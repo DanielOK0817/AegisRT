@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aegisrt:experiment:cgroup-sample:v1",
+  "title": "AegisRT anonymous cgroup v2 sample v1",
+  "description": "A PID-free and path-free observation of one known F4 attempt cgroup. Success-only stage order and readiness proofs are enforced when this record is bound to its trial trace.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "pair_id",
+    "trial_order",
+    "phase",
+    "sample_sequence",
+    "stage",
+    "monotonic_ns",
+    "attempt_number",
+    "exists",
+    "populated",
+    "member_count",
+    "escaped_descendant_count",
+    "controller_readback"
+  ],
+  "properties": {
+    "schema_version": {"const": "aegisrt.experiment.cgroup-sample/v1"},
+    "run_id": {"$ref": "#/$defs/run_id"},
+    "pair_id": {"$ref": "#/$defs/safe_id"},
+    "trial_order": {"type": "integer", "minimum": 0, "maximum": 1},
+    "phase": {"enum": ["warmup", "measurement"]},
+    "sample_sequence": {"type": "integer", "minimum": 1, "maximum": 1000000},
+    "stage": {
+      "enum": [
+        "attempt1_ready",
+        "post_daemon_exit",
+        "post_runtime_restart",
+        "attempt2_ready",
+        "trial_terminal"
+      ]
+    },
+    "monotonic_ns": {"type": "integer", "minimum": 0, "maximum": 315000000000},
+    "attempt_number": {"type": "integer", "minimum": 1, "maximum": 2},
+    "exists": {"type": "boolean"},
+    "populated": {"type": ["boolean", "null"]},
+    "member_count": {"type": ["integer", "null"], "minimum": 0, "maximum": 4096},
+    "escaped_descendant_count": {"type": "integer", "minimum": 0, "maximum": 4096},
+    "controller_readback": {"$ref": "#/$defs/controller_readback"}
+  },
+  "$defs": {
+    "run_id": {
+      "type": "string",
+      "pattern": "^run-[0-9a-f]{24}$"
+    },
+    "safe_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "controller_readback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cpu_max", "memory_max", "pids_max"],
+      "properties": {
+        "cpu_max": {"type": ["string", "null"], "pattern": "^(?:max|[1-9][0-9]*) [1-9][0-9]*$"},
+        "memory_max": {"type": ["string", "null"], "pattern": "^(?:max|[1-9][0-9]*)$"},
+        "pids_max": {"type": ["string", "null"], "pattern": "^(?:max|[1-9][0-9]*)$"}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"exists": {"const": true}}, "required": ["exists"]},
+      "then": {
+        "properties": {
+          "populated": {"type": "boolean"},
+          "member_count": {"type": "integer"},
+          "controller_readback": {
+            "properties": {
+              "cpu_max": {"type": "string"},
+              "memory_max": {"type": "string"},
+              "pids_max": {"type": "string"}
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "populated": {"type": "null"},
+          "member_count": {"type": "null"},
+          "controller_readback": {
+            "properties": {
+              "cpu_max": {"type": "null"},
+              "memory_max": {"type": "null"},
+              "pids_max": {"type": "null"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"stage": {"const": "attempt1_ready"}}, "required": ["stage"]},
+      "then": {
+        "properties": {
+          "attempt_number": {"const": 1},
+          "exists": {"const": true},
+          "populated": {"const": true},
+          "member_count": {"const": 2},
+          "escaped_descendant_count": {"const": 0},
+          "controller_readback": {
+            "properties": {
+              "cpu_max": {"const": "10000 100000"},
+              "memory_max": {"const": "67108864"},
+              "pids_max": {"const": "64"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"stage": {"const": "post_daemon_exit"}}, "required": ["stage"]},
+      "then": {"properties": {"attempt_number": {"const": 1}}}
+    },
+    {
+      "if": {"properties": {"stage": {"const": "post_runtime_restart"}}, "required": ["stage"]},
+      "then": {"properties": {"attempt_number": {"const": 1}, "exists": {"const": false}}}
+    },
+    {
+      "if": {"properties": {"stage": {"const": "attempt2_ready"}}, "required": ["stage"]},
+      "then": {"properties": {"attempt_number": {"const": 2}}}
+    },
+    {
+      "if": {"properties": {"stage": {"const": "trial_terminal"}}, "required": ["stage"]},
+      "then": {"properties": {"exists": {"const": false}}}
+    }
+  ]
+}

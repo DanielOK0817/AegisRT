@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "project": "AegisRT runtime monitor",
+  "source": "shadcn/ui official registry",
+  "source_url": "https://ui.shadcn.com/",
+  "setup_documentation": "https://ui.shadcn.com/docs/installation/vite",
+  "fetched_at": "2026-10-05T13:48:42.489Z",
+  "style": "new-york-v4",
+  "license": {
+    "spdx": "MIT",
+    "url": "https://github.com/shadcn-ui/ui/blob/main/LICENSE.md",
+    "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f",
+    "text": "MIT License\n\nCopyright (c) 2023 shadcn\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+  },
+  "components": [
+    {
+      "component": "button",
+      "registry_url": "https://ui.shadcn.com/r/styles/new-york-v4/button.json",
+      "registry_sha256": "4b8d7d848742727973c1b088af8d15f0b628272a1316f2d2fa344e73ddff9e9c",
+      "upstream_path": "registry/new-york-v4/ui/button.tsx",
+      "upstream_source_sha256": "79dd6f75f8136394442202d6b8b922fb269eaad0a5dba579397c9d5b41f893bb",
+      "local_path": "src/components/ui/button.tsx",
+      "local_source_sha256": "557e27d5d3159c338da761c5aec138dcd32d313b5a55774ea8001c3f3bfc620c",
+      "modifications": [
+        "Map cn import to local @/lib/utils",
+        "Map registry component imports to @/components/ui"
+      ],
+      "dependencies": [
+        "cn",
+        "radix-ui"
+      ]
+    },
+    {
+      "component": "card",
+      "registry_url": "https://ui.shadcn.com/r/styles/new-york-v4/card.json",
+      "registry_sha256": "c7ebaa49ba2a0613838558f3892c5007523c2dc26d6b36a244145d454a796106",
+      "upstream_path": "registry/new-york-v4/ui/card.tsx",
+      "upstream_source_sha256": "ef8305b12c3112dab42a4708b41b1ebcc042fa5ab4c20f039da8d45b09ed5059",
+      "local_path": "src/components/ui/card.tsx",
+      "local_source_sha256": "39480d5b63e46554f1cfcedaa91052c848bda5c45d7a5dda80fe91e7be604fb0",
+      "modifications": [
+        "Map cn import to local @/lib/utils",
+        "Map registry component imports to @/components/ui"
+      ],
+      "dependencies": [
+        "cn"
+      ]
+    },
+    {
+      "component": "table",
+      "registry_url": "https://ui.shadcn.com/r/styles/new-york-v4/table.json",
+      "registry_sha256": "35a45f90ee92883533c4c1029212d38bd263694e90ea54fbfaf66a099f7d3cc4",
+      "upstream_path": "registry/new-york-v4/ui/table.tsx",
+      "upstream_source_sha256": "bd1a9fc83a5a2149e504038e274bb7e5a0351af59f6896df52ac4d5b439695ac",
+      "local_path": "src/components/ui/table.tsx",
+      "local_source_sha256": "84be8055e88e5aebcc3f0d14ec68a03129b0eb65c7619e18866fe74a3a8b81e1",
+      "modifications": [
+        "Map cn import to local @/lib/utils",
+        "Map registry component imports to @/components/ui"
+      ],
+      "dependencies": [
+        "cn"
+      ]
+    },
+    {
+      "component": "badge",
+      "registry_url": "https://ui.shadcn.com/r/styles/new-york-v4/badge.json",
+      "registry_sha256": "0f988b37cf1c56e7ecc83b1dcf24c9af4e73ce4341da5caf2c9d9b07a551319b",
+      "upstream_path": "registry/new-york-v4/ui/badge.tsx",
+      "upstream_source_sha256": "13a9380dfff853ee730c14a52df49f22aecd31f40f2998d7c1e7ec458b6e1650",
+      "local_path": "src/components/ui/badge.tsx",
+      "local_source_sha256": "0311bb21a5dc8c1e3d70ffc35cccc375c90e2f08bb0f0dd943dad72c19ed45ff",
+      "modifications": [
+        "Map cn import to local @/lib/utils",
+        "Map registry component imports to @/components/ui"
+      ],
+      "dependencies": [
+        "cn",
+        "radix-ui"
+      ]
+    },
+    {
+      "component": "progress",
+      "registry_url": "https://ui.shadcn.com/r/styles/new-york-v4/progress.json",
+      "registry_sha256": "ca0c7ae4d88b8039a9ee64653569cf8be6a058070d9f719d2294c9d49d56bcab",
+      "upstream_path": "registry/new-york-v4/ui/progress.tsx",
+      "upstream_source_sha256": "e012e1f7e6e66d11229d1233eccf91954edcd9179b418ff1d114dc651b86fd35",
+      "local_path": "src/components/ui/progress.tsx",
+      "local_source_sha256": "1f6eb12292b38dd1601319ff7d6fc7dfefb8b988813962d688b3a9782000980a",
+      "modifications": [
+        "Map cn import to local @/lib/utils",
+        "Map registry component imports to @/components/ui"
+      ],
+      "dependencies": [
+        "cn",
+        "radix-ui"
+      ]
+    },
+    {
+      "component": "tabs",
+      "registry_url": "https://ui.shadcn.com/r/styles/new-york-v4/tabs.json",
+      "registry_sha256": "49320e6dcf56570753bb14ed3f5d66acf07d12e183c0e9024466995b25be5b1d",
+      "upstream_path": "registry/new-york-v4/ui/tabs.tsx",
+      "upstream_source_sha256": "e1df6e2f95ece373ca909c1d54b8ba8cf4c47dd425c1784bbb9a01c38dd0936b",
+      "local_path": "src/components/ui/tabs.tsx",
+      "local_source_sha256": "bc6b1c115fcc9d63d8f14cecd4fcb43cd0b8b201a5d295419296fe9e0ba1623f",
+      "modifications": [
+        "Map cn import to local @/lib/utils",
+        "Map registry component imports to @/components/ui"
+      ],
+      "dependencies": [
+        "cn",
+        "radix-ui"
+      ]
+    },
+    {
+      "component": "dialog",
+      "registry_url": "https://ui.shadcn.com/r/styles/new-york-v4/dialog.json",
+      "registry_sha256": "0115e3a57aa55a978c5fed0d77f7e98edd694215aae3e569def3fff722ba9f26",
+      "upstream_path": "registry/new-york-v4/ui/dialog.tsx",
+      "upstream_source_sha256": "2ade6074e5fad0a4eb171ead44c43d3301a3c83d186d7236fb1fdbea80ee556b",
+      "local_path": "src/components/ui/dialog.tsx",
+      "local_source_sha256": "0a85c31675f8269b3b1308fff0ab10d5cda1a090a550a1a74a8f7f439a92ea06",
+      "modifications": [
+        "Map cn import to local @/lib/utils",
+        "Map registry component imports to @/components/ui"
+      ],
+      "dependencies": [
+        "cn",
+        "radix-ui"
+      ]
+    },
+    {
+      "component": "select",
+      "registry_url": "https://ui.shadcn.com/r/styles/new-york-v4/select.json",
+      "registry_sha256": "ca3189ea8101a04f144b6d0f0e7330841639bfa5f4d57e7cca0894d39b30817b",
+      "upstream_path": "registry/new-york-v4/ui/select.tsx",
+      "upstream_source_sha256": "962830436bd0b7ee50e556f0747e277d6a86869ed27d167516346b15f26309d8",
+      "local_path": "src/components/ui/select.tsx",
+      "local_source_sha256": "a25676a80cb8ea9b90a1daad062dbbd84cafba68d72dd868f390c3bf487e230c",
+      "modifications": [
+        "Map cn import to local @/lib/utils",
+        "Map registry component imports to @/components/ui"
+      ],
+      "dependencies": [
+        "cn",
+        "radix-ui"
+      ]
+    },
+    {
+      "component": "input",
+      "registry_url": "https://ui.shadcn.com/r/styles/new-york-v4/input.json",
+      "registry_sha256": "b1fffa12ba72ce30a291749012b47235eda110648b8106725ced22b5b31c8f1b",
+      "upstream_path": "registry/new-york-v4/ui/input.tsx",
+      "upstream_source_sha256": "0c9457181f6ddc80969bcf854e92c362903a55b6e889fbef3fd85343ecc4af5b",
+      "local_path": "src/components/ui/input.tsx",
+      "local_source_sha256": "7bfd0eff6c53a38c99184394a09f55e7a86c725de12d6a300fa46b3765114091",
+      "modifications": [
+        "Map cn import to local @/lib/utils",
+        "Map registry component imports to @/components/ui"
+      ],
+      "dependencies": [
+        "cn"
+      ]
+    },
+    {
+      "component": "label",
+      "registry_url": "https://ui.shadcn.com/r/styles/new-york-v4/label.json",
+      "registry_sha256": "b03d6bc91da205758df87c5403d74bae4d742f1f4ac5ae0b94ad7a29ab6350ea",
+      "upstream_path": "registry/new-york-v4/ui/label.tsx",
+      "upstream_source_sha256": "344bde38b8531615dbf8e14af3895517c24d8ef6ce56ddeda7e2e6fe4b5d0c00",
+      "local_path": "src/components/ui/label.tsx",
+      "local_source_sha256": "db5dfcd98a78c5b7c3c01e0bb7726a3adbf0470f4d552e777ccf4751b51e6a56",
+      "modifications": [
+        "Map cn import to local @/lib/utils",
+        "Map registry component imports to @/components/ui"
+      ],
+      "dependencies": [
+        "cn",
+        "radix-ui"
+      ]
+    },
+    {
+      "component": "separator",
+      "registry_url": "https://ui.shadcn.com/r/styles/new-york-v4/separator.json",
+      "registry_sha256": "4242a9fe839cae9083acff1280b7cccfda10e97bbc83283aed12d2d12bebdc6a",
+      "upstream_path": "registry/new-york-v4/ui/separator.tsx",
+      "upstream_source_sha256": "ad7d5403fe337160e41dbf04147896e448ae3a747b8d06660d627d74d60021bc",
+      "local_path": "src/components/ui/separator.tsx",
+      "local_source_sha256": "f9ec8dde26a5c3f2af1c48a0c588c164e350567cddc5c4070cf5ba780e984f26",
+      "modifications": [
+        "Map cn import to local @/lib/utils",
+        "Map registry component imports to @/components/ui"
+      ],
+      "dependencies": [
+        "cn",
+        "radix-ui"
+      ]
+    },
+    {
+      "component": "textarea",
+      "registry_url": "https://ui.shadcn.com/r/styles/new-york-v4/textarea.json",
+      "registry_sha256": "2367d3964326b19ca2355f872d08153c86932abd4b103b5fd02039a3f2cb8ae5",
+      "upstream_path": "registry/new-york-v4/ui/textarea.tsx",
+      "upstream_source_sha256": "5cafcfeeee29534f449387a16b585f5923d2faab1a0cdc50a874416b175f59ce",
+      "local_path": "src/components/ui/textarea.tsx",
+      "local_source_sha256": "7c7122fc969c62228c691388aa1fe8b1eafe787ac25305a7a768f77d87d3c567",
+      "modifications": [
+        "Map cn import to local @/lib/utils",
+        "Map registry component imports to @/components/ui"
+      ],
+      "dependencies": [
+        "cn"
+      ]
+    },
+    {
+      "component": "tooltip",
+      "registry_url": "https://ui.shadcn.com/r/styles/new-york-v4/tooltip.json",
+      "registry_sha256": "1b7b452b34beab05b22bd653963abd1c88ebd8e9ebcc89dcaebf4ac4938c929e",
+      "upstream_path": "registry/new-york-v4/ui/tooltip.tsx",
+      "upstream_source_sha256": "611e4305879b2773eafe76bf3c5caa69d8e47367fd97887a71634a27828f4433",
+      "local_path": "src/components/ui/tooltip.tsx",
+      "local_source_sha256": "345bc589a285ece3622bf18f4c842107836cf6fc8a9055b0a604db0cf6c83551",
+      "modifications": [
+        "Map cn import to local @/lib/utils",
+        "Map registry component imports to @/components/ui"
+      ],
+      "dependencies": [
+        "cn",
+        "radix-ui"
+      ]
+    }
+  ]
+}

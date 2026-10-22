@@ -1,0 +1,291 @@
+{
+  "checks": [
+    {
+      "path": "$.sections[0].paragraphs[0]",
+      "supported": true,
+      "reason": "该段落对体验舆情的总结、各方观点的概括以及待核验事项的说明，均能由所引用的媒体报道、研究报告及评论样本支持。",
+      "evidence_ids": [
+        "C001",
+        "C005",
+        "R5c0d77e4d65a60680435",
+        "S7d39aef1cc40b2c45092"
+      ],
+      "sentence_checks": [
+        {
+          "index": 0,
+          "supported": true,
+          "reason": "所引材料确实提及了多平台优化实测、官方补丁迭代以及关卡设计反馈等核心舆情点。",
+          "evidence_ids": [
+            "R5c0d77e4d65a60680435",
+            "S7d39aef1cc40b2c45092"
+          ]
+        },
+        {
+          "index": 1,
+          "supported": true,
+          "reason": "媒体报道提及了性能模式稳定性的分歧，评论样本C001和C005分别反映了对空气墙的主观感受和对美术的认可。",
+          "evidence_ids": [
+            "C001",
+            "C005",
+            "R5c0d77e4d65a60680435",
+            "S7d39aef1cc40b2c45092"
+          ]
+        },
+        {
+          "index": 2,
+          "supported": true,
+          "reason": "媒体研究报告明确指出崩溃归因等技术争议缺乏大样本日志，仍属待核验事项。",
+          "evidence_ids": [
+            "R5c0d77e4d65a60680435"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "$.sections[1].paragraphs[0]",
+      "supported": true,
+      "reason": "该段落关于官方推出大型更新、性能模式调整及专业评测机构的测试结论，均与所引用的官方公告、媒体报道及评测视频标题一致。",
+      "evidence_ids": [
+        "S2f115578a7319dfbf765",
+        "Sdd0b79908e457bf9b0c4",
+        "Sdfdbcf235f1a24e632e7"
+      ],
+      "sentence_checks": [
+        {
+          "index": 0,
+          "supported": true,
+          "reason": "所引媒体报道证实了游戏发售后推出了旨在修复问题和优化性能的大型更新。",
+          "evidence_ids": [
+            "Sdd0b79908e457bf9b0c4",
+            "Sdfdbcf235f1a24e632e7"
+          ]
+        },
+        {
+          "index": 1,
+          "supported": true,
+          "reason": "官方更新公告明确列出了PS5性能模式调整为原生60Hz以及PC端集成AMD FSR4超采样技术。",
+          "evidence_ids": [
+            "Sdd0b79908e457bf9b0c4",
+            "Sdfdbcf235f1a24e632e7"
+          ]
+        },
+        {
+          "index": 2,
+          "supported": true,
+          "reason": "所引评测视频标题明确指出PS5版具有出色的视觉效果，但存在太多技术问题。",
+          "evidence_ids": [
+            "S2f115578a7319dfbf765"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "$.sections[2].paragraphs[0]",
+      "supported": true,
+      "reason": "该段落准确概括了查询研究、媒体研究和洞察研究的核心结论，且均能由所引用的三份研究报告原文支持。",
+      "evidence_ids": [
+        "R4d441bae148ba224180c",
+        "R5c0d77e4d65a60680435",
+        "Rd97b773e8208b4fdb4d1"
+      ],
+      "sentence_checks": [
+        {
+          "index": 0,
+          "supported": true,
+          "reason": "查询研究报告明确指出了官方公告与专业评测在帧率稳定性上的口径分歧，并标注补丁改善幅度待证实。",
+          "evidence_ids": [
+            "Rd97b773e8208b4fdb4d1"
+          ]
+        },
+        {
+          "index": 1,
+          "supported": true,
+          "reason": "媒体研究报告分析了跨平台性能优化的复杂动态，并确认了空气墙阻碍探索引发的负面反馈具有客观普遍性。",
+          "evidence_ids": [
+            "R5c0d77e4d65a60680435"
+          ]
+        },
+        {
+          "index": 2,
+          "supported": true,
+          "reason": "洞察研究报告明确说明其基于极小的B站评论样本，聚焦主观评价，且指出样本量极小无法推导全貌。",
+          "evidence_ids": [
+            "R4d441bae148ba224180c"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "$.sections[3].paragraphs[0]",
+      "supported": false,
+      "reason": "段落中提及“媒体研究指出”的内容，但本段并未引用媒体研究报告（R5c0d77e4d65a60680435），属于漏引证据。",
+      "evidence_ids": [
+        "S289a9285fc3dfb0cf08c",
+        "Sb1cfcc4cbdca6e565559",
+        "Sde727e71edae9f244a7b",
+        "Sf1cc9a480ed9f04323db"
+      ],
+      "sentence_checks": [
+        {
+          "index": 0,
+          "supported": true,
+          "reason": "所引报道均反映了主机端性能模式在更新后依然存在争议。",
+          "evidence_ids": [
+            "S289a9285fc3dfb0cf08c",
+            "Sb1cfcc4cbdca6e565559"
+          ]
+        },
+        {
+          "index": 1,
+          "supported": true,
+          "reason": "所引报道证实了基础版和Pro版主机难稳60帧，且外媒锐评其移除Lumen光照是“用画质换性能”。",
+          "evidence_ids": [
+            "S289a9285fc3dfb0cf08c",
+            "Sb1cfcc4cbdca6e565559",
+            "Sde727e71edae9f244a7b"
+          ]
+        },
+        {
+          "index": 2,
+          "supported": false,
+          "reason": "前半句的硬件归因由Sf1cc9a480ed9f04323db支持，但后半句明确提及“媒体研究指出”，而本段并未引用媒体研究报告（R5c0d77e4d65a60680435），无法支持该声明。",
+          "evidence_ids": [
+            "Sf1cc9a480ed9f04323db"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "$.sections[4].paragraphs[0]",
+      "supported": true,
+      "reason": "该段落对玩家评论的总结完全符合所引用的评论样本内容，准确反映了受众的不同看法。",
+      "evidence_ids": [
+        "C001",
+        "C002",
+        "C003",
+        "C005",
+        "C006"
+      ],
+      "sentence_checks": [
+        {
+          "index": 0,
+          "supported": true,
+          "reason": "作为段落总起句，符合后续引述的多种不同评论观点。",
+          "evidence_ids": [
+            "C001",
+            "C002",
+            "C003",
+            "C005",
+            "C006"
+          ]
+        },
+        {
+          "index": 1,
+          "supported": true,
+          "reason": "C001和C002明确指出了空气墙问题影响体验，且C002询问了IGN提及的优化和bug问题。",
+          "evidence_ids": [
+            "C001",
+            "C002"
+          ]
+        },
+        {
+          "index": 2,
+          "supported": true,
+          "reason": "C003对游民星空和A9VG的打分动机进行了主观推测。",
+          "evidence_ids": [
+            "C003"
+          ]
+        },
+        {
+          "index": 3,
+          "supported": true,
+          "reason": "C005将其与《流浪地球2》类比并称赞美术，C006将其视为给中国玩家的情书。",
+          "evidence_ids": [
+            "C005",
+            "C006"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "$.sections[5].paragraphs[0]",
+      "supported": true,
+      "reason": "该段落对主持讨论意见的转述准确无误，完全符合所引用的论坛讨论内容。",
+      "evidence_ids": [
+        "R9c760ef65303bf9c2c37"
+      ],
+      "sentence_checks": [
+        {
+          "index": 0,
+          "supported": true,
+          "reason": "主持讨论明确建议报告应严格分层信源，区分官方公告、专业实测与社区推测。",
+          "evidence_ids": [
+            "R9c760ef65303bf9c2c37"
+          ]
+        },
+        {
+          "index": 1,
+          "supported": true,
+          "reason": "主持讨论明确建议客观并列官方口径与实测区间，指出分歧源于硬件与场景差异，不作定性结论。",
+          "evidence_ids": [
+            "R9c760ef65303bf9c2c37"
+          ]
+        },
+        {
+          "index": 2,
+          "supported": true,
+          "reason": "主持讨论明确指出对缺乏原始数据的崩溃比例、空气墙频次等应保持存疑并列为待核查事项。",
+          "evidence_ids": [
+            "R9c760ef65303bf9c2c37"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "$.sections[6].paragraphs[0]",
+      "supported": false,
+      "reason": "段落中关于“受限于历史评论日期”及“不能将历史评论当作最新舆情”的表述在所引用的研究报告中均未提及，属于无中生有的推论。",
+      "evidence_ids": [
+        "R4d441bae148ba224180c",
+        "R5c0d77e4d65a60680435",
+        "Rd97b773e8208b4fdb4d1"
+      ],
+      "sentence_checks": [
+        {
+          "index": 0,
+          "supported": false,
+          "reason": "所引用的研究报告均未提及“历史评论日期”这一限制因素，也未提出“不能将历史评论当作最新舆情”的推论。",
+          "evidence_ids": [
+            "R4d441bae148ba224180c",
+            "R5c0d77e4d65a60680435",
+            "Rd97b773e8208b4fdb4d1"
+          ]
+        },
+        {
+          "index": 1,
+          "supported": true,
+          "reason": "查询研究报告明确指出了缺乏官方后台原始统计数据及第三方实验室复测数据。",
+          "evidence_ids": [
+            "Rd97b773e8208b4fdb4d1"
+          ]
+        },
+        {
+          "index": 2,
+          "supported": true,
+          "reason": "媒体研究报告明确指出缺乏大样本崩溃日志的独立核验，相关指控仍属待核验状态。",
+          "evidence_ids": [
+            "R5c0d77e4d65a60680435"
+          ]
+        },
+        {
+          "index": 3,
+          "supported": true,
+          "reason": "洞察研究报告明确说明其缺乏权威媒体原文的判断是基于其输入的极小样本（仅6条评论），符合段落表述。",
+          "evidence_ids": [
+            "R4d441bae148ba224180c"
+          ]
+        }
+      ]
+    }
+  ]
+}

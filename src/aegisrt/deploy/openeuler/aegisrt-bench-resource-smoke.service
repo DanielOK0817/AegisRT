@@ -1,0 +1,42 @@
+[Unit]
+Description=AegisRT bounded cgroup CPU memory and PID pressure smoke
+After=local-fs.target
+ConditionFileIsExecutable=/usr/local/libexec/aegisrt/aegisbench
+
+[Service]
+Type=exec
+User=aegisrt-bench
+Group=aegisrt-bench
+UMask=0077
+RuntimeDirectory=aegisrt-bench
+RuntimeDirectoryMode=0700
+StateDirectory=aegisrt-bench
+StateDirectoryMode=0700
+WorkingDirectory=/var/lib/aegisrt-bench
+ExecStart=/usr/local/libexec/aegisrt/aegisbench resource-kernel \
+  --profile smoke \
+  --output /var/lib/aegisrt-bench
+Restart=no
+TimeoutStartSec=3min
+TimeoutStopSec=20s
+KillMode=control-group
+Delegate=cpu memory pids
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+PrivateNetwork=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectClock=yes
+ProtectHostname=yes
+ProtectProc=invisible
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+LockPersonality=yes
+RemoveIPC=yes
+MemoryDenyWriteExecute=yes
+RestrictAddressFamilies=AF_UNIX
+SystemCallArchitectures=native

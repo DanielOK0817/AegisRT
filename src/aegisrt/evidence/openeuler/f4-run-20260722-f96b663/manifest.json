@@ -1,0 +1,136 @@
+{
+  "schema_version": "aegisrt.experiment.manifest/v1",
+  "run_id": "run-7aa3669fb8b265edc0d11f25",
+  "status": "COMPLETED",
+  "experiment": {
+    "kind": "fault-kernel",
+    "plan_id": "f4-daemon-sigkill-cgroup-smoke-v1",
+    "case_ids": [
+      "F4-kernel-smoke"
+    ],
+    "workload_sha256": "8d41eec4db44d5afca5e605bff5b67063400daa88ae3d525106a58e422fc5fc9",
+    "input_sha256": "f466672f44a2ac76abb257fe29a4a6b6b877e385e43c10ab8c5ec1a2276a4eab"
+  },
+  "protocol": {
+    "warmup_pairs": 0,
+    "measured_pairs": 2,
+    "seeds": [
+      104729,
+      104743
+    ],
+    "pairing": "seed-and-repetition-v1",
+    "counterbalance": "alternating-seed-index-v1",
+    "trial_timeout_ms": 60000,
+    "bootstrap_seed": 424242,
+    "bootstrap_resamples": 10000
+  },
+  "environment": {
+    "evidence_scope": "openeuler-kernel",
+    "os_family": "linux",
+    "distribution_id": "openEuler",
+    "distribution_version": "24.03",
+    "kernel_release": "6.6.0-159.4.3.154.oe2403sp4.x86_64",
+    "architecture": "amd64",
+    "logical_cpu_count": 4,
+    "memory_total_bytes": 3570421760,
+    "cgroup": {
+      "version": "v2",
+      "controllers": [
+        "cpu",
+        "memory",
+        "pids"
+      ],
+      "delegation": "delegated",
+      "psi": "available"
+    }
+  },
+  "software": {
+    "runtime_commit": "f96b66344e174167f25acd101990adb89a9df790",
+    "runtime_dirty": false,
+    "go_version": "go1.26.5",
+    "binary_sha256": "afdb45ff2511fc934953ef843f0b3450994663e42ad9f226360f24aeab3bf234",
+    "config_sha256": "95c0e3285f1f46c4ff17014479047e82e421c3faf7fa215d3903c2f43b0f7e87"
+  },
+  "started_at": "2026-07-22T10:49:49.171703326Z",
+  "finished_at": "2026-07-22T10:50:09.857737923Z",
+  "integrity": {
+    "directory_policy": "create-only-atomic-publish",
+    "tamper_evident": true,
+    "worm_storage": false,
+    "checksum_algorithm": "SHA-256",
+    "checksum_file": "SHA256SUMS"
+  },
+  "anonymization": {
+    "contains_personal_identifiers": false,
+    "contains_credentials": false,
+    "contains_absolute_paths": false,
+    "raw_output_capture": false,
+    "scan_result": "PASSED"
+  },
+  "artifacts": [
+    {
+      "kind": "fault-kernel-csv",
+      "path": "fault-kernel.csv",
+      "media_type": "text/csv",
+      "bytes": 2618,
+      "sha256": "5773f0e7fd4fecb0191c1ac2fccfb1510729e467bb67f5c2d0bf003173d33d1b",
+      "records": 4
+    },
+    {
+      "kind": "fault-kernel-trial-trace-jsonl",
+      "path": "fault-kernel-trial-traces.jsonl",
+      "media_type": "application/x-ndjson",
+      "bytes": 7812,
+      "sha256": "307e584cd78a9805ed7f2436ed42add3de68c272ddd3d89650f60cccaea1c322",
+      "records": 4
+    },
+    {
+      "kind": "cgroup-sample-jsonl",
+      "path": "cgroup-samples.jsonl",
+      "media_type": "application/x-ndjson",
+      "bytes": 5767,
+      "sha256": "b54a7385589850693d5fcfb84ee00bc6aab5b169c22789d23e8d87335bd882c4",
+      "records": 14
+    },
+    {
+      "kind": "workload-json",
+      "path": "workload.json",
+      "media_type": "application/json",
+      "bytes": 2536,
+      "sha256": "8d41eec4db44d5afca5e605bff5b67063400daa88ae3d525106a58e422fc5fc9",
+      "records": 1
+    },
+    {
+      "kind": "fault-kernel-input-json",
+      "path": "fault-kernel-input.json",
+      "media_type": "application/json",
+      "bytes": 1314,
+      "sha256": "f466672f44a2ac76abb257fe29a4a6b6b877e385e43c10ab8c5ec1a2276a4eab",
+      "records": 1
+    },
+    {
+      "kind": "component-manifest-json",
+      "path": "components.json",
+      "media_type": "application/json",
+      "bytes": 701,
+      "sha256": "c1734d19c7a3fc8c566aa99026260f0bfeb8757069ccb9d3e61461b07e4ddde9",
+      "records": 1
+    },
+    {
+      "kind": "event-jsonl",
+      "path": "events.jsonl",
+      "media_type": "application/x-ndjson",
+      "bytes": 4504,
+      "sha256": "8c37d34cf7122482d63d47d96a0b4958101e774b65858ad07412be169c099b94",
+      "records": 11
+    },
+    {
+      "kind": "environment-json",
+      "path": "environment.json",
+      "media_type": "application/json",
+      "bytes": 447,
+      "sha256": "1749af6220282e19150afe9fe4fc3ad14bbb844fffe577315a3f86f24e4535e5",
+      "records": 1
+    }
+  ]
+}

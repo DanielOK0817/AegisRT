@@ -1,0 +1,45 @@
+[Unit]
+Description=AegisRT bounded F4 daemon SIGKILL and cgroup smoke
+After=local-fs.target
+ConditionFileIsExecutable=/usr/local/libexec/aegisrt/aegisbench
+ConditionFileIsExecutable=/usr/local/libexec/aegisrt/aegisrt
+
+[Service]
+Type=exec
+User=aegisrt-bench
+Group=aegisrt-bench
+UMask=0077
+RuntimeDirectory=aegisrt-bench
+RuntimeDirectoryMode=0700
+StateDirectory=aegisrt-bench
+StateDirectoryMode=0700
+WorkingDirectory=/var/lib/aegisrt-bench
+ExecStart=/usr/local/libexec/aegisrt/aegisbench fault-kernel \
+  --profile smoke \
+  --output /var/lib/aegisrt-bench \
+  --seeds 104729,104743 \
+  --repetitions 1
+Restart=no
+TimeoutStartSec=8min
+TimeoutStopSec=30s
+KillMode=control-group
+Delegate=cpu memory pids
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+PrivateNetwork=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectClock=yes
+ProtectHostname=yes
+ProtectProc=invisible
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+LockPersonality=yes
+RemoveIPC=yes
+MemoryDenyWriteExecute=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+SystemCallArchitectures=native

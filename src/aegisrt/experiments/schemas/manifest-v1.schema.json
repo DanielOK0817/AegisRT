@@ -1,0 +1,521 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aegisrt:experiment:manifest:v1",
+  "title": "AegisRT published experiment manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "status",
+    "experiment",
+    "protocol",
+    "environment",
+    "software",
+    "started_at",
+    "finished_at",
+    "integrity",
+    "anonymization",
+    "artifacts"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "aegisrt.experiment.manifest/v1"
+    },
+    "run_id": {
+      "$ref": "#/$defs/opaque_id"
+    },
+    "status": {
+      "enum": ["NOT_EXECUTED", "COMPLETED", "FAILED"]
+    },
+    "experiment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "plan_id", "case_ids", "workload_sha256", "input_sha256"],
+      "properties": {
+        "kind": {
+          "enum": ["scheduler", "context", "fault", "fault-kernel", "resource"]
+        },
+        "plan_id": {
+          "$ref": "#/$defs/safe_label"
+        },
+        "case_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/safe_label"
+          }
+        },
+        "workload_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        },
+        "input_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        }
+      }
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "warmup_pairs",
+        "measured_pairs",
+        "seeds",
+        "pairing",
+        "counterbalance",
+        "trial_timeout_ms",
+        "bootstrap_seed",
+        "bootstrap_resamples"
+      ],
+      "properties": {
+        "warmup_pairs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "measured_pairs": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "seeds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967295
+          }
+        },
+        "pairing": {
+          "const": "seed-and-repetition-v1"
+        },
+        "counterbalance": {
+          "const": "alternating-seed-index-v1"
+        },
+        "trial_timeout_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "bootstrap_seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "bootstrap_resamples": {
+          "type": "integer",
+          "minimum": 1000
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_scope",
+        "os_family",
+        "distribution_id",
+        "distribution_version",
+        "kernel_release",
+        "architecture",
+        "logical_cpu_count",
+        "memory_total_bytes",
+        "cgroup"
+      ],
+      "properties": {
+        "evidence_scope": {
+          "enum": ["not-executed", "windows-functional", "openeuler-kernel"]
+        },
+        "os_family": {
+          "enum": ["unknown", "windows", "linux"]
+        },
+        "distribution_id": {
+          "type": ["string", "null"],
+          "pattern": "^[A-Za-z0-9._-]{1,64}$"
+        },
+        "distribution_version": {
+          "type": ["string", "null"],
+          "pattern": "^[A-Za-z0-9._ -]{1,64}$"
+        },
+        "kernel_release": {
+          "type": ["string", "null"],
+          "pattern": "^[A-Za-z0-9._+-]{1,128}$"
+        },
+        "architecture": {
+          "enum": ["unknown", "amd64", "arm64", "other"]
+        },
+        "logical_cpu_count": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        },
+        "memory_total_bytes": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        },
+        "cgroup": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["version", "controllers", "delegation", "psi"],
+          "properties": {
+            "version": {
+              "enum": ["unknown", "none", "v1", "v2"]
+            },
+            "controllers": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "enum": ["cpu", "memory", "pids", "io"]
+              }
+            },
+            "delegation": {
+              "enum": ["unknown", "none", "read-only", "delegated"]
+            },
+            "psi": {
+              "enum": ["unknown", "unavailable", "available"]
+            }
+          }
+        }
+      }
+    },
+    "software": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["runtime_commit", "runtime_dirty", "go_version", "binary_sha256", "config_sha256"],
+      "properties": {
+        "runtime_commit": {
+          "$ref": "#/$defs/nullable_commit"
+        },
+        "runtime_dirty": {
+          "type": ["boolean", "null"]
+        },
+        "go_version": {
+          "type": ["string", "null"],
+          "pattern": "^go[0-9]+[.][0-9]+(?:[.][0-9]+)?$"
+        },
+        "binary_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        },
+        "config_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        }
+      }
+    },
+    "started_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "finished_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["directory_policy", "tamper_evident", "worm_storage", "checksum_algorithm", "checksum_file"],
+      "properties": {
+        "directory_policy": {
+          "const": "create-only-atomic-publish"
+        },
+        "tamper_evident": {
+          "const": true
+        },
+        "worm_storage": {
+          "const": false
+        },
+        "checksum_algorithm": {
+          "const": "SHA-256"
+        },
+        "checksum_file": {
+          "anyOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/relative_path"}
+          ]
+        }
+      }
+    },
+    "anonymization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contains_personal_identifiers",
+        "contains_credentials",
+        "contains_absolute_paths",
+        "raw_output_capture",
+        "scan_result"
+      ],
+      "properties": {
+        "contains_personal_identifiers": {
+          "const": false
+        },
+        "contains_credentials": {
+          "const": false
+        },
+        "contains_absolute_paths": {
+          "const": false
+        },
+        "raw_output_capture": {
+          "const": false
+        },
+        "scan_result": {
+          "enum": ["NOT_RUN", "PASSED"]
+        }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "path", "media_type", "bytes", "sha256", "records"],
+        "properties": {
+          "kind": {
+            "enum": [
+              "event-jsonl",
+              "scheduler-csv",
+              "scheduler-task-trace-jsonl",
+              "workload-json",
+              "scheduler-input-json",
+              "context-csv",
+              "context-trial-trace-jsonl",
+              "context-input-json",
+              "fault-csv",
+              "fault-trial-trace-jsonl",
+              "fault-input-json",
+              "fault-kernel-csv",
+              "fault-kernel-trial-trace-jsonl",
+              "fault-kernel-warmup-trace-jsonl",
+              "cgroup-sample-jsonl",
+              "fault-kernel-input-json",
+              "component-manifest-json",
+              "resource-csv",
+              "environment-json",
+              "analysis-output"
+            ]
+          },
+          "path": {
+            "$ref": "#/$defs/relative_path"
+          },
+          "media_type": {
+            "enum": ["application/json", "application/x-ndjson", "text/csv"]
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "records": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "opaque_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$"
+    },
+    "safe_label": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nullable_sha256": {
+      "anyOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/sha256"}
+      ]
+    },
+    "nullable_commit": {
+      "anyOf": [
+        {"type": "null"},
+        {"type": "string", "pattern": "^[0-9a-f]{40}$"}
+      ]
+    },
+    "relative_path": {
+      "type": "string",
+      "pattern": "^(?!.*(?:^|/)[.][.](?:/|$))(?!/)(?![A-Za-z]:)[A-Za-z0-9][A-Za-z0-9._/-]{0,255}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"status": {"const": "NOT_EXECUTED"}},
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "started_at": {"type": "null"},
+          "finished_at": {"type": "null"},
+          "artifacts": {"maxItems": 0},
+          "experiment": {
+            "properties": {
+              "workload_sha256": {"type": "null"},
+              "input_sha256": {"type": "null"}
+            }
+          },
+          "environment": {
+            "properties": {"evidence_scope": {"const": "not-executed"}}
+          },
+          "software": {
+            "properties": {
+              "runtime_commit": {"type": "null"},
+              "runtime_dirty": {"type": "null"},
+              "go_version": {"type": "null"},
+              "binary_sha256": {"type": "null"},
+              "config_sha256": {"type": "null"}
+            }
+          },
+          "integrity": {
+            "properties": {"checksum_file": {"type": "null"}}
+          },
+          "anonymization": {
+            "properties": {"scan_result": {"const": "NOT_RUN"}}
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "started_at": {"type": "string", "format": "date-time"},
+          "finished_at": {"type": "string", "format": "date-time"},
+          "experiment": {
+            "properties": {
+              "workload_sha256": {"$ref": "#/$defs/sha256"},
+              "input_sha256": {"$ref": "#/$defs/sha256"}
+            }
+          },
+          "environment": {
+            "properties": {
+              "evidence_scope": {
+                "enum": ["windows-functional", "openeuler-kernel"]
+              },
+              "os_family": {"enum": ["windows", "linux"]},
+              "distribution_id": {"type": "string"},
+              "distribution_version": {"type": "string"},
+              "kernel_release": {"type": "string"},
+              "architecture": {"enum": ["amd64", "arm64", "other"]},
+              "logical_cpu_count": {"type": "integer", "minimum": 1},
+              "memory_total_bytes": {"type": "integer", "minimum": 1}
+            }
+          },
+          "software": {
+            "properties": {
+              "runtime_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+              "runtime_dirty": {"type": "boolean"},
+              "go_version": {"type": "string", "pattern": "^go[0-9]+[.][0-9]+(?:[.][0-9]+)?$"},
+              "binary_sha256": {"$ref": "#/$defs/sha256"},
+              "config_sha256": {"$ref": "#/$defs/sha256"}
+            }
+          },
+          "anonymization": {
+            "properties": {"scan_result": {"const": "PASSED"}}
+          },
+          "integrity": {
+            "properties": {
+              "checksum_file": {"$ref": "#/$defs/relative_path"}
+            }
+          },
+          "artifacts": {"minItems": 1}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "environment": {
+            "properties": {"evidence_scope": {"const": "openeuler-kernel"}},
+            "required": ["evidence_scope"]
+          }
+        },
+        "required": ["environment"]
+      },
+      "then": {
+        "properties": {
+          "environment": {
+            "properties": {
+              "os_family": {"const": "linux"},
+              "distribution_id": {"pattern": "^[Oo][Pp][Ee][Nn][Ee][Uu][Ll][Ee][Rr]$"},
+              "architecture": {"enum": ["amd64", "arm64", "other"]},
+              "cgroup": {
+                "properties": {
+                  "version": {"const": "v2"},
+                  "controllers": {
+                    "minItems": 3,
+                    "allOf": [
+                      {"contains": {"const": "cpu"}},
+                      {"contains": {"const": "memory"}},
+                      {"contains": {"const": "pids"}}
+                    ]
+                  },
+                  "delegation": {"const": "delegated"},
+                  "psi": {"const": "available"}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"enum": ["COMPLETED", "FAILED"]},
+          "experiment": {
+            "properties": {"kind": {"const": "fault-kernel"}},
+            "required": ["kind"]
+          }
+        },
+        "required": ["status", "experiment"]
+      },
+      "then": {
+        "properties": {
+          "environment": {
+            "properties": {"evidence_scope": {"const": "openeuler-kernel"}}
+          },
+          "artifacts": {
+            "allOf": [
+              {"contains": {"properties": {"kind": {"const": "event-jsonl"}}, "required": ["kind"]}},
+              {"contains": {"properties": {"kind": {"const": "fault-kernel-csv"}}, "required": ["kind"]}},
+              {"contains": {"properties": {"kind": {"const": "fault-kernel-trial-trace-jsonl"}}, "required": ["kind"]}},
+              {"contains": {"properties": {"kind": {"const": "cgroup-sample-jsonl"}}, "required": ["kind"]}},
+              {"contains": {"properties": {"kind": {"const": "workload-json"}}, "required": ["kind"]}},
+              {"contains": {"properties": {"kind": {"const": "fault-kernel-input-json"}}, "required": ["kind"]}},
+              {"contains": {"properties": {"kind": {"const": "component-manifest-json"}}, "required": ["kind"]}},
+              {"contains": {"properties": {"kind": {"const": "environment-json"}}, "required": ["kind"]}}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"enum": ["COMPLETED", "FAILED"]},
+          "experiment": {
+            "properties": {"kind": {"const": "fault-kernel"}, "plan_id": {"const": "f4-daemon-sigkill-cgroup-v1"}},
+            "required": ["kind", "plan_id"]
+          }
+        },
+        "required": ["status", "experiment"]
+      },
+      "then": {
+        "properties": {
+          "software": {"properties": {"runtime_dirty": {"const": false}}},
+          "artifacts": {
+            "contains": {
+              "properties": {"kind": {"const": "fault-kernel-warmup-trace-jsonl"}},
+              "required": ["kind"]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+package main
+
+import (
+	"fmt"
+	"math"
+	"sort"
+
+	"aegisrt/internal/domain"
+)
+
+type workflowMetric struct {
+	Workflow          string  `json:"workflow"`
+	FirstStartDelayMS int64   `json:"first_start_delay_ms"`
+	LastFinishMS      int64   `json:"last_finish_ms"`
+	ResourceTime      float64 `json:"declared_share_time_ms"`
+	SettledCharge     float64 `json:"settled_charge"`
+}
+
+type metrics struct {
+	MakespanMS        int64            `json:"makespan_ms"`
+	MeanWaitMS        float64          `json:"mean_wait_ms"`
+	P95WaitMS         int64            `json:"p95_wait_ms"`
+	MaxWaitMS         int64            `json:"max_wait_ms"`
+	LogicalThroughput float64          `json:"logical_tasks_per_second"`
+	FirstWave         map[string]int   `json:"first_wave_admissions"`
+	Workflows         []workflowMetric `json:"workflows"`
+}
+
+func workloads() []workload {
+	var result []workload
+	for _, seed := range []uint32{104729, 104743, 104759} {
+		for _, name := range []string{"multi-slot", "dynamic-arrival", "mixed-duration"} {
+			random := seed
+			value := workload{Case: name, Seed: seed, Capacity: domain.ResourceVector{
+				CPUMilli: 1000, MemoryMiB: 1024, ToolSlots: map[string]int64{"worker": 4}}}
+			ids := []string{"a", "b"}
+			if name != "multi-slot" {
+				ids = append(ids, "c")
+			}
+			for group, id := range ids {
+				count, arrival := 8, int64(0)
+				if name != "multi-slot" {
+					count = 6
+				}
+				if group == 2 {
+					arrival = 7
+				}
+				for index := 0; index < count; index++ {
+					// Fixed xorshift32 avoids collapsing distinct seeds modulo six.
+					random ^= random << 13
+					random ^= random >> 17
+					random ^= random << 5
+					jitter := int64(random % 6)
+					duration := int64(20) + jitter
+					if name == "mixed-duration" {
+						duration = []int64{100, 10, 25}[group] + jitter
+					}
+					value.Tasks = append(value.Tasks, task{ID: fmt.Sprintf("%s-%02d", id, index), Workflow: id,
+						ArrivalMS: arrival, ServiceMS: duration, Priority: 1,
+						Resources: domain.ResourceVector{CPUMilli: 250, MemoryMiB: 128, ToolSlots: map[string]int64{"worker": 1}}})
+				}
+			}
+			result = append(result, value)
+		}
+	}
+	return result
+}
+
+func calculate(input workload, timings map[string]timing, events []event) metrics {
+	value := metrics{FirstWave: make(map[string]int)}
+	waits := make([]int64, 0, len(input.Tasks))
+	workflows := make(map[string]workflowMetric)
+	firstStart := make(map[string]int64)
+	for _, item := range input.Tasks {
+		entry := timings[item.ID]
+		wait := entry.Started - item.ArrivalMS
+		waits = append(waits, wait)
+		value.MeanWaitMS += float64(wait) / float64(len(input.Tasks))
+		if wait > value.MaxWaitMS {
+			value.MaxWaitMS = wait
+		}
+		if entry.Finished > value.MakespanMS {
+			value.MakespanMS = entry.Finished
+		}
+		row, exists := workflows[item.Workflow]
+		if !exists {
+			row.Workflow = item.Workflow
+			firstStart[item.Workflow] = entry.Started
+		}
+		if entry.Started < firstStart[item.Workflow] {
+			firstStart[item.Workflow] = entry.Started
+		}
+		row.FirstStartDelayMS = firstStart[item.Workflow] - item.ArrivalMS
+		if entry.Finished > row.LastFinishMS {
+			row.LastFinishMS = entry.Finished
+		}
+		share := item.Resources.DominantShare(input.Capacity)
+		row.ResourceTime += share * float64(item.ServiceMS)
+		row.SettledCharge += share / float64(item.Priority+1)
+		workflows[item.Workflow] = row
+	}
+	sort.Slice(waits, func(i, j int) bool { return waits[i] < waits[j] })
+	value.P95WaitMS = waits[int(math.Ceil(float64(len(waits))*.95))-1]
+	value.LogicalThroughput = float64(len(input.Tasks)) * 1000 / float64(value.MakespanMS)
+	for _, item := range events {
+		if item.TimeMS != 0 {
+			break
+		}
+		if item.Kind == "dispatch" {
+			value.FirstWave[item.Workflow]++
+		}
+	}
+	for _, row := range workflows {
+		value.Workflows = append(value.Workflows, row)
+	}
+	sort.Slice(value.Workflows, func(i, j int) bool { return value.Workflows[i].Workflow < value.Workflows[j].Workflow })
+	return value
+}

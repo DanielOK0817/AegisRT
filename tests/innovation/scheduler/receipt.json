@@ -1,0 +1,9 @@
+{
+  "archive": "evidence.zip",
+  "sha256": "0f691ed2b44b5a0bde2e0a7ddd9121259b02b698eace12b44ad0326dfb515623",
+  "files": 2218,
+  "source": "2026-10-06 paired scheduler experiment with matching frozen source",
+  "anonymized_files": 2,
+  "original_measurement_preserved": true,
+  "new_experiment_executed": false
+}

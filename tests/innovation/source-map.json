@@ -1,0 +1,42 @@
+[
+  {
+    "source": "output/priority-comparison-20261006/evidence/matrix/metrics.csv",
+    "copy": "tests/innovation/scheduler/metrics.csv",
+    "sha256": "b84a57b91d75ae450edbd35ad82922bd7e992c82d997f5341a5305fc2e059c81"
+  },
+  {
+    "source": "output/priority-comparison-20261006/evidence/matrix/validation.json",
+    "copy": "tests/innovation/scheduler/validation.json",
+    "sha256": "57373bcb16cc6c988bd2c0e509ee414c8738e6e1633891a0dcbb3453202ac654"
+  },
+  {
+    "source": "output/priority-comparison-20261006/evidence/matrix/manifest.json",
+    "copy": "tests/innovation/scheduler/source-manifest.json",
+    "sha256": "88c9f86d842ce6e6c4225b94df37c17740aa377a5d249a87e9be994243e8e7a9"
+  },
+  {
+    "source": "aegisrt/experiments/context-evaluation/evidence/prepared-20260924-final/run-20260924-200723/analysis/communication-trials.csv",
+    "copy": "tests/innovation/context/communication-trials.csv",
+    "sha256": "f572917dd40397f5fcff8abff3379a61b6504b2dae7a1bcb6d12447fac8179de"
+  },
+  {
+    "source": "aegisrt/experiments/context-evaluation/evidence/prepared-20260924-final/run-20260924-200723/analysis/verification.json",
+    "copy": "tests/innovation/context/verification.json",
+    "sha256": "5fc857b85555b8c5fd90cf26c6b38f0411b58ed82674bcf2100f0e657927f0d2"
+  },
+  {
+    "source": "aegisrt/docs/experiments/part4-20261003/recovery-context-evidence.json",
+    "copy": "tests/innovation/context/recovery-context-evidence.json",
+    "sha256": "68d88bcd2b6af38eeac9fbf71309a4a143faed86b59de4bc837a780e1daeccf2"
+  },
+  {
+    "source": "aegisrt/evidence/part4-experiments-20261002/formal-native/verified-metrics.csv",
+    "copy": "tests/innovation/completion/verified-metrics.csv",
+    "sha256": "55a4e4e17757bcdcea99f094c435cd8b275f713bff30fe4f150a1ffb5a6d100a"
+  },
+  {
+    "source": "aegisrt/evidence/part4-experiments-20261002/formal-native/verification.json",
+    "copy": "tests/innovation/completion/verification.json",
+    "sha256": "7213dcdd535d7713197e3a93a498cda5976591ad2ac7f1b50545af0f8d7ce29c"
+  }
+]

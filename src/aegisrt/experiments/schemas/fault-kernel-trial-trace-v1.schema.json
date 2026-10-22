@@ -1,0 +1,1061 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aegisrt:experiment:fault-kernel-trial-trace:v1",
+  "title": "AegisRT openEuler F4 kernel trial trace v1",
+  "description": "Closed recomputation trace for one baseline or daemon-SIGKILL F4 observation. It contains no PID, absolute cgroup path, command line, raw log, hostname, username, address, token, or environment value.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "evidence_scope",
+    "profile",
+    "plan_id",
+    "case_id",
+    "pair_id",
+    "seed",
+    "repetition",
+    "trial_order",
+    "phase",
+    "treatment",
+    "role",
+    "workload_sha256",
+    "input_sha256",
+    "status",
+    "timeout_ms",
+    "clock_mode",
+    "protocol",
+    "milestones",
+    "startup_receipt",
+    "target",
+    "survivor",
+    "cgroup_sample_sequences",
+    "observations",
+    "reason_code"
+  ],
+  "properties": {
+    "schema_version": {"const": "aegisrt.experiment.fault-kernel-trial-trace/v1"},
+    "run_id": {"$ref": "#/$defs/run_id"},
+    "evidence_scope": {"const": "openeuler-kernel"},
+    "profile": {"enum": ["smoke", "formal"]},
+    "plan_id": {"enum": ["f4-daemon-sigkill-cgroup-smoke-v1", "f4-daemon-sigkill-cgroup-v1"]},
+    "case_id": {"enum": ["F4-kernel-smoke", "F4"]},
+    "pair_id": {"$ref": "#/$defs/safe_id"},
+    "seed": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+    "repetition": {"type": "integer", "minimum": 0, "maximum": 3},
+    "trial_order": {"type": "integer", "minimum": 0, "maximum": 1},
+    "phase": {"enum": ["warmup", "measurement"]},
+    "treatment": {"enum": ["no-injection", "daemon-sigkill"]},
+    "role": {"enum": ["baseline", "treatment"]},
+    "workload_sha256": {"$ref": "#/$defs/sha256"},
+    "input_sha256": {"$ref": "#/$defs/sha256"},
+    "status": {"enum": ["SUCCEEDED", "FAILED", "TIMED_OUT", "INVALID"]},
+    "timeout_ms": {"type": "integer", "minimum": 30000, "maximum": 300000},
+    "clock_mode": {"const": "harness-monotonic-v1"},
+    "protocol": {"$ref": "#/$defs/protocol"},
+    "milestones": {"$ref": "#/$defs/milestones"},
+    "startup_receipt": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/$defs/startup_receipt"}
+      ]
+    },
+    "target": {"$ref": "#/$defs/target"},
+    "survivor": {"$ref": "#/$defs/survivor"},
+    "cgroup_sample_sequences": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": {"type": "integer", "minimum": 1, "maximum": 1000000}
+    },
+    "observations": {"$ref": "#/$defs/observations"},
+    "reason_code": {
+      "enum": [
+        "NONE",
+        "HARNESS_FAILURE",
+        "DAEMON_EXIT_MISMATCH",
+        "ORPHAN_NOT_OBSERVED",
+        "CHECKPOINT_NOT_LOADED",
+        "RECOVERY_NOT_REQUEUED",
+        "RETRY_NOT_READY",
+        "CLEANUP_INCOMPLETE",
+        "ISOLATION_ESCAPE",
+        "DUPLICATE_ARTIFACTS",
+        "TRIAL_TIMEOUT"
+      ]
+    }
+  },
+  "$defs": {
+    "run_id": {
+      "type": "string",
+      "pattern": "^run-[0-9a-f]{24}$"
+    },
+    "safe_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nullable_ns": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "maximum": 315000000000
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fault_mode", "injection_boundary", "isolation_mode", "daemon_control", "expected_recovery"],
+      "properties": {
+        "fault_mode": {"enum": ["none", "daemon_sigkill"]},
+        "injection_boundary": {"enum": ["matched-attempt-control", "attempt1-ready-and-populated"]},
+        "isolation_mode": {"const": "cgroup-v2-clone-placement-v1"},
+        "daemon_control": {"const": "direct-child-process-v1"},
+        "expected_recovery": {"enum": ["attempt1-normal-completion", "restart-cleanup-requeue-attempt2"]}
+      }
+    },
+    "milestones": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["started_ns", "attempt1_ready_ns", "injected_ns", "daemon_exited_ns", "cleanup_complete_ns", "attempt2_ready_ns", "recovered_ns", "finished_ns"],
+      "properties": {
+        "started_ns": {"type": "integer", "minimum": 0, "maximum": 315000000000},
+        "attempt1_ready_ns": {"type": "integer", "minimum": 0, "maximum": 315000000000},
+        "injected_ns": {"$ref": "#/$defs/nullable_ns"},
+        "daemon_exited_ns": {"$ref": "#/$defs/nullable_ns"},
+        "cleanup_complete_ns": {"$ref": "#/$defs/nullable_ns"},
+        "attempt2_ready_ns": {"$ref": "#/$defs/nullable_ns"},
+        "recovered_ns": {"$ref": "#/$defs/nullable_ns"},
+        "finished_ns": {"type": "integer", "minimum": 0, "maximum": 315000000000}
+      }
+    },
+    "startup_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "state_loaded", "recovery_performed", "requeued_count", "failed_count", "canceled_count"],
+      "properties": {
+        "schema_version": {"const": 1},
+        "state_loaded": {"const": true},
+        "recovery_performed": {"const": true},
+        "requeued_count": {"const": 1},
+        "failed_count": {"const": 0},
+        "canceled_count": {"const": 0}
+      }
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["number", "ready_observed", "final_status", "artifact_observations", "reason_code"],
+      "properties": {
+        "number": {"type": "integer", "minimum": 1, "maximum": 2},
+        "ready_observed": {"type": "boolean"},
+        "final_status": {"enum": ["SUCCEEDED", "FAILED", "LOST", "RUNNING"]},
+        "artifact_observations": {"type": "integer", "minimum": 0, "maximum": 32},
+        "reason_code": {"enum": ["NONE", "RUNTIME_INTERRUPTED", "AGENT_EXIT", "AGENT_TIMEOUT"]}
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attempt_before", "attempt_after", "attempts", "final_status"],
+      "properties": {
+        "attempt_before": {"type": "integer", "minimum": 1, "maximum": 1},
+        "attempt_after": {"type": "integer", "minimum": 1, "maximum": 2},
+        "attempts": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2,
+          "items": {"$ref": "#/$defs/attempt"}
+        },
+        "final_status": {"enum": ["SUCCEEDED", "FAILED", "RUNNING"]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"attempt_after": {"const": 1}}, "required": ["attempt_after"]},
+          "then": {
+            "properties": {
+              "attempts": {
+                "minItems": 1,
+                "maxItems": 1,
+                "prefixItems": [{"properties": {"number": {"const": 1}}}]
+              }
+            }
+          }
+        },
+        {
+          "if": {"properties": {"attempt_after": {"const": 2}}, "required": ["attempt_after"]},
+          "then": {
+            "properties": {
+              "attempts": {
+                "minItems": 2,
+                "maxItems": 2,
+                "prefixItems": [
+                  {"properties": {"number": {"const": 1}}},
+                  {"properties": {"number": {"const": 2}}}
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "survivor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["completed_before_injection", "final_status", "artifact_observations"],
+      "properties": {
+        "completed_before_injection": {"const": true},
+        "final_status": {"const": "SUCCEEDED"},
+        "artifact_observations": {"type": "integer", "minimum": 1, "maximum": 32}
+      }
+    },
+    "observations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "daemon_sigkill_observed",
+        "orphan_observed_before_restart",
+        "checkpoint_loaded",
+        "recovery_requeued",
+        "restart_ready",
+        "old_processes_after_cleanup_observed",
+        "old_processes_after_cleanup",
+        "old_cgroups_after_cleanup_observed",
+        "old_cgroups_after_cleanup",
+        "isolation_escape_count",
+        "duplicate_artifacts_observed",
+        "duplicate_artifacts"
+      ],
+      "properties": {
+        "daemon_sigkill_observed": {"type": "boolean"},
+        "orphan_observed_before_restart": {"type": "boolean"},
+        "checkpoint_loaded": {"type": "boolean"},
+        "recovery_requeued": {"type": "boolean"},
+        "restart_ready": {"type": "boolean"},
+        "old_processes_after_cleanup_observed": {"type": "boolean"},
+        "old_processes_after_cleanup": {"type": "integer", "minimum": 0, "maximum": 4096},
+        "old_cgroups_after_cleanup_observed": {"type": "boolean"},
+        "old_cgroups_after_cleanup": {"type": "integer", "minimum": 0, "maximum": 2},
+        "isolation_escape_count": {"type": "integer", "minimum": 0, "maximum": 4096},
+        "duplicate_artifacts_observed": {"type": "boolean"},
+        "duplicate_artifacts": {"type": "integer", "minimum": 0, "maximum": 62}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"profile": {"const": "smoke"}}, "required": ["profile"]},
+      "then": {
+        "properties": {
+          "plan_id": {"const": "f4-daemon-sigkill-cgroup-smoke-v1"},
+          "case_id": {"const": "F4-kernel-smoke"},
+          "phase": {"const": "measurement"}
+        }
+      },
+      "else": {
+        "properties": {
+          "plan_id": {"const": "f4-daemon-sigkill-cgroup-v1"},
+          "case_id": {"const": "F4"},
+          "repetition": {"const": 0}
+        },
+        "allOf": [
+          {
+            "if": {"properties": {"phase": {"const": "warmup"}}, "required": ["phase"]},
+            "then": {"properties": {"seed": {"enum": [104701, 104707, 104711]}}},
+            "else": {
+              "properties": {
+                "seed": {
+                  "enum": [
+                    104729, 104743, 104759, 104761, 104773, 104779, 104789, 104801, 104803, 104827,
+                    104831, 104849, 104851, 104869, 104879, 104891, 104911, 104917, 104933, 104947,
+                    104953, 104959, 104971, 104987, 104999, 105019, 105023, 105031, 105037, 105071
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "properties": {
+        "target": {
+          "properties": {
+            "attempts": {
+              "prefixItems": [
+                {
+                  "properties": {"ready_observed": {"const": true}},
+                  "required": ["ready_observed"]
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"role": {"const": "baseline"}}, "required": ["role"]},
+      "then": {
+        "properties": {
+          "status": {"enum": ["SUCCEEDED", "FAILED", "TIMED_OUT"]},
+          "reason_code": {
+            "enum": ["NONE", "HARNESS_FAILURE", "CLEANUP_INCOMPLETE", "DUPLICATE_ARTIFACTS", "TRIAL_TIMEOUT"]
+          },
+          "treatment": {"const": "no-injection"},
+          "startup_receipt": {"type": "null"},
+          "target": {"properties": {"attempt_after": {"const": 1}}},
+          "observations": {
+            "properties": {
+              "daemon_sigkill_observed": {"const": false},
+              "orphan_observed_before_restart": {"const": false},
+              "checkpoint_loaded": {"const": false},
+              "recovery_requeued": {"const": false},
+              "restart_ready": {"const": false},
+              "old_processes_after_cleanup_observed": {"const": false},
+              "old_processes_after_cleanup": {"const": 0},
+              "old_cgroups_after_cleanup_observed": {"const": false},
+              "old_cgroups_after_cleanup": {"const": 0}
+            }
+          },
+          "milestones": {
+            "properties": {
+              "injected_ns": {"type": "null"},
+              "daemon_exited_ns": {"type": "null"},
+              "attempt2_ready_ns": {"type": "null"},
+              "recovered_ns": {"type": "null"}
+            }
+          },
+          "protocol": {
+            "properties": {
+              "fault_mode": {"const": "none"},
+              "injection_boundary": {"const": "matched-attempt-control"},
+              "expected_recovery": {"const": "attempt1-normal-completion"}
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "treatment": {"const": "daemon-sigkill"},
+          "protocol": {
+            "properties": {
+              "fault_mode": {"const": "daemon_sigkill"},
+              "injection_boundary": {"const": "attempt1-ready-and-populated"},
+              "expected_recovery": {"const": "restart-cleanup-requeue-attempt2"}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"reason_code": {"const": "ISOLATION_ESCAPE"}}, "required": ["reason_code"]},
+      "then": {
+        "properties": {
+          "observations": {"properties": {"isolation_escape_count": {"minimum": 1}}}
+        }
+      },
+      "else": {
+        "properties": {
+          "observations": {"properties": {"isolation_escape_count": {"const": 0}}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"reason_code": {"const": "DUPLICATE_ARTIFACTS"}}, "required": ["reason_code"]},
+      "then": {
+        "properties": {
+          "observations": {
+            "properties": {
+              "duplicate_artifacts_observed": {"const": true},
+              "duplicate_artifacts": {"minimum": 1}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "observations": {
+            "properties": {"orphan_observed_before_restart": {"const": true}},
+            "required": ["orphan_observed_before_restart"]
+          }
+        },
+        "required": ["observations"]
+      },
+      "then": {"properties": {"cgroup_sample_sequences": {"minItems": 3}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "role": {"const": "treatment"},
+          "target": {
+            "properties": {"attempt_after": {"const": 2}},
+            "required": ["attempt_after"]
+          }
+        },
+        "required": ["role", "target"]
+      },
+      "then": {
+        "properties": {
+          "startup_receipt": {"$ref": "#/$defs/startup_receipt"},
+          "cgroup_sample_sequences": {"minItems": 3},
+          "milestones": {
+            "properties": {
+              "injected_ns": {"type": "integer"},
+              "daemon_exited_ns": {"type": "integer"}
+            }
+          },
+          "target": {
+            "properties": {
+              "attempts": {
+                "prefixItems": [{"properties": {
+                  "number": {"const": 1},
+                  "ready_observed": {"const": true},
+                  "final_status": {"const": "LOST"},
+                  "artifact_observations": {"const": 0},
+                  "reason_code": {"const": "RUNTIME_INTERRUPTED"}
+                }}]
+              }
+            }
+          },
+          "observations": {
+            "properties": {
+              "daemon_sigkill_observed": {"const": true},
+              "orphan_observed_before_restart": {"const": true},
+              "checkpoint_loaded": {"const": true},
+              "recovery_requeued": {"const": true},
+              "restart_ready": {"const": true}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "role": {"const": "treatment"},
+          "target": {
+            "properties": {"attempt_after": {"const": 1}},
+            "required": ["attempt_after"]
+          }
+        },
+        "required": ["role", "target"]
+      },
+      "then": {
+        "properties": {
+          "startup_receipt": {"type": "null"},
+          "cgroup_sample_sequences": {"maxItems": 3},
+          "observations": {
+            "properties": {
+              "recovery_requeued": {"const": false},
+              "old_processes_after_cleanup_observed": {"const": false},
+              "old_processes_after_cleanup": {"const": 0},
+              "old_cgroups_after_cleanup_observed": {"const": false},
+              "old_cgroups_after_cleanup": {"const": 0}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"role": {"const": "baseline"}, "status": {"const": "SUCCEEDED"}},
+        "required": ["role", "status"]
+      },
+      "then": {
+        "properties": {
+          "startup_receipt": {"type": "null"},
+          "milestones": {
+            "properties": {
+              "injected_ns": {"type": "null"},
+              "daemon_exited_ns": {"type": "null"},
+              "cleanup_complete_ns": {"type": "integer"},
+              "attempt2_ready_ns": {"type": "null"},
+              "recovered_ns": {"type": "null"}
+            }
+          },
+          "target": {
+            "properties": {
+              "attempt_after": {"const": 1},
+              "attempts": {
+                "minItems": 1,
+                "maxItems": 1,
+                "prefixItems": [
+                  {
+                    "properties": {
+                      "number": {"const": 1},
+                      "ready_observed": {"const": true},
+                      "final_status": {"const": "SUCCEEDED"},
+                      "artifact_observations": {"const": 1},
+                      "reason_code": {"const": "NONE"}
+                    }
+                  }
+                ]
+              },
+              "final_status": {"const": "SUCCEEDED"}
+            }
+          },
+          "survivor": {"properties": {"artifact_observations": {"const": 1}}},
+          "observations": {
+            "properties": {
+              "daemon_sigkill_observed": {"const": false},
+              "orphan_observed_before_restart": {"const": false},
+              "checkpoint_loaded": {"const": false},
+              "recovery_requeued": {"const": false},
+              "restart_ready": {"const": false},
+              "old_processes_after_cleanup_observed": {"const": false},
+              "old_processes_after_cleanup": {"const": 0},
+              "old_cgroups_after_cleanup_observed": {"const": false},
+              "old_cgroups_after_cleanup": {"const": 0},
+              "isolation_escape_count": {"const": 0},
+              "duplicate_artifacts_observed": {"const": true},
+              "duplicate_artifacts": {"const": 0}
+            }
+          },
+          "reason_code": {"const": "NONE"}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"role": {"const": "treatment"}, "status": {"const": "SUCCEEDED"}},
+        "required": ["role", "status"]
+      },
+      "then": {
+        "properties": {
+          "startup_receipt": {"$ref": "#/$defs/startup_receipt"},
+          "milestones": {
+            "properties": {
+              "injected_ns": {"type": "integer"},
+              "daemon_exited_ns": {"type": "integer"},
+              "cleanup_complete_ns": {"type": "integer"},
+              "attempt2_ready_ns": {"type": "integer"},
+              "recovered_ns": {"type": "integer"}
+            }
+          },
+          "target": {
+            "properties": {
+              "attempt_after": {"const": 2},
+              "attempts": {
+                "minItems": 2,
+                "maxItems": 2,
+                "prefixItems": [
+                  {
+                    "properties": {
+                      "number": {"const": 1},
+                      "ready_observed": {"const": true},
+                      "final_status": {"const": "LOST"},
+                      "artifact_observations": {"const": 0},
+                      "reason_code": {"const": "RUNTIME_INTERRUPTED"}
+                    }
+                  },
+                  {
+                    "properties": {
+                      "number": {"const": 2},
+                      "ready_observed": {"const": true},
+                      "final_status": {"const": "SUCCEEDED"},
+                      "artifact_observations": {"const": 1},
+                      "reason_code": {"const": "NONE"}
+                    }
+                  }
+                ]
+              },
+              "final_status": {"const": "SUCCEEDED"}
+            }
+          },
+          "survivor": {"properties": {"artifact_observations": {"const": 1}}},
+          "observations": {
+            "properties": {
+              "daemon_sigkill_observed": {"const": true},
+              "orphan_observed_before_restart": {"const": true},
+              "checkpoint_loaded": {"const": true},
+              "recovery_requeued": {"const": true},
+              "restart_ready": {"const": true},
+              "old_processes_after_cleanup_observed": {"const": true},
+              "old_processes_after_cleanup": {"const": 0},
+              "old_cgroups_after_cleanup_observed": {"const": true},
+              "old_cgroups_after_cleanup": {"const": 0},
+              "isolation_escape_count": {"const": 0},
+              "duplicate_artifacts_observed": {"const": true},
+              "duplicate_artifacts": {"const": 0}
+            }
+          },
+          "reason_code": {"const": "NONE"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "TIMED_OUT"}}, "required": ["status"]},
+      "then": {"properties": {"reason_code": {"const": "TRIAL_TIMEOUT"}}}
+    },
+    {
+      "if": {"properties": {"status": {"const": "INVALID"}}, "required": ["status"]},
+      "then": {"properties": {"reason_code": {"const": "HARNESS_FAILURE"}}}
+    },
+    {
+      "if": {"properties": {"status": {"const": "FAILED"}}, "required": ["status"]},
+      "then": {
+        "properties": {
+          "reason_code": {
+            "enum": [
+              "HARNESS_FAILURE", "DAEMON_EXIT_MISMATCH", "ORPHAN_NOT_OBSERVED",
+              "CHECKPOINT_NOT_LOADED", "RECOVERY_NOT_REQUEUED", "RETRY_NOT_READY",
+              "CLEANUP_INCOMPLETE", "ISOLATION_ESCAPE", "DUPLICATE_ARTIFACTS"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "INVALID"}}, "required": ["status"]},
+      "then": {
+        "properties": {
+          "role": {"const": "treatment"},
+          "reason_code": {"const": "HARNESS_FAILURE"},
+          "startup_receipt": {"type": "null"},
+          "cgroup_sample_sequences": {"minItems": 3, "maxItems": 3},
+          "target": {"properties": {"attempt_after": {"const": 1}}},
+          "milestones": {
+            "properties": {
+              "injected_ns": {"type": "integer"},
+              "daemon_exited_ns": {"type": "integer"}
+            }
+          },
+          "observations": {
+            "properties": {
+              "daemon_sigkill_observed": {"const": true},
+              "orphan_observed_before_restart": {"const": true},
+              "checkpoint_loaded": {"const": false},
+              "recovery_requeued": {"const": false},
+              "restart_ready": {"const": true}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"reason_code": {"const": "DAEMON_EXIT_MISMATCH"}}, "required": ["reason_code"]},
+      "then": {
+        "properties": {
+          "startup_receipt": {"type": "null"},
+          "cgroup_sample_sequences": {"minItems": 2, "maxItems": 2},
+          "target": {"properties": {"attempt_after": {"const": 1}}},
+          "milestones": {
+            "properties": {"injected_ns": {"type": "integer"}, "daemon_exited_ns": {"type": "null"}}
+          },
+          "observations": {
+            "properties": {
+              "daemon_sigkill_observed": {"const": false},
+              "orphan_observed_before_restart": {"const": false},
+              "checkpoint_loaded": {"const": false},
+              "recovery_requeued": {"const": false},
+              "restart_ready": {"const": false}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"reason_code": {"const": "ORPHAN_NOT_OBSERVED"}}, "required": ["reason_code"]},
+      "then": {
+        "properties": {
+          "startup_receipt": {"type": "null"},
+          "cgroup_sample_sequences": {"minItems": 2, "maxItems": 3},
+          "target": {"properties": {"attempt_after": {"const": 1}}},
+          "milestones": {
+            "properties": {"injected_ns": {"type": "integer"}, "daemon_exited_ns": {"type": "integer"}}
+          },
+          "observations": {
+            "properties": {
+              "daemon_sigkill_observed": {"const": true},
+              "orphan_observed_before_restart": {"const": false},
+              "checkpoint_loaded": {"const": false},
+              "recovery_requeued": {"const": false},
+              "restart_ready": {"const": false}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"reason_code": {"const": "CHECKPOINT_NOT_LOADED"}}, "required": ["reason_code"]},
+      "then": {
+        "properties": {
+          "startup_receipt": {"type": "null"},
+          "cgroup_sample_sequences": {"minItems": 3, "maxItems": 3},
+          "target": {"properties": {"attempt_after": {"const": 1}}},
+          "milestones": {
+            "properties": {"injected_ns": {"type": "integer"}, "daemon_exited_ns": {"type": "integer"}}
+          },
+          "observations": {
+            "properties": {
+              "daemon_sigkill_observed": {"const": true},
+              "orphan_observed_before_restart": {"const": true},
+              "checkpoint_loaded": {"const": false},
+              "recovery_requeued": {"const": false},
+              "restart_ready": {"const": true}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"reason_code": {"const": "RECOVERY_NOT_REQUEUED"}}, "required": ["reason_code"]},
+      "then": {
+        "properties": {
+          "startup_receipt": {"type": "null"},
+          "cgroup_sample_sequences": {"minItems": 3, "maxItems": 3},
+          "target": {"properties": {"attempt_after": {"const": 1}}},
+          "milestones": {
+            "properties": {"injected_ns": {"type": "integer"}, "daemon_exited_ns": {"type": "integer"}}
+          },
+          "observations": {
+            "properties": {
+              "daemon_sigkill_observed": {"const": true},
+              "orphan_observed_before_restart": {"const": true},
+              "checkpoint_loaded": {"const": true},
+              "recovery_requeued": {"const": false},
+              "restart_ready": {"const": true}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "reason_code": {"const": "RETRY_NOT_READY"},
+          "target": {
+            "properties": {"attempt_after": {"const": 1}},
+            "required": ["attempt_after"]
+          }
+        },
+        "required": ["reason_code", "target"]
+      },
+      "then": {
+        "properties": {
+          "startup_receipt": {"type": "null"},
+          "cgroup_sample_sequences": {"minItems": 3, "maxItems": 3},
+          "milestones": {
+            "properties": {"injected_ns": {"type": "integer"}, "daemon_exited_ns": {"type": "integer"}}
+          },
+          "observations": {
+            "properties": {
+              "daemon_sigkill_observed": {"const": true},
+              "orphan_observed_before_restart": {"const": true},
+              "checkpoint_loaded": {"const": false},
+              "recovery_requeued": {"const": false},
+              "restart_ready": {"const": false}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "reason_code": {"const": "RETRY_NOT_READY"},
+          "target": {
+            "properties": {"attempt_after": {"const": 2}},
+            "required": ["attempt_after"]
+          }
+        },
+        "required": ["reason_code", "target"]
+      },
+      "then": {
+        "properties": {
+          "milestones": {"properties": {"attempt2_ready_ns": {"type": "null"}}},
+          "target": {
+            "properties": {
+              "attempts": {
+                "prefixItems": [
+                  {},
+                  {"properties": {"ready_observed": {"const": false}}}
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "role": {"const": "treatment"},
+          "reason_code": {"const": "CLEANUP_INCOMPLETE"}
+        },
+        "required": ["role", "reason_code"]
+      },
+      "then": {"properties": {"target": {"properties": {"attempt_after": {"const": 2}}}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "reason_code": {"const": "ISOLATION_ESCAPE"},
+          "target": {
+            "properties": {"attempt_after": {"const": 1}},
+            "required": ["attempt_after"]
+          }
+        },
+        "required": ["reason_code", "target"]
+      },
+      "then": {
+        "properties": {
+          "startup_receipt": {"type": "null"},
+          "cgroup_sample_sequences": {"minItems": 3, "maxItems": 3},
+          "milestones": {
+            "properties": {"injected_ns": {"type": "integer"}, "daemon_exited_ns": {"type": "integer"}}
+          },
+          "observations": {
+            "properties": {
+              "daemon_sigkill_observed": {"const": true},
+              "orphan_observed_before_restart": {"const": false},
+              "checkpoint_loaded": {"const": false},
+              "recovery_requeued": {"const": false},
+              "restart_ready": {"const": false}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "role": {"const": "treatment"},
+          "target": {
+            "properties": {"final_status": {"const": "SUCCEEDED"}},
+            "required": ["final_status"]
+          }
+        },
+        "required": ["role", "target"]
+      },
+      "then": {"properties": {"target": {"properties": {"attempt_after": {"const": 2}}}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "target": {
+            "properties": {"final_status": {"const": "FAILED"}},
+            "required": ["final_status"]
+          }
+        },
+        "required": ["target"]
+      },
+      "then": {
+        "properties": {
+          "survivor": {"properties": {"artifact_observations": {"const": 1}}},
+          "observations": {
+            "properties": {
+              "duplicate_artifacts_observed": {"const": false},
+              "duplicate_artifacts": {"const": 0}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"enum": ["FAILED", "TIMED_OUT", "INVALID"]},
+          "target": {
+            "properties": {"final_status": {"const": "SUCCEEDED"}},
+            "required": ["final_status"]
+          }
+        },
+        "required": ["status", "target"]
+      },
+      "then": {
+        "properties": {
+          "reason_code": {"enum": ["CLEANUP_INCOMPLETE", "DUPLICATE_ARTIFACTS", "TRIAL_TIMEOUT"]},
+          "observations": {
+            "properties": {"duplicate_artifacts_observed": {"const": true}}
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"enum": ["FAILED", "TIMED_OUT", "INVALID"]},
+          "target": {
+            "properties": {
+              "final_status": {"const": "SUCCEEDED"},
+              "attempt_after": {"const": 1}
+            },
+            "required": ["final_status", "attempt_after"]
+          }
+        },
+        "required": ["status", "target"]
+      },
+      "then": {
+        "properties": {
+          "target": {
+            "properties": {
+              "attempts": {
+                "prefixItems": [{"properties": {
+                  "final_status": {"const": "SUCCEEDED"},
+                  "artifact_observations": {"minimum": 1},
+                  "reason_code": {"const": "NONE"}
+                }}]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"enum": ["FAILED", "TIMED_OUT", "INVALID"]},
+          "target": {
+            "properties": {
+              "final_status": {"const": "SUCCEEDED"},
+              "attempt_after": {"const": 2}
+            },
+            "required": ["final_status", "attempt_after"]
+          }
+        },
+        "required": ["status", "target"]
+      },
+      "then": {
+        "properties": {
+          "target": {
+            "properties": {
+              "attempts": {
+                "prefixItems": [{}, {"properties": {
+                  "final_status": {"const": "SUCCEEDED"},
+                  "artifact_observations": {"minimum": 1},
+                  "reason_code": {"const": "NONE"}
+                }}]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"enum": ["FAILED", "TIMED_OUT", "INVALID"]},
+          "target": {
+            "properties": {"final_status": {"not": {"const": "SUCCEEDED"}}},
+            "required": ["final_status"]
+          }
+        },
+        "required": ["status", "target"]
+      },
+      "then": {"properties": {"target": {"properties": {"final_status": {"const": "FAILED"}}}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"enum": ["FAILED", "INVALID"]},
+          "target": {
+            "properties": {"final_status": {"const": "FAILED"}, "attempt_after": {"const": 1}},
+            "required": ["final_status", "attempt_after"]
+          }
+        },
+        "required": ["status", "target"]
+      },
+      "then": {"properties": {"target": {"properties": {"attempts": {"prefixItems": [{"properties": {
+        "final_status": {"const": "FAILED"}, "artifact_observations": {"const": 0},
+        "reason_code": {"const": "RUNTIME_INTERRUPTED"}
+      }}]}}}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"enum": ["FAILED", "INVALID"]},
+          "target": {
+            "properties": {"final_status": {"const": "FAILED"}, "attempt_after": {"const": 2}},
+            "required": ["final_status", "attempt_after"]
+          }
+        },
+        "required": ["status", "target"]
+      },
+      "then": {"properties": {"target": {"properties": {"attempts": {"prefixItems": [{}, {"properties": {
+        "final_status": {"const": "FAILED"}, "artifact_observations": {"const": 0},
+        "reason_code": {"const": "RUNTIME_INTERRUPTED"}
+      }}]}}}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"const": "TIMED_OUT"},
+          "target": {
+            "properties": {"final_status": {"const": "FAILED"}, "attempt_after": {"const": 1}},
+            "required": ["final_status", "attempt_after"]
+          }
+        },
+        "required": ["status", "target"]
+      },
+      "then": {"properties": {"target": {"properties": {"attempts": {"prefixItems": [{"properties": {
+        "final_status": {"const": "FAILED"}, "artifact_observations": {"const": 0},
+        "reason_code": {"const": "AGENT_TIMEOUT"}
+      }}]}}}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"const": "TIMED_OUT"},
+          "target": {
+            "properties": {"final_status": {"const": "FAILED"}, "attempt_after": {"const": 2}},
+            "required": ["final_status", "attempt_after"]
+          }
+        },
+        "required": ["status", "target"]
+      },
+      "then": {"properties": {"target": {"properties": {"attempts": {"prefixItems": [{}, {"properties": {
+        "final_status": {"const": "FAILED"}, "artifact_observations": {"const": 0},
+        "reason_code": {"const": "AGENT_TIMEOUT"}
+      }}]}}}}}
+    },
+    {
+      "if": {
+        "properties": {
+          "observations": {
+            "properties": {"old_processes_after_cleanup_observed": {"const": false}},
+            "required": ["old_processes_after_cleanup_observed"]
+          }
+        },
+        "required": ["observations"]
+      },
+      "then": {
+        "properties": {"observations": {"properties": {"old_processes_after_cleanup": {"const": 0}}}}
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "observations": {
+            "properties": {"old_cgroups_after_cleanup_observed": {"const": false}},
+            "required": ["old_cgroups_after_cleanup_observed"]
+          }
+        },
+        "required": ["observations"]
+      },
+      "then": {
+        "properties": {"observations": {"properties": {"old_cgroups_after_cleanup": {"const": 0}}}}
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "observations": {
+            "properties": {"duplicate_artifacts_observed": {"const": false}},
+            "required": ["duplicate_artifacts_observed"]
+          }
+        },
+        "required": ["observations"]
+      },
+      "then": {
+        "properties": {
+          "observations": {"properties": {"duplicate_artifacts": {"const": 0}}}
+        }
+      }
+    }
+  ]
+}

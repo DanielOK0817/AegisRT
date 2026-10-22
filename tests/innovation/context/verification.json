@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "pilot": false,
+  "all_trial_counts": {
+    "communication": 756,
+    "compression": 252
+  },
+  "communication_measured_trials": 648,
+  "communication_samples": 2592,
+  "compression_read_samples": 2160,
+  "communication_zero_latency_samples": 272,
+  "communication_zero_wall_windows": 34,
+  "compression_zero_latency_samples": 300,
+  "compression_warm_zero_latency_samples": 37,
+  "compression_logical_reads": 55728,
+  "undefined_derived_values": "zero wall windows have no throughput; paired ratios with zero or undefined terms remain blank; per-metric defined counts reported",
+  "raw_bodies_provenance_envelopes_hashes_verified": true,
+  "zero_samples_preserved": true,
+  "baseline_isolation_failure_is_expected_and_reported": true,
+  "statistics": "median and full range across six trial estimates; warm reads averaged within trial; no significance test",
+  "verifier_sha256": "72e2c04f4c76a483a537da2ff5a5e812f4f679dab6a9748caad188628f1c69aa"
+}

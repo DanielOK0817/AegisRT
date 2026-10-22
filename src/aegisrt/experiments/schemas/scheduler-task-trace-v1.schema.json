@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aegisrt:experiment:scheduler-task-trace:v1",
+  "title": "AegisRT scheduler task trace v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "run_id", "evidence_scope", "plan_id", "case_id",
+    "pair_id", "seed", "repetition", "trial_order", "treatment", "role",
+    "policy", "workflow_shape", "workload_sha256", "input_sha256",
+    "trial_timeout_ms", "starvation_limit_ms", "critical_path_metric_semantic",
+    "task_id", "workflow_id", "status", "ready_ms", "dispatch_ms",
+    "terminal_ms", "service_ms", "normalized_service", "dispatch_sequence",
+    "critical_path_order", "critical_segment_order", "unlock_target"
+  ],
+  "properties": {
+    "schema_version": {"const": "aegisrt.experiment.scheduler-task-trace/v1"},
+    "run_id": {"type": "string", "pattern": "^run-[0-9a-f]{24}$"},
+    "evidence_scope": {"const": "windows-functional"},
+    "plan_id": {"enum": ["s1-single-slot-critical-segment-smoke-v2", "scheduler-s1-s2-s3-formal-v1"]},
+    "case_id": {"enum": ["S1-smoke", "S1", "S2", "S3"]},
+    "pair_id": {"$ref": "#/$defs/safe_label"},
+    "seed": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+    "repetition": {"type": "integer", "minimum": 0, "maximum": 999},
+    "trial_order": {"enum": [0, 1]},
+    "treatment": {"enum": ["priority", "dag-drcfs"]},
+    "role": {"enum": ["baseline", "treatment"]},
+    "policy": {"enum": ["fifo", "priority", "dag-drcfs"]},
+    "workflow_shape": {
+      "enum": [
+        "diamond-single-slot-sim-v2", "diamond-single-slot-sim-v3",
+        "multi-workflow-multi-resource-sim-v1", "dynamic-critical-unlock-sim-v1"
+      ]
+    },
+    "workload_sha256": {"$ref": "#/$defs/sha256"},
+    "input_sha256": {"$ref": "#/$defs/sha256"},
+    "trial_timeout_ms": {"const": 60000},
+    "starvation_limit_ms": {"type": "integer", "minimum": 1, "maximum": 60000},
+    "critical_path_metric_semantic": {
+      "enum": ["predeclared-segment-response", "diagnostic-task-response", "critical-workflow-response"]
+    },
+    "task_id": {"$ref": "#/$defs/safe_label"},
+    "workflow_id": {"$ref": "#/$defs/safe_label"},
+    "status": {"const": "SUCCEEDED"},
+    "ready_ms": {"$ref": "#/$defs/logical_ms"},
+    "dispatch_ms": {"$ref": "#/$defs/logical_ms"},
+    "terminal_ms": {"$ref": "#/$defs/logical_ms"},
+    "service_ms": {"type": "integer", "minimum": 1, "maximum": 60000},
+    "normalized_service": {"type": "number", "exclusiveMinimum": 0, "maximum": 60000},
+    "dispatch_sequence": {"type": "integer", "minimum": 0, "maximum": 999},
+    "critical_path_order": {"type": "integer", "minimum": -1, "maximum": 999},
+    "critical_segment_order": {"type": "integer", "minimum": -1, "maximum": 999},
+    "unlock_target": {"type": "boolean"}
+  },
+  "$defs": {
+    "safe_label": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "logical_ms": {"type": "integer", "minimum": 0, "maximum": 60000}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"role": {"const": "treatment"}, "treatment": {"const": "priority"}}, "required": ["role", "treatment"]},
+      "then": {"properties": {"policy": {"const": "priority"}}}
+    },
+    {
+      "if": {"properties": {"role": {"const": "treatment"}, "treatment": {"const": "dag-drcfs"}}, "required": ["role", "treatment"]},
+      "then": {"properties": {"policy": {"const": "dag-drcfs"}}}
+    },
+    {
+      "if": {"properties": {"role": {"const": "baseline"}, "case_id": {"const": "S3"}}, "required": ["role", "case_id"]},
+      "then": {"properties": {"policy": {"const": "priority"}}}
+    },
+    {
+      "if": {"properties": {"role": {"const": "baseline"}, "case_id": {"enum": ["S1-smoke", "S1", "S2"]}}, "required": ["role", "case_id"]},
+      "then": {"properties": {"policy": {"const": "fifo"}}}
+    },
+    {
+      "oneOf": [
+        {
+          "properties": {
+            "plan_id": {"const": "s1-single-slot-critical-segment-smoke-v2"},
+            "case_id": {"const": "S1-smoke"},
+            "pair_id": {"pattern": "^s1-smoke-[0-9]{1,10}-[0-9]{1,3}-(priority|dag-drcfs)$"},
+            "workflow_shape": {"const": "diamond-single-slot-sim-v2"},
+            "critical_path_metric_semantic": {"const": "predeclared-segment-response"},
+            "task_id": {"enum": ["root", "alpha-aux", "beta-critical", "join"]},
+            "workflow_id": {"const": "workflow-s1"}
+          }
+        },
+        {
+          "properties": {
+            "plan_id": {"const": "scheduler-s1-s2-s3-formal-v1"},
+            "case_id": {"const": "S1"},
+            "pair_id": {"pattern": "^s1-[0-9]{1,10}-0-(priority|dag-drcfs)$"},
+            "workflow_shape": {"const": "diamond-single-slot-sim-v3"},
+            "critical_path_metric_semantic": {"const": "predeclared-segment-response"},
+            "task_id": {"enum": ["root", "alpha-aux", "beta-critical", "join"]},
+            "workflow_id": {"const": "workflow-s1"}
+          }
+        },
+        {
+          "properties": {
+            "plan_id": {"const": "scheduler-s1-s2-s3-formal-v1"},
+            "case_id": {"const": "S2"},
+            "pair_id": {"pattern": "^s2-[0-9]{1,10}-0-dag-drcfs$"},
+            "workflow_shape": {"const": "multi-workflow-multi-resource-sim-v1"},
+            "critical_path_metric_semantic": {"const": "diagnostic-task-response"},
+            "task_id": {"pattern": "^[abc]-0[0-5]$"},
+            "workflow_id": {"pattern": "^workflow-s2-[abc]$"}
+          }
+        },
+        {
+          "properties": {
+            "plan_id": {"const": "scheduler-s1-s2-s3-formal-v1"},
+            "case_id": {"const": "S3"},
+            "pair_id": {"pattern": "^s3-[0-9]{1,10}-0-dag-drcfs$"},
+            "workflow_shape": {"const": "dynamic-critical-unlock-sim-v1"},
+            "critical_path_metric_semantic": {"const": "critical-workflow-response"},
+            "task_id": {"pattern": "^(critical-(root|target)|load-0[0-4])$"},
+            "workflow_id": {"enum": ["workflow-s3-critical", "workflow-s3-load"]}
+          }
+        }
+      ]
+    }
+  ]
+}

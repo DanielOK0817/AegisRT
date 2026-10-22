@@ -1,0 +1,1 @@
+schema_version,run_id,status,evidence_scope,case_id,pair_id,seed,repetition,trial_order,treatment,role,workload_sha256,backend,controller,limit_kind,requested_limit,observed_peak,unit,throttle_events,oom_events,pid_limit_events,pressure_some_avg10,pressure_full_avg10,admitted,rejected,ledger_invariant,containment_result,elapsed_ms,timeout_ms,reason_code

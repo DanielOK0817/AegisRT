@@ -1,0 +1,16 @@
+{
+  "schema": "bettafish.report-recovery-verification/v1",
+  "status": "passed",
+  "workflow_id": "bf-entry-20261006-213814-6990a77bf8",
+  "task_id": "bf-entry-20261006-213814-6990a77bf8-report-recovery-1",
+  "authorization_sha256": "e9e98fa19c9b420be4dfbb51915ee47606dd65a4faaa4a941cb1f6b0721ece75",
+  "report_sha256": "83d63fee41449866389ebb37519154fbe9b43b1bde2d87c97a8bc792492acd77",
+  "model_requests": 2,
+  "reused_tasks": 8,
+  "original_failed_report_preserved": true,
+  "fresh_from_zero": false,
+  "sections": 7,
+  "paragraphs": 15,
+  "original_file_hashes_verified": 262,
+  "model_calls_by_verifier": 0
+}

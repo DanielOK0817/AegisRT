@@ -1,0 +1,391 @@
+{
+  "passed": true,
+  "measured_runs": 18,
+  "warmup_runs": 3,
+  "model_requests": 0,
+  "aggregate": [
+    {
+      "scenario": "simultaneous",
+      "policy": "fifo",
+      "n": 3,
+      "short_ready_to_start_p95_seconds": {
+        "median": 9.703859076,
+        "min": 9.493113051,
+        "max": 11.191983024
+      },
+      "short_ready_to_child_work_start_p95_seconds": {
+        "median": 9.713606857,
+        "min": 9.508413487,
+        "max": 11.19920876
+      },
+      "short_ready_to_admit_p95_seconds": {
+        "median": 9.703175255,
+        "min": 9.491108219,
+        "max": 11.189567559
+      },
+      "makespan_seconds": {
+        "median": 11.250520858,
+        "min": 11.080946329,
+        "max": 12.998584472
+      },
+      "throughput_tasks_per_second": {
+        "median": 4.266469135592797,
+        "min": 3.692709779545294,
+        "max": 4.33175999367301
+      },
+      "common_demand_jain_reserved_time": {
+        "median": 0.7336307516139576,
+        "min": 0.7258274927207247,
+        "max": 0.760024805036821
+      }
+    },
+    {
+      "scenario": "simultaneous",
+      "policy": "priority",
+      "n": 3,
+      "short_ready_to_start_p95_seconds": {
+        "median": 9.666682616,
+        "min": 9.622416469,
+        "max": 10.085378061
+      },
+      "short_ready_to_child_work_start_p95_seconds": {
+        "median": 9.671439048,
+        "min": 9.65635521,
+        "max": 10.092546203
+      },
+      "short_ready_to_admit_p95_seconds": {
+        "median": 9.660337765,
+        "min": 9.615370414,
+        "max": 10.084122382
+      },
+      "makespan_seconds": {
+        "median": 11.225533792,
+        "min": 11.014123691,
+        "max": 11.488130647
+      },
+      "throughput_tasks_per_second": {
+        "median": 4.275965926378283,
+        "min": 4.178225463734143,
+        "max": 4.358040761719643
+      },
+      "common_demand_jain_reserved_time": {
+        "median": 0.7290442419505782,
+        "min": 0.7251457839257177,
+        "max": 0.7446461643552664
+      }
+    },
+    {
+      "scenario": "simultaneous",
+      "policy": "dag-drcfs-time",
+      "n": 3,
+      "short_ready_to_start_p95_seconds": {
+        "median": 4.311248752,
+        "min": 4.302910126,
+        "max": 4.318034093
+      },
+      "short_ready_to_child_work_start_p95_seconds": {
+        "median": 4.326700494,
+        "min": 4.310164239,
+        "max": 4.33655343
+      },
+      "short_ready_to_admit_p95_seconds": {
+        "median": 4.305434587,
+        "min": 4.30120532,
+        "max": 4.315212655
+      },
+      "makespan_seconds": {
+        "median": 11.228297074,
+        "min": 11.225056421,
+        "max": 11.276257352
+      },
+      "throughput_tasks_per_second": {
+        "median": 4.274913611891135,
+        "min": 4.256731511318916,
+        "max": 4.276147771533771
+      },
+      "common_demand_jain_reserved_time": {
+        "median": 0.9922918728065865,
+        "min": 0.9893699357205393,
+        "max": 0.996923358064575
+      }
+    },
+    {
+      "scenario": "late-short",
+      "policy": "fifo",
+      "n": 3,
+      "short_ready_to_start_p95_seconds": {
+        "median": 11.983934555,
+        "min": 10.980787621,
+        "max": 13.12920075
+      },
+      "short_ready_to_child_work_start_p95_seconds": {
+        "median": 11.9954644,
+        "min": 10.987467279,
+        "max": 13.213616612
+      },
+      "short_ready_to_admit_p95_seconds": {
+        "median": 11.978340407,
+        "min": 10.978245696,
+        "max": 13.072496928
+      },
+      "makespan_seconds": {
+        "median": 12.572158568,
+        "min": 11.479030321,
+        "max": 13.98651086
+      },
+      "throughput_tasks_per_second": {
+        "median": 3.8179601172208186,
+        "min": 3.4318780774178017,
+        "max": 4.181537870162056
+      },
+      "common_demand_jain_reserved_time": {
+        "median": 0.5194929008291862,
+        "min": 0.5129013979268436,
+        "max": 0.5433490309081483
+      }
+    },
+    {
+      "scenario": "late-short",
+      "policy": "priority",
+      "n": 3,
+      "short_ready_to_start_p95_seconds": {
+        "median": 12.744858566,
+        "min": 10.959743906,
+        "max": 14.62769443
+      },
+      "short_ready_to_child_work_start_p95_seconds": {
+        "median": 12.788096266,
+        "min": 11.016993859,
+        "max": 14.750161665
+      },
+      "short_ready_to_admit_p95_seconds": {
+        "median": 12.738058052,
+        "min": 10.952679106,
+        "max": 14.608807268
+      },
+      "makespan_seconds": {
+        "median": 13.473481485,
+        "min": 11.507006506,
+        "max": 15.34223982
+      },
+      "throughput_tasks_per_second": {
+        "median": 3.562553602306746,
+        "min": 3.128617500648611,
+        "max": 4.171371587821017
+      },
+      "common_demand_jain_reserved_time": {
+        "median": 0.5213151033518862,
+        "min": 0.5104116276161051,
+        "max": 0.5396648844294283
+      }
+    },
+    {
+      "scenario": "late-short",
+      "policy": "dag-drcfs-time",
+      "n": 3,
+      "short_ready_to_start_p95_seconds": {
+        "median": 5.949904213,
+        "min": 5.548653306,
+        "max": 6.116896079
+      },
+      "short_ready_to_child_work_start_p95_seconds": {
+        "median": 5.993366204,
+        "min": 5.557310222,
+        "max": 6.186589519
+      },
+      "short_ready_to_admit_p95_seconds": {
+        "median": 5.945252279,
+        "min": 5.536978738,
+        "max": 6.113694325
+      },
+      "makespan_seconds": {
+        "median": 12.879131537,
+        "min": 12.735970998,
+        "max": 12.956676377
+      },
+      "throughput_tasks_per_second": {
+        "median": 3.726959373161343,
+        "min": 3.704653771024723,
+        "max": 3.7688528034130813
+      },
+      "common_demand_jain_reserved_time": {
+        "median": 0.99073759019828,
+        "min": 0.9887455367191568,
+        "max": 0.9921282642839546
+      }
+    }
+  ],
+  "paired_comparisons": [
+    {
+      "scenario": "simultaneous",
+      "repetition": 1,
+      "policy": "priority",
+      "delta_vs_fifo": {
+        "short_ready_to_start_p95_seconds": -0.0371764600000013,
+        "short_ready_to_child_work_start_p95_seconds": -0.04216780900000039,
+        "short_ready_to_admit_p95_seconds": -0.042837490000000145,
+        "makespan_seconds": -0.024987065999999558,
+        "throughput_tasks_per_second": 0.009496790785485487,
+        "common_demand_jain_reserved_time": -0.004586509663379479
+      }
+    },
+    {
+      "scenario": "simultaneous",
+      "repetition": 1,
+      "policy": "dag-drcfs-time",
+      "delta_vs_fifo": {
+        "short_ready_to_start_p95_seconds": -5.385824983000001,
+        "short_ready_to_child_work_start_p95_seconds": -5.3869063630000005,
+        "short_ready_to_admit_p95_seconds": -5.3879626,
+        "makespan_seconds": -0.02222378399999947,
+        "throughput_tasks_per_second": 0.008444476298337555,
+        "common_demand_jain_reserved_time": 0.2557391841065817
+      }
+    },
+    {
+      "scenario": "simultaneous",
+      "repetition": 2,
+      "policy": "priority",
+      "delta_vs_fifo": {
+        "short_ready_to_start_p95_seconds": -1.5695665550000015,
+        "short_ready_to_child_work_start_p95_seconds": -1.5428535500000002,
+        "short_ready_to_admit_p95_seconds": -1.5741971450000012,
+        "makespan_seconds": -1.9844607809999992,
+        "throughput_tasks_per_second": 0.6653309821743489,
+        "common_demand_jain_reserved_time": -0.0348790211111033
+      }
+    },
+    {
+      "scenario": "simultaneous",
+      "repetition": 2,
+      "policy": "dag-drcfs-time",
+      "delta_vs_fifo": {
+        "short_ready_to_start_p95_seconds": -6.889072898000001,
+        "short_ready_to_child_work_start_p95_seconds": -6.889044521,
+        "short_ready_to_admit_p95_seconds": -6.888362239,
+        "makespan_seconds": -1.7223271199999992,
+        "throughput_tasks_per_second": 0.5640217317736225,
+        "common_demand_jain_reserved_time": 0.23689855302775398
+      }
+    },
+    {
+      "scenario": "simultaneous",
+      "repetition": 3,
+      "policy": "priority",
+      "delta_vs_fifo": {
+        "short_ready_to_start_p95_seconds": 0.5922650100000002,
+        "short_ready_to_child_work_start_p95_seconds": 0.5841327159999992,
+        "short_ready_to_admit_p95_seconds": 0.5930141630000012,
+        "makespan_seconds": 0.40718431800000054,
+        "throughput_tasks_per_second": -0.15353452993886663,
+        "common_demand_jain_reserved_time": 0.01881867163454176
+      }
+    },
+    {
+      "scenario": "simultaneous",
+      "repetition": 3,
+      "policy": "dag-drcfs-time",
+      "delta_vs_fifo": {
+        "short_ready_to_start_p95_seconds": -5.181864299,
+        "short_ready_to_child_work_start_p95_seconds": -5.171860057,
+        "short_ready_to_admit_p95_seconds": -5.185673631999999,
+        "makespan_seconds": 0.14411009200000002,
+        "throughput_tasks_per_second": -0.055612222139238554,
+        "common_demand_jain_reserved_time": 0.2664643800858618
+      }
+    },
+    {
+      "scenario": "late-short",
+      "repetition": 1,
+      "policy": "priority",
+      "delta_vs_fifo": {
+        "short_ready_to_start_p95_seconds": -0.021043714999999352,
+        "short_ready_to_child_work_start_p95_seconds": 0.02952657999999886,
+        "short_ready_to_admit_p95_seconds": -0.02556659000000039,
+        "makespan_seconds": 0.027976184999999987,
+        "throughput_tasks_per_second": -0.010166282341038446,
+        "common_demand_jain_reserved_time": -0.009081273213081054
+      }
+    },
+    {
+      "scenario": "late-short",
+      "repetition": 1,
+      "policy": "dag-drcfs-time",
+      "delta_vs_fifo": {
+        "short_ready_to_start_p95_seconds": -4.863891541999999,
+        "short_ready_to_child_work_start_p95_seconds": -4.8008777600000005,
+        "short_ready_to_admit_p95_seconds": -4.864551371,
+        "makespan_seconds": 1.4001012159999995,
+        "throughput_tasks_per_second": -0.45457849700071273,
+        "common_demand_jain_reserved_time": 0.4726353634547684
+      }
+    },
+    {
+      "scenario": "late-short",
+      "repetition": 2,
+      "policy": "priority",
+      "delta_vs_fifo": {
+        "short_ready_to_start_p95_seconds": 1.4984936799999993,
+        "short_ready_to_child_work_start_p95_seconds": 1.536545053000001,
+        "short_ready_to_admit_p95_seconds": 1.53631034,
+        "makespan_seconds": 1.3557289600000004,
+        "throughput_tasks_per_second": -0.3032605767691905,
+        "common_demand_jain_reserved_time": 0.026763486502584644
+      }
+    },
+    {
+      "scenario": "late-short",
+      "repetition": 2,
+      "policy": "dag-drcfs-time",
+      "delta_vs_fifo": {
+        "short_ready_to_start_p95_seconds": -7.179296537000001,
+        "short_ready_to_child_work_start_p95_seconds": -7.220250407999999,
+        "short_ready_to_admit_p95_seconds": -7.127244649,
+        "makespan_seconds": -1.0298344829999984,
+        "throughput_tasks_per_second": 0.27277569360692144,
+        "common_demand_jain_reserved_time": 0.47584413879231313
+      }
+    },
+    {
+      "scenario": "late-short",
+      "repetition": 3,
+      "policy": "priority",
+      "delta_vs_fifo": {
+        "short_ready_to_start_p95_seconds": 0.7609240110000002,
+        "short_ready_to_child_work_start_p95_seconds": 0.7926318660000007,
+        "short_ready_to_admit_p95_seconds": 0.7597176450000003,
+        "makespan_seconds": 0.9013229169999999,
+        "throughput_tasks_per_second": -0.2554065149140725,
+        "common_demand_jain_reserved_time": -0.0220339275562621
+      }
+    },
+    {
+      "scenario": "late-short",
+      "repetition": 3,
+      "policy": "dag-drcfs-time",
+      "delta_vs_fifo": {
+        "short_ready_to_start_p95_seconds": -6.435281248999999,
+        "short_ready_to_child_work_start_p95_seconds": -6.438154178,
+        "short_ready_to_admit_p95_seconds": -6.441361668999999,
+        "makespan_seconds": 0.16381243000000012,
+        "throughput_tasks_per_second": -0.04910731380773736,
+        "common_demand_jain_reserved_time": 0.44738855929013166
+      }
+    }
+  ],
+  "metric_definitions": {
+    "p95": "nearest rank ceil(0.95*n); committed READY observation to Executor process-start confirmation after command.Start returns",
+    "child_work_start_p95": "same nearest rank; committed READY observation to child work start recorded after stdin decoding; it may precede parent start confirmation",
+    "jain_reserved_time": "Jain index of each workflow's integrated confirmed process occupancy from Executor start confirmation to Wait completion over the common outstanding-demand window; identical resource vectors; not CPU utilization",
+    "common_window": "latest first READY observation to earliest last child end among workflows; includes waiting and running demand",
+    "makespan": "first committed READY observation to last real child wait completion",
+    "throughput": "all completed tasks divided by makespan"
+  },
+  "boundaries": [
+    "two finite independent-task workflows; DAG critical-path ranking untested",
+    "reserved-capacity sleepers; no cgroup limits or actual CPU contention",
+    "three repetitions are descriptive, with no significance or confidence interval claim",
+    "fresh process and durable state per run; system cache is warmed uniformly, not flushed",
+    "no model or business-quality comparison"
+  ]
+}

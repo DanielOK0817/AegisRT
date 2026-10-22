@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aegisrt:experiment:context-trial-trace:v2",
+  "title": "AegisRT Context C1/C2/C3 functional trial trace v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "run_id", "evidence_scope", "plan_id", "case_id", "pair_id",
+    "seed", "repetition", "trial_order", "treatment", "role", "counter_name",
+    "context_mode", "provider_cache_mode", "workload_sha256", "input_sha256", "status",
+    "comparison_target_budget", "summarizer_mode", "elapsed_ns", "manifest_operations",
+    "manifest_conflicts", "stores", "dispatches", "acl_probes"
+  ],
+  "properties": {
+    "schema_version": {"const": "aegisrt.experiment.context-trial-trace/v2"},
+    "run_id": {"type": "string", "pattern": "^run-[0-9a-f]{24}$"},
+    "evidence_scope": {"const": "windows-functional"},
+    "plan_id": {"const": "context-dedup-budget-compression-smoke-v2"},
+    "case_id": {"enum": ["C1-smoke", "C2-smoke", "C3-smoke"]},
+    "pair_id": {"type": "string", "pattern": "^c[123]-smoke-(?:0|[1-9][0-9]{0,9})-(?:0|[1-9][0-9]{0,2})$"},
+    "seed": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+    "repetition": {"type": "integer", "minimum": 0, "maximum": 999},
+    "trial_order": {"type": "integer", "minimum": 0, "maximum": 1},
+    "treatment": {"enum": ["copy-per-task", "contextvm-dedup", "unbudgeted-logical", "contextvm-budgeted", "contextvm-drop", "contextvm-compress"]},
+    "role": {"enum": ["baseline", "treatment"]},
+    "counter_name": {"const": "whitespace-v1"},
+    "context_mode": {"enum": ["isolated-store-copy-v1", "shared-store-blob-dedup-v1", "unbudgeted-assembly-v1", "budgeted-drop-no-summary-v1", "budgeted-extractive-summary-v1"]},
+    "provider_cache_mode": {"const": "none"},
+    "workload_sha256": {"$ref": "#/$defs/sha256"},
+    "input_sha256": {"$ref": "#/$defs/sha256"},
+    "status": {"const": "SUCCEEDED"},
+    "comparison_target_budget": {"enum": [6, 8]},
+    "summarizer_mode": {"enum": ["disabled", "deterministic-extractive-v1"]},
+    "elapsed_ns": {"type": "integer", "minimum": 0, "maximum": 60000000000},
+    "manifest_operations": {"type": "integer", "minimum": 1, "maximum": 4},
+    "manifest_conflicts": {"const": 0},
+    "stores": {"type": "array", "minItems": 1, "maxItems": 4, "items": {"$ref": "#/$defs/store"}},
+    "dispatches": {"type": "array", "minItems": 1, "maxItems": 4, "items": {"$ref": "#/$defs/dispatch"}},
+    "acl_probes": {
+      "oneOf": [
+        {"type": "array", "minItems": 1, "maxItems": 1, "items": {"$ref": "#/$defs/acl_probe"}},
+        {"type": "null"}
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"treatment": {"const": "contextvm-compress"}}, "required": ["treatment"]},
+      "then": {"properties": {"case_id": {"const": "C3-smoke"}, "role": {"const": "treatment"}, "summarizer_mode": {"const": "deterministic-extractive-v1"}}},
+      "else": {"properties": {"summarizer_mode": {"const": "disabled"}}}
+    }
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "store": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["store_id", "put_calls", "unique_pages", "unique_blobs", "reused_puts", "logical_tokens", "physical_tokens", "reused_tokens"],
+      "properties": {
+        "store_id": {"enum": ["store-0", "store-1", "store-2", "store-3", "store-shared", "store-context"]},
+        "put_calls": {"type": "integer", "minimum": 1, "maximum": 4},
+        "unique_pages": {"type": "integer", "minimum": 1, "maximum": 4},
+        "unique_blobs": {"type": "integer", "minimum": 1, "maximum": 4},
+        "reused_puts": {"type": "integer", "minimum": 0, "maximum": 3},
+        "logical_tokens": {"type": "integer", "minimum": 3, "maximum": 24},
+        "physical_tokens": {"type": "integer", "minimum": 3, "maximum": 24},
+        "reused_tokens": {"type": "integer", "minimum": 0, "maximum": 18}
+      }
+    },
+    "dispatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_id", "agent_id", "store_id", "assembled_text_sha256", "applied_budget",
+        "referenced_tokens", "assembled_tokens", "reused_ref_tokens", "dropped_tokens",
+        "selected_pages", "dropped_pages", "summary_pages", "summarized_source_tokens",
+        "summary_tokens", "pinned_page_required", "pinned_page_preserved", "pages"
+      ],
+      "properties": {
+        "task_id": {"enum": ["task-agent-1", "task-agent-2", "task-agent-3", "task-agent-4", "task-context"]},
+        "agent_id": {"enum": ["agent-1", "agent-2", "agent-3", "agent-4", "agent-context"]},
+        "store_id": {"enum": ["store-0", "store-1", "store-2", "store-3", "store-shared", "store-context"]},
+        "assembled_text_sha256": {"$ref": "#/$defs/sha256"},
+        "applied_budget": {"type": "integer", "minimum": 6, "maximum": 12},
+        "referenced_tokens": {"type": "integer", "minimum": 6, "maximum": 12},
+        "assembled_tokens": {"type": "integer", "minimum": 6, "maximum": 12},
+        "reused_ref_tokens": {"const": 0},
+        "dropped_tokens": {"type": "integer", "minimum": 0, "maximum": 6},
+        "selected_pages": {"type": "integer", "minimum": 1, "maximum": 3},
+        "dropped_pages": {"type": "integer", "minimum": 0, "maximum": 1},
+        "summary_pages": {"type": "integer", "minimum": 0, "maximum": 1},
+        "summarized_source_tokens": {"type": "integer", "minimum": 0, "maximum": 6},
+        "summary_tokens": {"type": "integer", "minimum": 0, "maximum": 5},
+        "pinned_page_required": {"type": "boolean"},
+        "pinned_page_preserved": {"const": true},
+        "pages": {"type": "array", "minItems": 1, "maxItems": 3, "items": {"$ref": "#/$defs/page_outcome"}}
+      }
+    },
+    "page_outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["page_id", "content_sha256", "scope", "owner_agent_id", "token_count", "pin", "cold", "outcome"],
+      "properties": {
+        "page_id": {"$ref": "#/$defs/sha256"},
+        "content_sha256": {"$ref": "#/$defs/sha256"},
+        "scope": {"enum": ["agent", "workflow"]},
+        "owner_agent_id": {"enum": ["", "agent-1", "agent-2", "agent-3", "agent-4"]},
+        "token_count": {"type": "integer", "minimum": 3, "maximum": 6},
+        "pin": {"type": "boolean"},
+        "cold": {"type": "boolean"},
+        "outcome": {"enum": ["selected", "dropped", "summarized"]},
+        "summary_page_id": {"$ref": "#/$defs/sha256"},
+        "summary_content_sha256": {"$ref": "#/$defs/sha256"},
+        "summary_token_count": {"type": "integer", "minimum": 1, "maximum": 5}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"outcome": {"const": "summarized"}}, "required": ["outcome"]},
+          "then": {"required": ["summary_page_id", "summary_content_sha256", "summary_token_count"], "properties": {"cold": {"const": true}}},
+          "else": {"not": {"anyOf": [{"required": ["summary_page_id"]}, {"required": ["summary_content_sha256"]}, {"required": ["summary_token_count"]}]}}
+        }
+      ]
+    },
+    "acl_probe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["page_id", "owner_agent_id", "request_agent_id", "result_code"],
+      "properties": {
+        "page_id": {"$ref": "#/$defs/sha256"},
+        "owner_agent_id": {"const": "agent-1"},
+        "request_agent_id": {"const": "agent-2"},
+        "result_code": {"const": "ACCESS_DENIED"}
+      }
+    }
+  }
+}

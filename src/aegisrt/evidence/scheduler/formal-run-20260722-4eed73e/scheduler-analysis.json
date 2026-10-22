@@ -1,0 +1,473 @@
+{
+  "schema_version": "aegisrt.experiment.scheduler-analysis/v1",
+  "plan_id": "scheduler-s1-s2-s3-formal-v1",
+  "bootstrap_seed": 424242,
+  "bootstrap_resamples": 10000,
+  "cells": [
+    {
+      "case_id": "S1",
+      "baseline_policy": "fifo",
+      "treatment": "dag-drcfs",
+      "metrics": [
+        {
+          "name": "makespan_ms",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 57,
+            "p50": 57,
+            "p95": 62,
+            "iqr": 4
+          },
+          "treatment": {
+            "n": 30,
+            "median": 57,
+            "p50": 57,
+            "p95": 62,
+            "iqr": 4
+          },
+          "paired_n": 30,
+          "improvement_median": 0,
+          "improvement_ci95_lower": 0,
+          "improvement_ci95_upper": 0,
+          "paired_rank_biserial": 0
+        },
+        {
+          "name": "queue_p50_ms",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 0,
+            "p50": 0,
+            "p95": 0,
+            "iqr": 0
+          },
+          "treatment": {
+            "n": 30,
+            "median": 0,
+            "p50": 0,
+            "p95": 0,
+            "iqr": 0
+          },
+          "paired_n": 30,
+          "improvement_median": 0,
+          "improvement_ci95_lower": 0,
+          "improvement_ci95_upper": 0,
+          "paired_rank_biserial": 0
+        },
+        {
+          "name": "queue_p95_ms",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 11,
+            "p50": 11,
+            "p95": 12,
+            "iqr": 3
+          },
+          "treatment": {
+            "n": 30,
+            "median": 35,
+            "p50": 35,
+            "p95": 37,
+            "iqr": 4
+          },
+          "paired_n": 30,
+          "improvement_median": -24,
+          "improvement_ci95_lower": -25,
+          "improvement_ci95_upper": -23,
+          "paired_rank_biserial": -1
+        },
+        {
+          "name": "critical_path_ms",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 45,
+            "p50": 45,
+            "p95": 49,
+            "iqr": 4
+          },
+          "treatment": {
+            "n": 30,
+            "median": 35,
+            "p50": 35,
+            "p95": 37,
+            "iqr": 4
+          },
+          "paired_n": 30,
+          "improvement_median": 11,
+          "improvement_ci95_lower": 10,
+          "improvement_ci95_upper": 11,
+          "paired_rank_biserial": 1
+        },
+        {
+          "name": "dependency_unlock_ms",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 11,
+            "p50": 11,
+            "p95": 12,
+            "iqr": 3
+          },
+          "treatment": {
+            "n": 30,
+            "median": 0,
+            "p50": 0,
+            "p95": 0,
+            "iqr": 0
+          },
+          "paired_n": 30,
+          "improvement_median": 11,
+          "improvement_ci95_lower": 10,
+          "improvement_ci95_upper": 11,
+          "paired_rank_biserial": 1
+        },
+        {
+          "name": "decision_count",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 4,
+            "p50": 4,
+            "p95": 4,
+            "iqr": 0
+          },
+          "treatment": {
+            "n": 30,
+            "median": 4,
+            "p50": 4,
+            "p95": 4,
+            "iqr": 0
+          },
+          "paired_n": 30,
+          "improvement_median": 0,
+          "improvement_ci95_lower": 0,
+          "improvement_ci95_upper": 0,
+          "paired_rank_biserial": 0
+        }
+      ]
+    },
+    {
+      "case_id": "S1",
+      "baseline_policy": "fifo",
+      "treatment": "priority",
+      "metrics": [
+        {
+          "name": "makespan_ms",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 57,
+            "p50": 57,
+            "p95": 62,
+            "iqr": 4
+          },
+          "treatment": {
+            "n": 30,
+            "median": 57,
+            "p50": 57,
+            "p95": 62,
+            "iqr": 4
+          },
+          "paired_n": 30,
+          "improvement_median": 0,
+          "improvement_ci95_lower": 0,
+          "improvement_ci95_upper": 0,
+          "paired_rank_biserial": 0
+        },
+        {
+          "name": "queue_p50_ms",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 0,
+            "p50": 0,
+            "p95": 0,
+            "iqr": 0
+          },
+          "treatment": {
+            "n": 30,
+            "median": 0,
+            "p50": 0,
+            "p95": 0,
+            "iqr": 0
+          },
+          "paired_n": 30,
+          "improvement_median": 0,
+          "improvement_ci95_lower": 0,
+          "improvement_ci95_upper": 0,
+          "paired_rank_biserial": 0
+        },
+        {
+          "name": "queue_p95_ms",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 11,
+            "p50": 11,
+            "p95": 12,
+            "iqr": 3
+          },
+          "treatment": {
+            "n": 30,
+            "median": 35,
+            "p50": 35,
+            "p95": 37,
+            "iqr": 4
+          },
+          "paired_n": 30,
+          "improvement_median": -24,
+          "improvement_ci95_lower": -25,
+          "improvement_ci95_upper": -23,
+          "paired_rank_biserial": -1
+        },
+        {
+          "name": "critical_path_ms",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 45,
+            "p50": 45,
+            "p95": 49,
+            "iqr": 4
+          },
+          "treatment": {
+            "n": 30,
+            "median": 35,
+            "p50": 35,
+            "p95": 37,
+            "iqr": 4
+          },
+          "paired_n": 30,
+          "improvement_median": 11,
+          "improvement_ci95_lower": 10,
+          "improvement_ci95_upper": 11,
+          "paired_rank_biserial": 1
+        },
+        {
+          "name": "dependency_unlock_ms",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 11,
+            "p50": 11,
+            "p95": 12,
+            "iqr": 3
+          },
+          "treatment": {
+            "n": 30,
+            "median": 0,
+            "p50": 0,
+            "p95": 0,
+            "iqr": 0
+          },
+          "paired_n": 30,
+          "improvement_median": 11,
+          "improvement_ci95_lower": 10,
+          "improvement_ci95_upper": 11,
+          "paired_rank_biserial": 1
+        },
+        {
+          "name": "decision_count",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 4,
+            "p50": 4,
+            "p95": 4,
+            "iqr": 0
+          },
+          "treatment": {
+            "n": 30,
+            "median": 4,
+            "p50": 4,
+            "p95": 4,
+            "iqr": 0
+          },
+          "paired_n": 30,
+          "improvement_median": 0,
+          "improvement_ci95_lower": 0,
+          "improvement_ci95_upper": 0,
+          "paired_rank_biserial": 0
+        }
+      ]
+    },
+    {
+      "case_id": "S2",
+      "baseline_policy": "fifo",
+      "treatment": "dag-drcfs",
+      "metrics": [
+        {
+          "name": "throughput_tasks_s",
+          "direction": "higher-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 72.8744939271255,
+            "p50": 72.8744939271255,
+            "p95": 75,
+            "iqr": 2.3609266637155173
+          },
+          "treatment": {
+            "n": 30,
+            "median": 73.17073170731707,
+            "p50": 73.17073170731707,
+            "p95": 75.31380753138075,
+            "iqr": 2.074074074074076
+          },
+          "paired_n": 30,
+          "improvement_median": 0,
+          "improvement_ci95_lower": -0.2891566265060277,
+          "improvement_ci95_upper": 0,
+          "paired_rank_biserial": -0.19117647058823528
+        },
+        {
+          "name": "jain_fairness",
+          "direction": "higher-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 0.8262265892838072,
+            "p50": 0.8262265892838072,
+            "p95": 0.8319533276069954,
+            "iqr": 0.004564063084637304
+          },
+          "treatment": {
+            "n": 30,
+            "median": 0.9973568164718787,
+            "p50": 0.9973568164718787,
+            "p95": 0.9979021131246845,
+            "iqr": 0.0005900148763546831
+          },
+          "paired_n": 30,
+          "improvement_median": 0.1707884807428086,
+          "improvement_ci95_lower": 0.169007747197639,
+          "improvement_ci95_upper": 0.17168206344878922,
+          "paired_rank_biserial": 1
+        },
+        {
+          "name": "queue_p95_ms",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 221,
+            "p50": 221,
+            "p95": 229,
+            "iqr": 7
+          },
+          "treatment": {
+            "n": 30,
+            "median": 221,
+            "p50": 221,
+            "p95": 229,
+            "iqr": 5
+          },
+          "paired_n": 30,
+          "improvement_median": 0,
+          "improvement_ci95_lower": -1,
+          "improvement_ci95_upper": 0,
+          "paired_rank_biserial": -0.3333333333333333
+        },
+        {
+          "name": "admission_rejections",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 0,
+            "p50": 0,
+            "p95": 0,
+            "iqr": 0
+          },
+          "treatment": {
+            "n": 30,
+            "median": 0,
+            "p50": 0,
+            "p95": 0,
+            "iqr": 0
+          },
+          "paired_n": 30,
+          "improvement_median": 0,
+          "improvement_ci95_lower": 0,
+          "improvement_ci95_upper": 0,
+          "paired_rank_biserial": 0
+        }
+      ]
+    },
+    {
+      "case_id": "S3",
+      "baseline_policy": "priority",
+      "treatment": "dag-drcfs",
+      "metrics": [
+        {
+          "name": "critical_path_ms",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 184,
+            "p50": 184,
+            "p95": 192,
+            "iqr": 13
+          },
+          "treatment": {
+            "n": 30,
+            "median": 59,
+            "p50": 59,
+            "p95": 62,
+            "iqr": 2
+          },
+          "paired_n": 30,
+          "improvement_median": 126,
+          "improvement_ci95_lower": 122,
+          "improvement_ci95_upper": 126,
+          "paired_rank_biserial": 1
+        },
+        {
+          "name": "dependency_unlock_ms",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 157,
+            "p50": 157,
+            "p95": 162,
+            "iqr": 15
+          },
+          "treatment": {
+            "n": 30,
+            "median": 31,
+            "p50": 31,
+            "p95": 32,
+            "iqr": 3
+          },
+          "paired_n": 30,
+          "improvement_median": 126,
+          "improvement_ci95_lower": 122,
+          "improvement_ci95_upper": 126,
+          "paired_rank_biserial": 1
+        },
+        {
+          "name": "starvation_count",
+          "direction": "lower-is-better",
+          "baseline": {
+            "n": 30,
+            "median": 1,
+            "p50": 1,
+            "p95": 1,
+            "iqr": 0
+          },
+          "treatment": {
+            "n": 30,
+            "median": 0,
+            "p50": 0,
+            "p95": 0,
+            "iqr": 0
+          },
+          "paired_n": 30,
+          "improvement_median": 1,
+          "improvement_ci95_lower": 1,
+          "improvement_ci95_upper": 1,
+          "paired_rank_biserial": 1
+        }
+      ]
+    }
+  ]
+}

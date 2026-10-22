@@ -1,0 +1,74 @@
+{
+  "checks": [
+    {
+      "path": "$.sections[0].paragraphs[0]",
+      "supported": false,
+      "reason": "摘录未提及“各方对游戏的美术表现多持肯定态度”及“文化叙事门槛上存在不同看法”，且主持讨论不能独立证明外部事实。",
+      "evidence_ids": [
+        "R56bcfaeff0b1ad985e99",
+        "S0e4bb45b6551b2215813"
+      ]
+    },
+    {
+      "path": "$.sections[1].paragraphs[0]",
+      "supported": true,
+      "reason": "摘录完整支持了游戏销量在线人数纪录、美术战斗获认可及团队先做新作引发讨论等事实。",
+      "evidence_ids": [
+        "S0da44fb1a970b411a6e6",
+        "S0a8dbe7e171ac43a6bcc",
+        "S41e1693a43426ba7e6df"
+      ]
+    },
+    {
+      "path": "$.sections[2].paragraphs[0]",
+      "supported": true,
+      "reason": "摘录准确反映了三个研究视角的分析内容，包括缺乏量化数据、补丁演变、评测分歧及评论样本的心态差异。",
+      "evidence_ids": [
+        "R1f1f6e07ad250c0a78f3",
+        "Re02f38f9f3caed74941a",
+        "R72eb582e428ef5164ac5"
+      ]
+    },
+    {
+      "path": "$.sections[3].paragraphs[0]",
+      "supported": false,
+      "reason": "摘录S7321d580d7dacd963ba6提到了帧数不稳定，但未提及“输入延迟”的问题，该细节缺乏支持。",
+      "evidence_ids": [
+        "S2e284faf6714443ec762",
+        "S7321d580d7dacd963ba6",
+        "S3eb3ecda3e1477e587bc",
+        "S567944b16d9177b62e76"
+      ]
+    },
+    {
+      "path": "$.sections[4].paragraphs[0]",
+      "supported": true,
+      "reason": "摘录完整覆盖了段落中关于空气墙、客观评价、媒体评分、等待调侃、类比科幻电影及情书的所有评论细节。",
+      "evidence_ids": [
+        "C001",
+        "C002",
+        "C003",
+        "C004",
+        "C005",
+        "C006"
+      ]
+    },
+    {
+      "path": "$.sections[5].paragraphs[0]",
+      "supported": true,
+      "reason": "摘录完整支持了主持讨论中关于核心争议、后续核查建议及综合报告撰写原则的所有内容。",
+      "evidence_ids": [
+        "R56bcfaeff0b1ad985e99"
+      ]
+    },
+    {
+      "path": "$.sections[6].paragraphs[0]",
+      "supported": true,
+      "reason": "摘录充分支持了材料在量化数据、硬件普查及场外争议核验方面的局限性，以及结论不可外推的声明。",
+      "evidence_ids": [
+        "R1f1f6e07ad250c0a78f3",
+        "R72eb582e428ef5164ac5"
+      ]
+    }
+  ]
+}

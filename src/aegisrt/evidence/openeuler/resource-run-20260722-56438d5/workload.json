@@ -1,0 +1,45 @@
+{
+  "schema": "aegisrt.experiment.resource-workload/v1",
+  "plan_id": "resource-cgroup-pressure-smoke-v1",
+  "cases": [
+    {
+      "case_id": "R2",
+      "controller": "cpu",
+      "limit_kind": "cpu.max",
+      "fixture": "cpu",
+      "baseline_limit": 0,
+      "treatment_limit": 250,
+      "treatment_swap": "unchanged",
+      "fixture_value": 700,
+      "fixture_unit": "cpu_milliseconds",
+      "sample_interval_ms": 100,
+      "unit": "millicpu"
+    },
+    {
+      "case_id": "R3-memory",
+      "controller": "memory",
+      "limit_kind": "memory.max",
+      "fixture": "memory",
+      "baseline_limit": 0,
+      "treatment_limit": 67108864,
+      "treatment_swap": "disabled",
+      "fixture_value": 268435456,
+      "fixture_unit": "bytes",
+      "sample_interval_ms": 100,
+      "unit": "bytes"
+    },
+    {
+      "case_id": "R3-pids",
+      "controller": "pids",
+      "limit_kind": "pids.max",
+      "fixture": "pids",
+      "baseline_limit": 0,
+      "treatment_limit": 12,
+      "treatment_swap": "unchanged",
+      "fixture_value": 24,
+      "fixture_unit": "children",
+      "sample_interval_ms": 100,
+      "unit": "processes"
+    }
+  ]
+}

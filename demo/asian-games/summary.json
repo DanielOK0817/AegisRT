@@ -1,0 +1,117 @@
+{
+  "summary": {
+    "workflow_id": "bf-entry-20261006-213814-6990a77bf8",
+    "task_id": "bf-entry-20261006-213814-6990a77bf8-report-recovery-1",
+    "status": "completed",
+    "started_at": "2026-10-06T22:33:58.645068+00:00",
+    "reused_tasks": 8,
+    "fresh_from_zero": false,
+    "runtime": {
+      "name": "aegisrt",
+      "version": "dev",
+      "started_at": "2026-10-06T22:33:58.766573905Z",
+      "stats": {
+        "policy": "dag-drcfs",
+        "graph_version": 32,
+        "task_count": 10,
+        "ready_count": 0,
+        "pending_completion_count": 0,
+        "capacity": {
+          "cpu_milli": 4000,
+          "memory_mib": 4096,
+          "llm_slots": 3,
+          "token_budget": 64000
+        },
+        "allocated": {
+          "cpu_milli": 0,
+          "memory_mib": 0,
+          "llm_slots": 0,
+          "token_budget": 0
+        },
+        "durable": true,
+        "checkpoint_healthy": true,
+        "generation": 42,
+        "last_checkpoint_at": "2026-10-06T22:36:46.723818403Z"
+      },
+      "context_stats": {
+        "counter_identity": "unicode-segment-v1",
+        "summarizer_identity": "none-v1",
+        "summary_count": 0,
+        "durable": true,
+        "checkpoint_healthy": true,
+        "generation": 15,
+        "last_checkpoint_at": "2026-10-06T22:36:46.703023645Z",
+        "manifest_count": 27,
+        "head_count": 5,
+        "ledger_entries": 22,
+        "output_count": 9,
+        "artifact_count": 9,
+        "store": {
+          "put_calls": 9,
+          "get_calls": 20,
+          "unique_pages": 9,
+          "unique_blobs": 9,
+          "reused_puts": 0,
+          "logical_bytes": 13687,
+          "physical_bytes": 13687,
+          "logical_tokens": 3791,
+          "physical_tokens": 3791,
+          "reused_tokens": 0
+        }
+      },
+      "event_history": {
+        "retention": "process_memory",
+        "ordering": "append_id",
+        "stream_id": "609e6e29def6ed45bcdcb58d90da2b28",
+        "started_at": "2026-10-06T22:33:58.766573905Z",
+        "window": {
+          "capacity": 4096,
+          "retained": 1,
+          "first_id": "1",
+          "last_id": "1",
+          "total_appended": "1",
+          "evicted": "0"
+        }
+      }
+    },
+    "output_summary": {
+      "record_count": 1,
+      "artifact_count": 1
+    },
+    "ended_at": "2026-10-06T22:36:46.951736+00:00",
+    "elapsed_seconds": 168.276,
+    "cleanup": {
+      "error_types": [],
+      "daemon_stopped": true,
+      "tasks_terminal": true
+    },
+    "model_requests": 2,
+    "aggregate_requests": 92
+  },
+  "view": {
+    "task_id": "bf-entry-20261006-213814-6990a77bf8-report-recovery-1",
+    "original_task_id": "bf-entry-20261006-213814-6990a77bf8-report",
+    "status": "SUCCEEDED",
+    "reused_tasks": 8,
+    "model_requests": 2,
+    "limit": 5,
+    "original_status": "FAILED",
+    "fresh_from_zero": false,
+    "interrupted": false,
+    "message": "本报告仅恢复了报告任务，复用本轮八项已完成的研究与讨论结果；原报告失败记录保留。"
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "status": "candidate_validated",
+      "phase": "generation",
+      "error_type": null
+    },
+    {
+      "attempt": 2,
+      "status": "passed",
+      "phase": "evidence_review",
+      "error_type": null
+    }
+  ]
+}

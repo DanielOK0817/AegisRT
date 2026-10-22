@@ -1,0 +1,48 @@
+services:
+  bettafish:
+    image: bettafish-repro:c4ca636-cpu
+    build:
+      context: ./source
+      dockerfile: ../Dockerfile.repro
+    restart: "no"
+    environment:
+      PYTHONUNBUFFERED: "1"
+      LOGURU_DIAGNOSE: "NO"
+      INSIGHT_CLUSTERING_MODEL_PATH: "/models/clustering"
+      STREAMLIT_SERVER_ENABLE_FILE_WATCHER: "false"
+      STREAMLIT_SERVER_FILE_WATCHER_TYPE: "none"
+      HOST: "0.0.0.0"
+      PORT: "5000"
+    ports:
+      - "127.0.0.1:5000:5000"
+      - "127.0.0.1:8501:8501"
+      - "127.0.0.1:8502:8502"
+      - "127.0.0.1:8503:8503"
+    volumes:
+      - ./.env:/app/.env
+      - ./runtime/logs:/app/logs
+      - ./runtime/final_reports:/app/final_reports
+      - ./runtime/insight_engine_streamlit_reports:/app/insight_engine_streamlit_reports
+      - ./runtime/media_engine_streamlit_reports:/app/media_engine_streamlit_reports
+      - ./runtime/query_engine_streamlit_reports:/app/query_engine_streamlit_reports
+      - ./runtime/sentiment-model:/app/SentimentAnalysisModel/WeiboMultilingualSentiment/model
+      - ./runtime/clustering-model:/models/clustering:ro
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:15
+    restart: "no"
+    environment:
+      POSTGRES_USER: ${DB_USER:?Run prepare_environment.py first}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Run prepare_environment.py first}
+      POSTGRES_DB: ${DB_NAME:?Run prepare_environment.py first}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - database:/var/lib/postgresql/data
+volumes:
+  database:

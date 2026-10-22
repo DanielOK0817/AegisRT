@@ -1,0 +1,545 @@
+{
+  "schema": "aegisrt.part4.recovery-context-evidence/v1",
+  "review_date": "2026-10-03",
+  "status": "verified-from-existing-evidence",
+  "scope": "本轮仅只读重核已有原始证据并整理材料；没有重新运行实验、调用模型或修改旧证据。",
+  "source_refs": [
+    {
+      "path": "evidence/part4-experiments-20261002/formal-native/verification.json",
+      "sha256": "7213dcdd535d7713197e3a93a498cda5976591ad2ac7f1b50545af0f8d7ce29c"
+    },
+    {
+      "path": "evidence/part4-experiments-20261002/formal-native/environment.json",
+      "sha256": "08beea60dbf227d10bfca28d7b90f64969f99ee3b3aa0122b55894f547683825"
+    },
+    {
+      "path": "evidence/part4-experiments-20261002/review.json",
+      "sha256": "0d3ab8a1c8614ec6bcb78cb294089fa38eaab8418b755b69d9e209a2f7b7b1e0"
+    },
+    {
+      "path": "experiments/completion-boundaries/verify.py",
+      "sha256": "0d3143676b6668d512103acf8761a227c053715ce380be9f70fb65d79f7827b0"
+    },
+    {
+      "path": "experiments/part4-readiness/context-audit.json",
+      "sha256": "278483a0139877ead1515f5497d59a421ce4f666a6cfb533c0fc1d271ebc0534"
+    },
+    {
+      "path": "experiments/context-evaluation/evidence/prepared-20260924-final/run-20260924-200723/run.json",
+      "sha256": "d3301ff9430e10990a367ccec011f4133bb49700fb17c79985d5ea60cd5bbdeb"
+    },
+    {
+      "path": "experiments/context-evaluation/evidence/prepared-20260924-final/run-20260924-200723/analysis/verification.json",
+      "sha256": "5fc857b85555b8c5fd90cf26c6b38f0411b58ed82674bcf2100f0e657927f0d2"
+    },
+    {
+      "path": "evidence/part4-experiments-20261002/experiments/part4-readiness/context-precheck-evidence/pilot-2xu0lwrr/provenance.json",
+      "sha256": "33bd1f0a014c5e271b03a49b00953689f2324ae92d38feb22012d1359210ceb6"
+    },
+    {
+      "path": "evidence/part4-experiments-20261002/experiments/part4-readiness/context-precheck-evidence/pilot-2xu0lwrr/data/communication-2852174881/report.json",
+      "sha256": "a57fa6049744ba1e014b4f1f20d90ee9a17504a9389292f5f1666b6a0d087aac"
+    },
+    {
+      "path": "experiments/part4-readiness/context_precheck.py",
+      "sha256": "27e84890320857d06a0040580506ac172675ac6ce7acf7fa7fb93a0a71b95482"
+    }
+  ],
+  "recovery": {
+    "environment": {
+      "platform": "Linux-6.6.0-159.4.3.154.oe2403sp4.x86_64-x86_64-with-glibc2.38",
+      "execution": "openEuler原生Linux执行；二进制由Windows Go1.26.2交叉编译为linux/amd64",
+      "binary_sha256": "124796d2302419bc64c13c465e2e996444748e0d78ffec4fa9ec9c64ffbacca2"
+    },
+    "counts": {
+      "formal_trials": 25,
+      "points": 5,
+      "repetitions_per_point": 5,
+      "hardkill_trials": 20,
+      "hardkill_returncodes": [
+        -9
+      ],
+      "control_trials": 5,
+      "control_returncodes": [
+        0
+      ],
+      "recovery_and_second_reopen_processes": 50,
+      "recovery_returncodes": [
+        0
+      ],
+      "model_requests": 0
+    },
+    "table": [
+      {
+        "point": "none",
+        "label": "无故障对照",
+        "trials": 5,
+        "before_disk_state": "上游和下游均SUCCEEDED，无待完成意图",
+        "recovery_behavior": "不再执行已完成任务",
+        "producer_executions_per_trial": [
+          1
+        ],
+        "consumer_executions_per_trial": [
+          1
+        ],
+        "producer_publication_requests_per_trial": [
+          1
+        ],
+        "durable_producer_insertions_per_trial": [
+          1
+        ],
+        "initial_returncodes": [
+          0
+        ]
+      },
+      {
+        "point": "running",
+        "label": "Agent执行中",
+        "trials": 5,
+        "before_disk_state": "上游RUNNING、下游WAITING_DEPENDENCY，无完成意图或产物",
+        "recovery_behavior": "核对并清理登记的实验Agent，重排上游，第二次执行上游后执行下游",
+        "producer_executions_per_trial": [
+          2
+        ],
+        "consumer_executions_per_trial": [
+          1
+        ],
+        "producer_publication_requests_per_trial": [
+          1
+        ],
+        "durable_producer_insertions_per_trial": [
+          1
+        ],
+        "initial_returncodes": [
+          -9
+        ]
+      },
+      {
+        "point": "prepared",
+        "label": "完成意图持久化后",
+        "trials": 5,
+        "before_disk_state": "上游RUNNING、下游WAITING_DEPENDENCY，完成意图已保存，Context尚无上游产物",
+        "recovery_behavior": "发布保存的正文，保持上游第1次尝试，不再执行上游Agent",
+        "producer_executions_per_trial": [
+          1
+        ],
+        "consumer_executions_per_trial": [
+          1
+        ],
+        "producer_publication_requests_per_trial": [
+          1
+        ],
+        "durable_producer_insertions_per_trial": [
+          1
+        ],
+        "initial_returncodes": [
+          -9
+        ]
+      },
+      {
+        "point": "published",
+        "label": "产物持久化后",
+        "trials": 5,
+        "before_disk_state": "上游RUNNING、下游WAITING_DEPENDENCY，完成意图和Context上游产物均已保存，成功状态未提交",
+        "recovery_behavior": "幂等重放发布并提交成功，再执行下游；发布请求2次、持久插入1次",
+        "producer_executions_per_trial": [
+          1
+        ],
+        "consumer_executions_per_trial": [
+          1
+        ],
+        "producer_publication_requests_per_trial": [
+          2
+        ],
+        "durable_producer_insertions_per_trial": [
+          1
+        ],
+        "initial_returncodes": [
+          -9
+        ]
+      },
+      {
+        "point": "succeeded",
+        "label": "成功状态持久化后",
+        "trials": 5,
+        "before_disk_state": "上游SUCCEEDED、下游READY，无待完成意图，下游尚未执行",
+        "recovery_behavior": "上游不再执行或重放，只执行下游1次",
+        "producer_executions_per_trial": [
+          1
+        ],
+        "consumer_executions_per_trial": [
+          1
+        ],
+        "producer_publication_requests_per_trial": [
+          1
+        ],
+        "durable_producer_insertions_per_trial": [
+          1
+        ],
+        "initial_returncodes": [
+          -9
+        ]
+      }
+    ],
+    "verification_this_review": {
+      "raw_trials_read": 25,
+      "controller_actions_read": 75,
+      "state_envelopes_verified": 150,
+      "recomputed_rows_match_recorded_verification": true,
+      "method": "以import方式调用verify.py的只读verify_trial；直接检查原始状态包络、磁盘内容页、events.jsonl、journal、实际consumer-input.txt和Controller返回码，不调用写文件的main。"
+    },
+    "recorded_independent_review": {
+      "path": "evidence/part4-experiments-20261002/review.json",
+      "review": "passed",
+      "production_non_test_files_compared": 216,
+      "mismatches": [],
+      "negative_cases": [
+        {
+          "case": "downstream_body_changed",
+          "rejected": true
+        },
+        {
+          "case": "duplicate_output_record",
+          "rejected": true
+        },
+        {
+          "case": "duplicate_artifact",
+          "rejected": true
+        }
+      ],
+      "original_evidence_files_unchanged": 974
+    },
+    "safe_claim": "在本实验的冻结正文和两任务依赖流中，生产完成协议通过了真实磁盘与SIGKILL边界核验：未保存完成意图时重试，保存后直接恢复发布，重复发布请求未产生重复持久产物，下游执行一次且正文一致，再次重开状态不变。",
+    "limitations": [
+      "这是生产Coordinator、Worker、Runtime、Context和statefile组件加实验注入包装器的受控试验，未启动完整HTTPdaemon。",
+      "执行中故障仅有一个不创建后代的Agent，恢复适配器核对PID、可执行路径与独立目录后清理；不覆盖cgroup子进程树。",
+      "没有真实微舆、数据库、模型API、流式响应或供应商请求恢复，不能称为真实业务中断后的精确一次执行。",
+      "资源归零是声明资源预留结算，不能代表主机CPU/内存实测使用归零。",
+      "5次重复及20次SIGKILL不支持长期稳定性、任意崩溃窗口或恢复性能优势。"
+    ]
+  },
+  "historical_context": {
+    "run_path": "experiments/context-evaluation/evidence/prepared-20260924-final/run-20260924-200723",
+    "platform": "Windows",
+    "go_version": "go version go1.26.2 windows/amd64",
+    "environment": {
+      "GOMAXPROCS": "2",
+      "GOMEMLIMIT": "768MiB",
+      "GOFLAGS": "-p=1"
+    },
+    "version_definitions": {
+      "A": "actual Git baseline, historical correctness limitations retained",
+      "B": "verified archived pre-optimization working source; durable recipient hydration; not a historical Git release",
+      "C": "current source; authorized dependency read views avoid recipient checkpoint writes",
+      "N": "current source with summary cache lookup bypassed; provenance and durable records still retained"
+    },
+    "version_source_identities": {
+      "A": {
+        "source_sha256": "48c53de8c8c6adf43c707d571f988d7113156217b3d2c17111611ba9c33df7b5",
+        "file_count": 59,
+        "archive_and_member_hashes_match": true,
+        "actual_git_bytes_match": true
+      },
+      "B": {
+        "source_sha256": "8dabc78d05db48af2b04a72e3c91f4de558882f485c22f75c5ceb0407c9519e4",
+        "file_count": 68,
+        "archive_and_member_hashes_match": true
+      },
+      "C": {
+        "source_sha256": "34525e56d42b71c4d36a6f4d885763b9f449960e0d2ef7c261ee3360e25758ff",
+        "file_count": 72,
+        "archive_and_member_hashes_match": true
+      },
+      "N": {
+        "source_sha256": "bf9f16bdf217c86958fb492b1d0305b9e2e972cd25d2d23434ef7e369cc6d977",
+        "file_count": 72,
+        "archive_and_member_hashes_match": true
+      }
+    },
+    "version_cautions": [
+      "9月24日B是已核验的9月22日C归档，具有持久化接收方装载，不是历史Git发布版本。",
+      "9月24日C是当时的只读授权依赖视图实现；9月22日B是保留正确性的Store复制候选重构，两轮B含义不同，不得合并。",
+      "A是真实Git基线，但任务隔离失败为预期历史限制，不能与B/C视为相同正确性条件。"
+    ],
+    "communication_matrix": {
+      "operations": [
+        "output_publish",
+        "context_load",
+        "context_hydrate"
+      ],
+      "operation_labels": {
+        "output_publish": "产物发布",
+        "context_load": "已加载读取",
+        "context_hydrate": "首次依赖读取"
+      },
+      "payload_bytes": [
+        256,
+        4096,
+        32768
+      ],
+      "recipients": [
+        1,
+        4
+      ],
+      "concurrency": [
+        1,
+        4
+      ],
+      "configurations": 36,
+      "variants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "warmup_repetitions_per_variant_config": 1,
+      "measured_repetitions_per_variant_config": 6,
+      "samples_per_trial": 4,
+      "measured_trials": 648,
+      "measured_samples": 2592,
+      "warmup_trials": 108,
+      "count_formula": "36 configurations * 3 variants * 6 repetitions = 648 measured trials"
+    },
+    "compression_counts": {
+      "measured_trials": 216,
+      "warmup_trials": 36,
+      "timing_records": 2160,
+      "logical_reads": 55728,
+      "variants": [
+        "C",
+        "N"
+      ],
+      "note": "缓存模式与C/N版本配对而非完全交叉，正式计数直接来自job清单。"
+    },
+    "result_file_count_explanation": {
+      "raw_result_json_files_verified": 1008,
+      "measured_trials_total": 864,
+      "warmup_trials_total": 144,
+      "all_trials_formula": "648 + 216 + 108 + 36 = 1008",
+      "allowed_wording": "1008份原始结果文件，包含864轮正式测量及144轮预热",
+      "forbidden_wording": "1008轮正式试验"
+    },
+    "save_call_table": [
+      {
+        "operation": "context_hydrate",
+        "variant": "A",
+        "trials": 72,
+        "save_calls_per_trial": [
+          4,
+          16
+        ],
+        "field": "result.checkpoint_save_calls"
+      },
+      {
+        "operation": "context_hydrate",
+        "variant": "B",
+        "trials": 72,
+        "save_calls_per_trial": [
+          4,
+          16
+        ],
+        "field": "result.checkpoint_save_calls"
+      },
+      {
+        "operation": "context_hydrate",
+        "variant": "C",
+        "trials": 72,
+        "save_calls_per_trial": [
+          0
+        ],
+        "field": "result.checkpoint_save_calls"
+      },
+      {
+        "operation": "context_load",
+        "variant": "A",
+        "trials": 72,
+        "save_calls_per_trial": [
+          0
+        ],
+        "field": "result.checkpoint_save_calls"
+      },
+      {
+        "operation": "context_load",
+        "variant": "B",
+        "trials": 72,
+        "save_calls_per_trial": [
+          0
+        ],
+        "field": "result.checkpoint_save_calls"
+      },
+      {
+        "operation": "context_load",
+        "variant": "C",
+        "trials": 72,
+        "save_calls_per_trial": [
+          0
+        ],
+        "field": "result.checkpoint_save_calls"
+      },
+      {
+        "operation": "output_publish",
+        "variant": "A",
+        "trials": 72,
+        "save_calls_per_trial": [
+          4
+        ],
+        "field": "result.checkpoint_save_calls"
+      },
+      {
+        "operation": "output_publish",
+        "variant": "B",
+        "trials": 72,
+        "save_calls_per_trial": [
+          4
+        ],
+        "field": "result.checkpoint_save_calls"
+      },
+      {
+        "operation": "output_publish",
+        "variant": "C",
+        "trials": 72,
+        "save_calls_per_trial": [
+          4
+        ],
+        "field": "result.checkpoint_save_calls"
+      }
+    ],
+    "save_call_explanation": "每轮4个操作；B首次依赖读取按1或4个接收方写入，形成4或16次Save，C对应72轮均为0。已加载读取B/C均0，产物初始发布B/C均4。",
+    "zero_records": {
+      "communication_zero_latency_samples": 272,
+      "communication_zero_wall_windows": 34,
+      "handling": "保留原值；零整体窗口不算吞吐，无法定义的比值留空。"
+    },
+    "verification_levels": {
+      "this_review": "直接重算1008份结果文件哈希、正式/预热计数、36配置、Save次数及通信零样本；未重跑历史完整正文/来源独立验证器。",
+      "recorded_full_verification": {
+        "path": "experiments/context-evaluation/evidence/prepared-20260924-final/run-20260924-200723/analysis/verification.json",
+        "passed": true,
+        "raw_bodies_provenance_envelopes_hashes_verified": true,
+        "verifier_sha256": "72e2c04f4c76a483a537da2ff5a5e812f4f679dab6a9748caad188628f1c69aa"
+      },
+      "body_flags_in_result": "replay_stable/reload_verified/isolation_verified是采集器记录的结果，不替代当前重新核验正文。"
+    },
+    "safe_claim": "在9月24日冻结的B/C版本及Windows本地矩阵中，只读依赖视图消除了首次依赖读取触发的接收方检查点保存；正文、隔离、重放和持久重开依据当时的完整核验记录。",
+    "limitations": [
+      "旧Windows计时不能改写为openEuler性能结果。",
+      "共享仓库每次只读一份正文，4个工作流使用相同正文，利于内容去重；不覆盖大量不同内容、持续仓库增长或混合页规模。",
+      "Go分配量不等于RSS，Save输入字节不等于物理磁盘I/O，本地Token计数不等于供应商账单，合成标记不代表语义答案质量。",
+      "通信配置6次重复只作中位数与全范围描述，没有显著性检验。"
+    ]
+  },
+  "current_context_drift": {
+    "scope": "contextstate、contextvm、contextdispatch、domain、statefile内Go文件及go.mod/go.sum，含测试；不是整仓身份。",
+    "historical_c_file_count": 72,
+    "historical_c_source_sha256": "34525e56d42b71c4d36a6f4d885763b9f449960e0d2ef7c261ee3360e25758ff",
+    "current_file_count": 75,
+    "current_source_sha256": "2fdd7137c65f30e02ffa4a69fd31469a727e6b6b8d5fe3764935b3bad81cc6f9",
+    "all_current_scoped_file_hashes_match_audit": true,
+    "context_and_domain_drift": [],
+    "changed_existing_files": [
+      "internal/statefile/store.go"
+    ],
+    "added_files": [
+      "internal/statefile/replace_nonwindows.go",
+      "internal/statefile/replace_windows.go",
+      "internal/statefile/replace_windows_test.go"
+    ],
+    "consequence": "三个Context包与domain逐字节一致，但状态文件原子替换实现已变。历史计时只能归属当时版本，不能宣称为当前最后版本的新性能测量。"
+  },
+  "native_context_pilot": {
+    "provenance_path": "evidence/part4-experiments-20261002/experiments/part4-readiness/context-precheck-evidence/pilot-2xu0lwrr/provenance.json",
+    "report_path": "evidence/part4-experiments-20261002/experiments/part4-readiness/context-precheck-evidence/pilot-2xu0lwrr/data/communication-2852174881/report.json",
+    "status": "passed",
+    "environment": {
+      "evidence_scope": "linux-local",
+      "os_family": "linux",
+      "distribution_id": "openEuler",
+      "distribution_version": "24.03",
+      "kernel_release": "6.6.0-159.4.3.154.oe2403sp4.x86_64",
+      "architecture": "amd64",
+      "logical_cpu_count": 4,
+      "memory_total_bytes": 3570425856,
+      "cgroup": {
+        "version": "not-measured",
+        "controllers": [],
+        "delegation": "not-requested",
+        "psi": "not-measured"
+      }
+    },
+    "go_version": "go version go1.26.5 linux/amd64",
+    "environment_controls": {
+      "GOMAXPROCS": "2",
+      "GOMEMLIMIT": "768MiB",
+      "GOFLAGS": "-p=1"
+    },
+    "plan": {
+      "payload_bytes": [
+        4096
+      ],
+      "recipients": [
+        8
+      ],
+      "concurrency": [
+        4
+      ],
+      "operations_per_trial": 4,
+      "repetitions": 1,
+      "read_passes_per_load_sample": 32
+    },
+    "build_source_sha256": "90d77d8b190d56c1edb9edf6f28867b9bbfcd826656e1adbd400b17bdaa4a279",
+    "binary_sha256": "20962c6a004c1accde0f7c703b8baa9a795f9d6826355cff764d68d63ace473a",
+    "identity_scope_note": "pilot身份包括cmd、internal和实验入口/核验器，范围大于上面的75文件Context审计身份，两者哈希不可直接比较。",
+    "measured_trials": 3,
+    "warmup_trials": 3,
+    "state_envelopes_verified": 6,
+    "model_requests": 0,
+    "table": [
+      {
+        "operation": "output_publish",
+        "payload_bytes": 4096,
+        "recipients": 8,
+        "concurrency": 4,
+        "samples": 4,
+        "read_passes": 1,
+        "checkpoint_save_calls": 4,
+        "checkpoint_payload_written_bytes": 137437
+      },
+      {
+        "operation": "context_load",
+        "payload_bytes": 4096,
+        "recipients": 8,
+        "concurrency": 4,
+        "samples": 4,
+        "read_passes": 32,
+        "checkpoint_save_calls": 0,
+        "checkpoint_payload_written_bytes": 0
+      },
+      {
+        "operation": "context_hydrate",
+        "payload_bytes": 4096,
+        "recipients": 8,
+        "concurrency": 4,
+        "samples": 4,
+        "read_passes": 1,
+        "checkpoint_save_calls": 0,
+        "checkpoint_payload_written_bytes": 0
+      }
+    ],
+    "verification_levels": {
+      "this_review_independent": "重核报告sha、源码/二进制关联、完整计划、3轮配置、Save4/0/0、6个statefile包络校验和；读取采集器正文/隔离布尔值。",
+      "production_benchmark": "正文、来源/授权、重放、重开与隔离由生产benchmark检查路径执行。",
+      "independent_full_body_verifier_rerun": false
+    },
+    "safe_claim": "当前冻结版本在openEuler原生环境的4KiB正文、8接收方、并发4功能预检通过；产物发布每轮4次Save，两种读取0次Save。",
+    "limitations": [
+      "这是3轮结果加3轮预热的功能pilot，不是与旧版配对的性能对照。",
+      "没有HTTP、进程启动、Runtime完成协议、真实模型请求或cgroup硬限制测量。",
+      "不能据此声称openEuler相对Windows或旧版更快，也不能声称独立外层验证器已重新核验全部正文来源。"
+    ]
+  },
+  "lookup_issues": [
+    {
+      "issue": "按猜测查询旧runner.py和verify.py路径不存在",
+      "resolution": "改用真实run.json、trial-*/result.json和analysis/verification.json；未产生证据变更"
+    }
+  ]
+}

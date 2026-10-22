@@ -1,0 +1,9 @@
+{
+  "archive": "evidence.zip",
+  "sha256": "b927d95f797a1f51e10f9e06b337cb6598ef39508aab4b44b62de57cb02ad97b",
+  "files": 7378,
+  "source": "2026-09-24 frozen context experiment; 648 measured communication trials",
+  "anonymized_files": 1,
+  "original_measurement_preserved": true,
+  "new_experiment_executed": false
+}

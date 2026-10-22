@@ -1,0 +1,145 @@
+package main
+
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "os"
+    "path/filepath"
+    "runtime"
+    "strings"
+    "time"
+
+    "aegisrt/internal/contextstate"
+    "aegisrt/internal/contextvm"
+    "aegisrt/internal/statefile"
+)
+
+type countedSummary struct { contextvm.Summarizer; Calls int }
+func (*countedSummary) Name() string { return "deterministic-extractive-v1" }
+func (s *countedSummary) Summarize(ctx context.Context, request contextvm.SummaryRequest) (string, error) {
+    s.Calls++; return s.Summarizer.Summarize(ctx, request)
+}
+
+type CompressionSample struct {
+    Phase string `json:"phase"`
+    Index int `json:"index"`
+    ReadPasses int `json:"read_passes"`
+    LatencyNS int64 `json:"latency_ns"`
+    ReloadNS int64 `json:"reload_ns"`
+    AllocBytes uint64 `json:"alloc_bytes"`
+    HeapBefore uint64 `json:"heap_before"`
+    HeapAfter uint64 `json:"heap_after"`
+    SummaryCalls int `json:"summary_calls"`
+    Saves uint64 `json:"save_calls"`
+    Written uint64 `json:"written_bytes"`
+    CheckpointBytes int64 `json:"checkpoint_bytes"`
+    Text string `json:"text"`
+    Refs []contextvm.ContextRef `json:"refs"`
+    Metrics contextvm.AssemblyMetrics `json:"metrics"`
+    Facts []bool `json:"facts_retained"`
+    SourceVerified bool `json:"source_verified"`
+    IsolationVerified bool `json:"isolation_verified"`
+}
+
+func compressionTrial(ctx context.Context, dir string, job Job) (any, error) {
+    var counter contextvm.Counter = contextvm.WhitespaceCounter{}
+    if job.Corpus == "mixed" { counter = contextvm.UnicodeSegmentCounter{} }
+    config := contextstate.Config{Fingerprint: "compression-ablation-v1", RuntimeInstanceID: strings.Repeat("a",64),
+        Counter: counter, Limits: contextstate.DefaultLimits()}
+    extractive, err := contextvm.NewExtractiveSummarizer(counter); if err != nil { return nil, err }
+    summary := &countedSummary{Summarizer: extractive}
+    if job.Mode != "off" { config.Summarizer = summary }
+    words := make([]string, job.Words)
+    for i := range words {
+        words[i] = fmt.Sprintf("item%04d", i)
+        if job.Corpus == "mixed" { words[i] = fmt.Sprintf("数据%04d", i) }
+    }
+    facts := []string{"FACT_HEAD_731", "FACT_MIDDLE_947", "FACT_TAIL_563"}
+    for i, position := range []int{job.Words/10, job.Words/2, job.Words*9/10} { words[position] = facts[i] }
+    content := strings.Join(words, " ")
+    sourceTokens, err := counter.Count(content); if err != nil { return nil, err }
+    budget := sourceTokens * job.Fraction / 8
+    file, err := statefile.New(filepath.Join(dir,"context.state")); if err != nil { return nil, err }
+    store := &communicationStore{Store:file}
+    repository, err := contextstate.NewPersistent(config, store, true, time.Now()); if err != nil { return nil, err }
+    head, _, err := repository.EnsureEmptyWithOwnership("workflow-000", "consumer-01"); if err != nil { return nil, err }
+    task, agent := communicationConsumer(contextstate.OutputCommand{TaskID:"source", WorkflowID:"workflow-000"}, 1)
+    task.Dependencies = nil
+    added, err := repository.Append(ctx, contextstate.AppendCommand{TaskID:task.ID,WorkflowID:task.WorkflowID,
+        AgentID:agent.ID,ExpectedManifestID:head.ID,IdempotencyKey:"source",Content:content,
+        Visibility:contextstate.VisibilityAgent,Cold:true,TaskTokenBudget:65536,PrincipalPinnedBudget:65536},time.Now())
+    if err != nil { return nil, err }
+    input := map[string]any{"content":content,"facts":facts,"source_tokens":sourceTokens,"budget":budget,
+        "source_page_id":added.PageID,"counter":counter.(contextvm.NamedCounter).Name()}
+    if err := writeCommunicationJSON(filepath.Join(dir,"input.json"),input); err != nil { return nil, err }
+    initial,err:=os.ReadFile(filepath.Join(dir,"context.state")); if err!=nil {return nil,err}
+    if err=os.WriteFile(filepath.Join(dir,"initial.state"),initial,0600);err!=nil{return nil,err}
+    var samples []CompressionSample
+    firstText := ""
+    for i:=0; i<10; i++ {
+        sample := CompressionSample{Index:i,Phase:"warm",ReadPasses:1}
+        if i>0 && i<9 && job.CompressionReadPasses>1 {sample.ReadPasses=job.CompressionReadPasses}
+        if i==0 { sample.Phase="cold" }
+        if i==9 {
+            sample.Phase="restart"
+            began := time.Now()
+            repository, err = contextstate.NewPersistent(config, store, false, time.Now())
+            sample.ReloadNS = time.Since(began).Nanoseconds()
+            if err != nil { return nil, err }
+        }
+        runtime.GC()
+        var before,after runtime.MemStats
+        calls,saves,written := summary.Calls,store.saves,store.written
+        runtime.ReadMemStats(&before)
+        began := time.Now()
+        resolution, err := repository.Resolve(ctx,task,agent,budget)
+        for pass:=1;pass<sample.ReadPasses && err==nil;pass++ {
+            next,nextErr:=repository.Resolve(ctx,task,agent,budget)
+            err=nextErr
+            if err==nil && next.Text!=resolution.Text {err=fmt.Errorf("batch read changed text")}
+        }
+        sample.LatencyNS = time.Since(began).Nanoseconds()
+        runtime.ReadMemStats(&after)
+        if err != nil { return nil,err }
+        sample.AllocBytes = after.TotalAlloc-before.TotalAlloc
+        sample.HeapBefore,sample.HeapAfter = before.HeapAlloc,after.HeapAlloc
+        sample.SummaryCalls,sample.Saves,sample.Written = summary.Calls-calls,store.saves-saves,store.written-written
+        info, err := os.Stat(filepath.Join(dir,"context.state")); if err != nil { return nil,err }
+        sample.CheckpointBytes = info.Size()
+        sample.Text,sample.Metrics = resolution.Text,resolution.Metrics
+        sample.Refs = resolution.Refs
+        if i==0 {
+            cold,err:=os.ReadFile(filepath.Join(dir,"context.state"));if err!=nil{return nil,err}
+            if err=os.WriteFile(filepath.Join(dir,"cold.state"),cold,0600);err!=nil{return nil,err}
+        }
+        tokens, err := counter.Count(resolution.Text); if err != nil { return nil,err }
+        if tokens>budget { return nil,fmt.Errorf("budget exceeded") }
+        for _,fact := range facts { sample.Facts=append(sample.Facts,strings.Contains(resolution.Text,fact)) }
+        if i==0 { firstText=resolution.Text } else if firstText!=resolution.Text { return nil,fmt.Errorf("unstable compression text") }
+        if job.Fraction==8 && resolution.Text!=content { return nil,fmt.Errorf("full budget lost input") }
+        if job.Fraction<8 && job.Mode=="off" && resolution.Text!="" { return nil,fmt.Errorf("disabled compression did not drop oversized page") }
+        expectedCalls := 0
+        if job.Mode!="off" && job.Fraction<8 && (job.Mode=="no-cache" || i==0) { expectedCalls=sample.ReadPasses }
+        if sample.SummaryCalls!=expectedCalls { return nil,fmt.Errorf("summary calls got %d expected %d",sample.SummaryCalls,expectedCalls) }
+        payload,err := store.Load(); if err!=nil { return nil,err }
+        var checkpoint struct { Store contextvm.StoreState `json:"store"` }
+        if err=json.Unmarshal(payload,&checkpoint);err!=nil { return nil,err }
+        sample.SourceVerified=true
+        for _, ref := range resolution.Refs {
+            found:=false
+            for _, page := range checkpoint.Store.Pages {
+                if page.ID!=ref.PageID {continue}
+                found=true
+                if page.ID!=added.PageID && (len(page.SourceRefs)!=1 || page.SourceRefs[0].PageID!=added.PageID) { sample.SourceVerified=false }
+            }
+            if !found {sample.SourceVerified=false}
+        }
+        unrelated:=task; unrelated.ID="unrelated"
+        isolated,err:=repository.Resolve(ctx,unrelated,agent,budget)
+        sample.IsolationVerified=err==nil && isolated.Text=="" && len(isolated.Refs)==0
+        if !sample.SourceVerified || !sample.IsolationVerified {return nil,fmt.Errorf("provenance or isolation failed")}
+        samples=append(samples,sample)
+    }
+    return map[string]any{"input":input,"samples":samples},nil
+}

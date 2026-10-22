@@ -1,0 +1,290 @@
+```json
+{
+  "checks": [
+    {
+      "path": "$.sections[0].paragraphs[0]",
+      "supported": false,
+      "reason": "第1句中“对作品整体美术的认可”由C005支持，但本段未引用C005，仅引用的C001等无法支持该观点。",
+      "evidence_ids": [
+        "C001",
+        "R5c0d77e4d65a60680435",
+        "S7d39aef1cc40b2c45092"
+      ],
+      "sentence_checks": [
+        {
+          "index": 0,
+          "supported": true,
+          "reason": "准确概括了R5c0d77e4d65a60680435中关于技术表现、补丁优化和关卡设计的舆情焦点。",
+          "evidence_ids": [
+            "R5c0d77e4d65a60680435"
+          ]
+        },
+        {
+          "index": 1,
+          "supported": false,
+          "reason": "引用的C001未提及“对作品整体美术的认可”，该观点实际由漏引的C005支持。",
+          "evidence_ids": [
+            "C001",
+            "R5c0d77e4d65a60680435",
+            "S7d39aef1cc40b2c45092"
+          ]
+        },
+        {
+          "index": 2,
+          "supported": true,
+          "reason": "符合R5c0d77e4d65a60680435中关于技术争议与崩溃归因仍待独立核验的结论。",
+          "evidence_ids": [
+            "R5c0d77e4d65a60680435"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "$.sections[1].paragraphs[0]",
+      "supported": true,
+      "reason": "全段准确转述了引用的媒体报道和官方公告中关于补丁更新、性能模式调整及专业评测的反馈。",
+      "evidence_ids": [
+        "Sdd0b79908e457bf9b0c4",
+        "Sdfdbcf235f1a24e632e7",
+        "S2f115578a7319dfbf765"
+      ],
+      "sentence_checks": [
+        {
+          "index": 0,
+          "supported": true,
+          "reason": "符合Sdfdbcf235f1a24e632e7和Sdd0b79908e457bf9b0c4中关于推出大型更新修复问题并优化性能的报道。",
+          "evidence_ids": [
+            "Sdd0b79908e457bf9b0c4",
+            "Sdfdbcf235f1a24e632e7"
+          ]
+        },
+        {
+          "index": 1,
+          "supported": true,
+          "reason": "符合Sdd0b79908e457bf9b0c4中关于PS5原生60Hz改善延迟及PC集成FSR4超采样技术的公告内容。",
+          "evidence_ids": [
+            "Sdd0b79908e457bf9b0c4"
+          ]
+        },
+        {
+          "index": 2,
+          "supported": true,
+          "reason": "符合S2f115578a7319dfbf765中Digital Foundry评测指出视觉效果出色但技术问题太多的结论。",
+          "evidence_ids": [
+            "S2f115578a7319dfbf765"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "$.sections[2].paragraphs[0]",
+      "supported": true,
+      "reason": "全段准确概括了三份研究报告中关于性能口径分歧、跨平台优化动态、关卡设计负面反馈及评论样本局限性的分析。",
+      "evidence_ids": [
+        "Rd97b773e8208b4fdb4d1",
+        "R5c0d77e4d65a60680435",
+        "R4d441bae148ba224180c"
+      ],
+      "sentence_checks": [
+        {
+          "index": 0,
+          "supported": true,
+          "reason": "准确转述了Rd97b773e8208b4fdb4d1中关于官方与评测口径分歧及改善幅度待证实的结论。",
+          "evidence_ids": [
+            "Rd97b773e8208b4fdb4d1"
+          ]
+        },
+        {
+          "index": 1,
+          "supported": true,
+          "reason": "准确转述了R5c0d77e4d65a60680435中关于跨平台优化复杂动态及空气墙引发负面反馈的分析。",
+          "evidence_ids": [
+            "R5c0d77e4d65a60680435"
+          ]
+        },
+        {
+          "index": 2,
+          "supported": true,
+          "reason": "准确转述了R4d441bae148ba224180c中关于样本极小、聚焦主观评价且缺乏系统日志的局限性声明。",
+          "evidence_ids": [
+            "R4d441bae148ba224180c"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "$.sections[3].paragraphs[0]",
+      "supported": false,
+      "reason": "第2句中关于“缺乏大样本日志的独立核实”的分析结论来自未引用的研究报告，引用的外部报道并未包含此元分析。",
+      "evidence_ids": [
+        "Sb1cfcc4cbdca6e565559",
+        "S289a9285fc3dfb0cf08c",
+        "Sf1cc9a480ed9f04323db",
+        "Sde727e71edae9f244a7b"
+      ],
+      "sentence_checks": [
+        {
+          "index": 0,
+          "supported": true,
+          "reason": "符合引用的多篇报道中关于主机端性能模式引发争议的整体情况。",
+          "evidence_ids": [
+            "S289a9285fc3dfb0cf08c",
+            "Sb1cfcc4cbdca6e565559",
+            "Sde727e71edae9f244a7b"
+          ]
+        },
+        {
+          "index": 1,
+          "supported": true,
+          "reason": "符合Sb1cfcc4cbdca6e565559、Sde727e71edae9f244a7b关于难稳60帧的实测，以及S289a9285fc3dfb0cf08c关于移除Lumen光照被评为用画质换性能的报道。",
+          "evidence_ids": [
+            "S289a9285fc3dfb0cf08c",
+            "Sb1cfcc4cbdca6e565559",
+            "Sde727e71edae9f244a7b"
+          ]
+        },
+        {
+          "index": 2,
+          "supported": false,
+          "reason": "引用的Sf1cc9a480ed9f04323db仅提及硬件缺陷归因，并未指出“缺乏大样本日志的独立核实”，该分析结论漏引了R5c0d77e4d65a60680435。",
+          "evidence_ids": [
+            "Sf1cc9a480ed9f04323db"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "$.sections[4].paragraphs[0]",
+      "supported": true,
+      "reason": "全段准确引用了给定的评论样本，涵盖了对空气墙的批评、对打分动机的推测以及对美术质量的高度认可。",
+      "evidence_ids": [
+        "C001",
+        "C002",
+        "C003",
+        "C005",
+        "C006"
+      ],
+      "sentence_checks": [
+        {
+          "index": 0,
+          "supported": true,
+          "reason": "作为段落总起句，准确概括了后续评论样本中存在的不同看法。",
+          "evidence_ids": [
+            "C001",
+            "C002",
+            "C003",
+            "C005",
+            "C006"
+          ]
+        },
+        {
+          "index": 1,
+          "supported": true,
+          "reason": "准确转述了C001关于空气墙视觉受阻的批评，以及C002关于询问IGN提及的优化与漏洞问题。",
+          "evidence_ids": [
+            "C001",
+            "C002"
+          ]
+        },
+        {
+          "index": 2,
+          "supported": true,
+          "reason": "准确转述了C003中关于游民星空和A9VG打分动机的主观推测。",
+          "evidence_ids": [
+            "C003"
+          ]
+        },
+        {
+          "index": 3,
+          "supported": true,
+          "reason": "准确转述了C005类比流浪地球2及认可美术设计的观点，以及C006视为给中国玩家情书的评论。",
+          "evidence_ids": [
+            "C005",
+            "C006"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "$.sections[5].paragraphs[0]",
+      "supported": true,
+      "reason": "全段准确转述了主持讨论中关于分层信源、客观并列性能争议口径以及对缺乏原始数据的事项保持存疑的建议。",
+      "evidence_ids": [
+        "R9c760ef65303bf9c2c37"
+      ],
+      "sentence_checks": [
+        {
+          "index": 0,
+          "supported": true,
+          "reason": "符合R9c760ef65303bf9c2c37中关于严格分层信源、区分官方公告与社区推测的建议。",
+          "evidence_ids": [
+            "R9c760ef65303bf9c2c37"
+          ]
+        },
+        {
+          "index": 1,
+          "supported": true,
+          "reason": "符合R9c760ef65303bf9c2c37中关于客观并列官方口径与专业实测区间、不作定性结论的建议。",
+          "evidence_ids": [
+            "R9c760ef65303bf9c2c37"
+          ]
+        },
+        {
+          "index": 2,
+          "supported": true,
+          "reason": "符合R9c760ef65303bf9c2c37中关于对崩溃比例、空气墙频次等保持存疑并列为待核查事项的建议。",
+          "evidence_ids": [
+            "R9c760ef65303bf9c2c37"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "$.sections[6].paragraphs[0]",
+      "supported": true,
+      "reason": "全段准确综合了三份研究报告中关于样本局限性、缺乏原始统计数据及大样本日志独立核验的分析结论。",
+      "evidence_ids": [
+        "R4d441bae148ba224180c",
+        "R5c0d77e4d65a60680435",
+        "Rd97b773e8208b4fdb4d1"
+      ],
+      "sentence_checks": [
+        {
+          "index": 0,
+          "supported": true,
+          "reason": "符合各研究报告中关于结论仅适用于给定样本、无法外推为整体舆情的局限性声明。",
+          "evidence_ids": [
+            "R4d441bae148ba224180c",
+            "R5c0d77e4d65a60680435",
+            "Rd97b773e8208b4fdb4d1"
+          ]
+        },
+        {
+          "index": 1,
+          "supported": true,
+          "reason": "准确转述了Rd97b773e8208b4fdb4d1中关于缺乏官方后台原始统计数据及第三方实验室复测数据的结论。",
+          "evidence_ids": [
+            "Rd97b773e8208b4fdb4d1"
+          ]
+        },
+        {
+          "index": 2,
+          "supported": true,
+          "reason": "准确转述了R5c0d77e4d65a60680435中关于缺乏大样本崩溃日志独立核验，相关指控仍属待核验状态的分析。",
+          "evidence_ids": [
+            "R5c0d77e4d65a60680435"
+          ]
+        },
+        {
+          "index": 3,
+          "supported": true,
+          "reason": "准确转述了R4d441bae148ba224180c中关于样本极小、仅限给定评论样本，无法推导全网技术全貌的局限性说明。",
+          "evidence_ids": [
+            "R4d441bae148ba224180c"
+          ]
+        }
+      ]
+    }
+  ]
+}
+```

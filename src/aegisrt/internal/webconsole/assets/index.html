@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>AegisRT控制台</title>
+  <link rel="stylesheet" href="/console/styles.css">
+  <script type="module" src="/console/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <div class="brand-group">
+      <div class="brand-mark" aria-hidden="true">A</div>
+      <div>
+        <p class="eyebrow">AGENT RUNTIME CONTROL PLANE</p>
+        <h1>AegisRT控制台</h1>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <span id="connection-status" class="status-chip status-offline" data-testid="connection-status">离线</span>
+      <button id="refresh-button" class="button button-secondary" type="button">刷新</button>
+      <button id="lock-button" class="button button-secondary" type="button" hidden>锁定</button>
+      <button id="open-submit-button" class="button button-primary" type="button" disabled>提交任务图</button>
+    </div>
+  </header>
+
+  <main id="main" class="page-shell">
+    <section id="auth-panel" class="auth-panel" aria-labelledby="auth-title">
+      <div>
+        <p class="eyebrow">本地管理会话</p>
+        <h2 id="auth-title">连接运行时</h2>
+        <p class="muted">Token仅保存在当前页面内存中，刷新或锁定后立即清除。</p>
+      </div>
+      <form id="auth-form" class="auth-form">
+        <label for="token-input">Bearer Token</label>
+        <div class="input-row">
+          <input id="token-input" data-testid="token-input" type="password" autocomplete="off" spellcheck="false" required>
+          <button class="button button-primary" type="submit">连接</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="hero-grid" aria-labelledby="runtime-title">
+      <article class="hero-card hero-primary">
+        <p class="eyebrow">RUNTIME运行状态</p>
+        <div class="hero-title-row">
+          <h2 id="runtime-title">运行时总览</h2>
+          <span id="runtime-ready" class="status-chip status-offline">检测中</span>
+        </div>
+        <dl class="definition-grid">
+          <div><dt>版本</dt><dd id="runtime-version">—</dd></div>
+          <div><dt>调度策略</dt><dd id="runtime-policy">—</dd></div>
+          <div><dt>启动时间</dt><dd id="runtime-started">—</dd></div>
+          <div><dt>图版本</dt><dd id="runtime-generation">—</dd></div>
+        </dl>
+      </article>
+      <article class="hero-card">
+        <p class="eyebrow">TASK任务</p>
+        <div class="metric-line"><strong id="metric-total">0</strong><span>任务总数</span></div>
+        <div class="mini-metrics">
+          <span><b id="metric-admitted">0</b> 已准入</span>
+          <span><b id="metric-running">0</b> 运行状态</span>
+          <span><b id="metric-pending">0</b> 待确认完成</span>
+          <span><b id="metric-ready">0</b> 就绪</span>
+          <span><b id="metric-failed">0</b> 失败</span>
+        </div>
+        <p class="muted">运行状态包含正在确认完成的任务，不等同于存活进程数。</p>
+      </article>
+      <article class="hero-card">
+        <p class="eyebrow">CONTEXTVM</p>
+        <div class="metric-line"><strong id="metric-reuse">0</strong><span>复用Token</span></div>
+        <div class="mini-metrics">
+          <span><b id="metric-manifests">0</b> 个清单</span>
+          <span><b id="metric-pages">0</b> 个页面</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel" aria-labelledby="resources-title">
+      <div class="panel-heading">
+        <div><p class="eyebrow">预留量/总容量</p><h2 id="resources-title">资源预留</h2></div>
+        <p class="muted">显示调度器预留，不代表实时内核利用率。</p>
+      </div>
+      <div id="resource-grid" class="resource-grid" data-testid="resource-grid"></div>
+    </section>
+
+    <div class="workspace-grid">
+      <section class="panel workflow-panel" aria-labelledby="workflows-title">
+        <div class="panel-heading panel-heading-wrap">
+          <div><p class="eyebrow">WORKFLOW工作流</p><h2 id="workflows-title">通用任务DAG</h2></div>
+          <div class="filters">
+            <label for="workflow-filter">工作流</label>
+            <select id="workflow-filter"><option value="">全部</option></select>
+            <label for="task-search">筛选</label>
+            <input id="task-search" type="search" placeholder="任务/Agent/状态">
+          </div>
+        </div>
+        <div id="workflow-empty" class="empty-state">连接后提交任意任务图，DAG 将在这里出现。</div>
+        <div id="dag-board" class="dag-board" data-testid="dag-board" aria-label="任务依赖图"></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>状态</th><th>任务</th><th>Agent</th><th>优先级</th><th>依赖</th></tr></thead>
+            <tbody id="task-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <aside class="panel inspector-panel" aria-labelledby="inspector-title">
+        <div class="panel-heading">
+          <div><p class="eyebrow">INSPECTOR检查器</p><h2 id="inspector-title">任务详情</h2></div>
+        </div>
+        <div id="task-inspector" class="empty-state">选择一个任务查看资源、依赖和Context元数据。</div>
+      </aside>
+    </div>
+
+    <div class="lower-grid">
+      <section class="panel" aria-labelledby="agents-title">
+        <div class="panel-heading">
+          <div><p class="eyebrow">CATALOG目录</p><h2 id="agents-title">Agent目录</h2></div>
+        </div>
+        <div id="agent-grid" class="agent-grid"><p class="empty-state">连接后加载Agent目录。</p></div>
+      </section>
+      <section class="panel" aria-labelledby="events-title">
+        <div class="panel-heading">
+          <div><p class="eyebrow">有限终态事件流</p><h2 id="events-title">终态事件</h2></div>
+          <span id="event-stream-status" class="subtle-chip">未连接</span>
+        </div>
+        <div id="event-alerts" class="alerts" aria-live="polite"></div>
+        <p class="muted">事件只保留本次启动的有限历史，按记录顺序排列；重启后的任务状态以持久快照为准。</p>
+        <ol id="event-list" class="event-list"><li class="empty-state">连接后轮询安全事件投影。</li></ol>
+      </section>
+    </div>
+  </main>
+
+  <dialog id="submit-dialog" class="dialog">
+    <form id="submit-form">
+      <div class="dialog-heading">
+        <div><p class="eyebrow">任务图增量提交</p><h2>提交通用任务图</h2></div>
+        <button class="icon-button" type="button" data-close-dialog="submit-dialog" aria-label="关闭">×</button>
+      </div>
+      <label for="graph-json">严格JSON</label>
+      <textarea id="graph-json" rows="18" spellcheck="false"></textarea>
+      <p id="graph-validation" class="form-message" aria-live="polite"></p>
+      <div class="dialog-actions">
+        <button class="button button-secondary" type="button" data-close-dialog="submit-dialog">取消</button>
+        <button class="button button-primary" type="submit">验证并提交</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="context-dialog" class="dialog dialog-compact">
+    <form id="context-form">
+      <div class="dialog-heading">
+        <div><p class="eyebrow">CONTEXT追加</p><h2>追加Context</h2></div>
+        <button class="icon-button" type="button" data-close-dialog="context-dialog" aria-label="关闭">×</button>
+      </div>
+      <input id="context-task-id" type="hidden">
+      <label for="context-content">内容</label>
+      <textarea id="context-content" rows="8" maxlength="131072" required></textarea>
+      <div class="form-grid">
+        <label for="context-visibility">可见范围</label>
+        <select id="context-visibility"><option value="workflow">workflow</option><option value="agent">agent</option></select>
+        <label class="check-label"><input id="context-pin" type="checkbox"> 固定引用</label>
+        <label class="check-label"><input id="context-cold" type="checkbox"> 标记冷数据</label>
+      </div>
+      <p id="context-message" class="form-message" aria-live="polite"></p>
+      <div class="dialog-actions">
+        <button class="button button-secondary" type="button" data-close-dialog="context-dialog">取消</button>
+        <button class="button button-primary" type="submit">追加</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="cancel-dialog" class="dialog dialog-compact">
+    <form id="cancel-form">
+      <div class="dialog-heading"><h2>确认取消任务</h2></div>
+      <p id="cancel-copy"></p>
+      <input id="cancel-task-id" type="hidden">
+      <div class="dialog-actions">
+        <button class="button button-secondary" type="button" data-close-dialog="cancel-dialog">返回</button>
+        <button class="button button-danger" type="submit">确认取消</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="announcer" class="sr-only" aria-live="polite"></div>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

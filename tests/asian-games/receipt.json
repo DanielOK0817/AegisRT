@@ -1,0 +1,9 @@
+{
+  "archive": "evidence.zip",
+  "sha256": "dc46e88a9fe41b5eb3e25738913f4a1d8dac05668a35ea15788b742a85e9acec",
+  "files": 39,
+  "source": "bf-entry-20261006-213814-6990a77bf8",
+  "anonymized_files": 0,
+  "original_measurement_preserved": true,
+  "new_experiment_executed": false
+}

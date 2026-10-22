@@ -1,0 +1,154 @@
+{
+  "schema_version": "aegisrt.experiment.manifest/v1",
+  "run_id": "run-4f302bae3565b29421ddc9da",
+  "status": "COMPLETED",
+  "experiment": {
+    "kind": "scheduler",
+    "plan_id": "scheduler-s1-s2-s3-formal-v1",
+    "case_ids": [
+      "S1",
+      "S2",
+      "S3"
+    ],
+    "workload_sha256": "95a9c98915fbf9a2fd7adc60aecac98e15b854fa87ea0666485a880838116cb5",
+    "input_sha256": "a2dd56a474a9e056fee09225b9f5052f16cb494caa6e287873892ce156f394ef"
+  },
+  "protocol": {
+    "warmup_pairs": 12,
+    "measured_pairs": 120,
+    "seeds": [
+      104729,
+      104743,
+      104759,
+      104761,
+      104773,
+      104779,
+      104789,
+      104801,
+      104803,
+      104827,
+      104831,
+      104849,
+      104851,
+      104869,
+      104879,
+      104891,
+      104911,
+      104917,
+      104933,
+      104947,
+      104953,
+      104959,
+      104971,
+      104987,
+      104999,
+      105019,
+      105023,
+      105031,
+      105037,
+      105071
+    ],
+    "pairing": "seed-and-repetition-v1",
+    "counterbalance": "alternating-seed-index-v1",
+    "trial_timeout_ms": 60000,
+    "bootstrap_seed": 424242,
+    "bootstrap_resamples": 10000
+  },
+  "environment": {
+    "evidence_scope": "windows-functional",
+    "os_family": "windows",
+    "distribution_id": "windows",
+    "distribution_version": "10.0.26200",
+    "kernel_release": "10.0.26200",
+    "architecture": "amd64",
+    "logical_cpu_count": 24,
+    "memory_total_bytes": 16944848896,
+    "cgroup": {
+      "version": "none",
+      "controllers": [],
+      "delegation": "none",
+      "psi": "unavailable"
+    }
+  },
+  "software": {
+    "runtime_commit": "4eed73e4e42190a9c0be2a759eed5ace470c27e2",
+    "runtime_dirty": false,
+    "go_version": "go1.26.2",
+    "binary_sha256": "3283fea08b289fe294232354300adde31ac169342847bdbe403d8987444fb5e8",
+    "config_sha256": "a2dd56a474a9e056fee09225b9f5052f16cb494caa6e287873892ce156f394ef"
+  },
+  "started_at": "2026-07-22T15:05:22.2764975Z",
+  "finished_at": "2026-07-22T15:05:22.9209588Z",
+  "integrity": {
+    "directory_policy": "create-only-atomic-publish",
+    "tamper_evident": true,
+    "worm_storage": false,
+    "checksum_algorithm": "SHA-256",
+    "checksum_file": "SHA256SUMS"
+  },
+  "anonymization": {
+    "contains_personal_identifiers": false,
+    "contains_credentials": false,
+    "contains_absolute_paths": false,
+    "raw_output_capture": false,
+    "scan_result": "PASSED"
+  },
+  "artifacts": [
+    {
+      "kind": "scheduler-csv",
+      "path": "scheduler.csv",
+      "media_type": "text/csv",
+      "bytes": 87334,
+      "sha256": "ea7796c5071a19fdc56c4989ba1df1a90f0133f78009bb790297c5cde720b55d",
+      "records": 240
+    },
+    {
+      "kind": "scheduler-task-trace-jsonl",
+      "path": "scheduler-task-traces.jsonl",
+      "media_type": "application/x-ndjson",
+      "bytes": 1827222,
+      "sha256": "fd307b7642949e8ceeaff6564810091ce939a4c2c4a71f01485dca62a9e4dd4c",
+      "records": 1980
+    },
+    {
+      "kind": "workload-json",
+      "path": "workload.json",
+      "media_type": "application/json",
+      "bytes": 432301,
+      "sha256": "95a9c98915fbf9a2fd7adc60aecac98e15b854fa87ea0666485a880838116cb5",
+      "records": 1
+    },
+    {
+      "kind": "scheduler-input-json",
+      "path": "scheduler-input.json",
+      "media_type": "application/json",
+      "bytes": 683,
+      "sha256": "a2dd56a474a9e056fee09225b9f5052f16cb494caa6e287873892ce156f394ef",
+      "records": 1
+    },
+    {
+      "kind": "scheduler-analysis-json",
+      "path": "scheduler-analysis.json",
+      "media_type": "application/json",
+      "bytes": 12042,
+      "sha256": "c5878467da0a532774df7b1f501ae67b422f126143625d82d2ff6eb41100dd0e",
+      "records": 4
+    },
+    {
+      "kind": "event-jsonl",
+      "path": "events.jsonl",
+      "media_type": "application/x-ndjson",
+      "bytes": 214858,
+      "sha256": "90b2b797586989ce4fb473f43cef70c6461e76d486bb43bd792f259e39024cf3",
+      "records": 531
+    },
+    {
+      "kind": "environment-json",
+      "path": "environment.json",
+      "media_type": "application/json",
+      "bytes": 384,
+      "sha256": "a12d6bf7a4d294fdb7bb31241cce3a92f91a3a893927c5857cca707a0742ef24",
+      "records": 1
+    }
+  ]
+}

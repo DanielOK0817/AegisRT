@@ -1,0 +1,62 @@
+{
+  "schema_version": "aegisrt.experiment.manifest/v1",
+  "run_id": "synthetic-not-executed",
+  "status": "NOT_EXECUTED",
+  "experiment": {
+    "kind": "scheduler",
+    "plan_id": "experiment-plan-v1",
+    "case_ids": ["synthetic-parser-example"],
+    "workload_sha256": null,
+    "input_sha256": null
+  },
+  "protocol": {
+    "warmup_pairs": 3,
+    "measured_pairs": 30,
+    "seeds": [104729, 104743, 104759, 104761, 104773, 104779, 104789, 104801, 104803, 104827, 104831, 104849, 104851, 104869, 104879, 104891, 104911, 104917, 104933, 104947, 104953, 104959, 104971, 104987, 104999, 105019, 105023, 105031, 105037, 105071],
+    "pairing": "seed-and-repetition-v1",
+    "counterbalance": "alternating-seed-index-v1",
+    "trial_timeout_ms": 60000,
+    "bootstrap_seed": 424242,
+    "bootstrap_resamples": 10000
+  },
+  "environment": {
+    "evidence_scope": "not-executed",
+    "os_family": "unknown",
+    "distribution_id": null,
+    "distribution_version": null,
+    "kernel_release": null,
+    "architecture": "unknown",
+    "logical_cpu_count": null,
+    "memory_total_bytes": null,
+    "cgroup": {
+      "version": "unknown",
+      "controllers": [],
+      "delegation": "unknown",
+      "psi": "unknown"
+    }
+  },
+  "software": {
+    "runtime_commit": null,
+    "runtime_dirty": null,
+    "go_version": null,
+    "binary_sha256": null,
+    "config_sha256": null
+  },
+  "started_at": null,
+  "finished_at": null,
+  "integrity": {
+    "directory_policy": "create-only-atomic-publish",
+    "tamper_evident": true,
+    "worm_storage": false,
+    "checksum_algorithm": "SHA-256",
+    "checksum_file": null
+  },
+  "anonymization": {
+    "contains_personal_identifiers": false,
+    "contains_credentials": false,
+    "contains_absolute_paths": false,
+    "raw_output_capture": false,
+    "scan_result": "NOT_RUN"
+  },
+  "artifacts": []
+}

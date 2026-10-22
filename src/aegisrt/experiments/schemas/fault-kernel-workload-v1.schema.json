@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aegisrt:experiment:fault-kernel-workload:v1",
+  "title": "AegisRT F4 deterministic workload v1",
+  "description": "Anonymous, canonical F4 task, Agent, and Runtime inputs. Local paths and credentials are deliberately excluded.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "workload_version", "fixture_protocol", "profile",
+    "plan_id", "case_id", "runtime_config", "agents", "cells"
+  ],
+  "properties": {
+    "schema_version": {"const": "aegisrt.experiment.fault-kernel-workload/v1"},
+    "workload_version": {"const": "f4-deterministic-agent-tree-v1"},
+    "fixture_protocol": {"const": "aegisbench-fault-kernel-agent-v1"},
+    "profile": {"enum": ["smoke", "formal"]},
+    "plan_id": {
+      "enum": ["f4-daemon-sigkill-cgroup-smoke-v1", "f4-daemon-sigkill-cgroup-v1"]
+    },
+    "case_id": {"enum": ["F4-kernel-smoke", "F4"]},
+    "runtime_config": {"$ref": "#/$defs/runtime_config"},
+    "agents": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "prefixItems": [
+        {"$ref": "#/$defs/target_agent"},
+        {"$ref": "#/$defs/survivor_agent"}
+      ],
+      "items": false
+    },
+    "cells": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 33,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/cell"}
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"profile": {"const": "smoke"}}, "required": ["profile"]},
+      "then": {
+        "properties": {
+          "plan_id": {"const": "f4-daemon-sigkill-cgroup-smoke-v1"},
+          "case_id": {"const": "F4-kernel-smoke"},
+          "cells": {
+            "minItems": 1,
+            "maxItems": 4,
+            "items": {"properties": {"phase": {"const": "measurement"}}}
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "plan_id": {"const": "f4-daemon-sigkill-cgroup-v1"},
+          "case_id": {"const": "F4"},
+          "cells": {
+            "minItems": 33,
+            "maxItems": 33,
+            "prefixItems": [
+              {"properties": {"phase": {"const": "warmup"}, "seed": {"const": 104701}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "warmup"}, "seed": {"const": 104707}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "warmup"}, "seed": {"const": 104711}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104729}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104743}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104759}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104761}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104773}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104779}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104789}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104801}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104803}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104827}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104831}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104849}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104851}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104869}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104879}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104891}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104911}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104917}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104933}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104947}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104953}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104959}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104971}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104987}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 104999}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 105019}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 105023}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 105031}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 105037}, "repetition": {"const": 0}}},
+              {"properties": {"phase": {"const": "measurement"}, "seed": {"const": 105071}, "repetition": {"const": 0}}}
+            ],
+            "items": false
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "capacity_resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cpu_milli", "memory_mib", "llm_slots", "token_budget"],
+      "properties": {
+        "cpu_milli": {"const": 1000},
+        "memory_mib": {"const": 512},
+        "llm_slots": {"const": 0},
+        "token_budget": {"const": 4096}
+      }
+    },
+    "task_resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cpu_milli", "memory_mib", "llm_slots", "token_budget"],
+      "properties": {
+        "cpu_milli": {"const": 100},
+        "memory_mib": {"const": 64},
+        "llm_slots": {"const": 0},
+        "token_budget": {"const": 256}
+      }
+    },
+    "runtime_config": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scheduler_policy", "capacity", "max_workers", "poll_interval_ms",
+        "event_capacity", "pids_max", "cpu_period_micros",
+        "shutdown_timeout_ms", "agent_timeout_ms", "task_timeout_ms",
+        "target_hold_ms", "spawn_child"
+      ],
+      "properties": {
+        "scheduler_policy": {"const": "dag-drcfs"},
+        "capacity": {"$ref": "#/$defs/capacity_resources"},
+        "max_workers": {"const": 2},
+        "poll_interval_ms": {"const": 10},
+        "event_capacity": {"const": 128},
+        "pids_max": {"const": 64},
+        "cpu_period_micros": {"const": 100000},
+        "shutdown_timeout_ms": {"const": 5000},
+        "agent_timeout_ms": {"const": 15000},
+        "task_timeout_ms": {"const": 20000},
+        "target_hold_ms": {"const": 5000},
+        "spawn_child": {"const": true}
+      }
+    },
+    "target_agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "fixture_role", "resources", "max_concurrency", "execution_timeout_ms"],
+      "properties": {
+        "id": {"const": "f4-target-agent"},
+        "fixture_role": {"const": "target-agent-tree"},
+        "resources": {"$ref": "#/$defs/task_resources"},
+        "max_concurrency": {"const": 1},
+        "execution_timeout_ms": {"const": 15000}
+      }
+    },
+    "survivor_agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "fixture_role", "resources", "max_concurrency", "execution_timeout_ms"],
+      "properties": {
+        "id": {"const": "f4-survivor-agent"},
+        "fixture_role": {"const": "survivor"},
+        "resources": {"$ref": "#/$defs/task_resources"},
+        "max_concurrency": {"const": 1},
+        "execution_timeout_ms": {"const": 15000}
+      }
+    },
+    "target_task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "workflow_id", "agent_id", "goal", "dependencies", "priority",
+        "resources", "max_attempts", "timeout_ms", "idempotency_key"
+      ],
+      "properties": {
+        "id": {"type": "string", "pattern": "^f4-[wm]-(0|[1-9][0-9]{0,9})-[0-3]-target$"},
+        "workflow_id": {"type": "string", "pattern": "^f4-[wm]-(0|[1-9][0-9]{0,9})-[0-3]-workflow$"},
+        "agent_id": {"const": "f4-target-agent"},
+        "goal": {"const": "execute deterministic F4 fixture"},
+        "dependencies": {"const": []},
+        "priority": {"const": 1},
+        "resources": {"$ref": "#/$defs/task_resources"},
+        "max_attempts": {"const": 2},
+        "timeout_ms": {"const": 20000},
+        "idempotency_key": {"type": "string", "pattern": "^f4-[wm]-(0|[1-9][0-9]{0,9})-[0-3]-target-key$"}
+      }
+    },
+    "survivor_task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "workflow_id", "agent_id", "goal", "dependencies", "priority",
+        "resources", "max_attempts", "timeout_ms", "idempotency_key"
+      ],
+      "properties": {
+        "id": {"type": "string", "pattern": "^f4-[wm]-(0|[1-9][0-9]{0,9})-[0-3]-survivor$"},
+        "workflow_id": {"type": "string", "pattern": "^f4-[wm]-(0|[1-9][0-9]{0,9})-[0-3]-workflow$"},
+        "agent_id": {"const": "f4-survivor-agent"},
+        "goal": {"const": "execute deterministic F4 fixture"},
+        "dependencies": {"const": []},
+        "priority": {"const": 10},
+        "resources": {"$ref": "#/$defs/task_resources"},
+        "max_attempts": {"const": 1},
+        "timeout_ms": {"const": 20000},
+        "idempotency_key": {"type": "string", "pattern": "^f4-[wm]-(0|[1-9][0-9]{0,9})-[0-3]-survivor-key$"}
+      }
+    },
+    "cell": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["phase", "seed", "repetition", "pair_id", "target", "survivor"],
+      "properties": {
+        "phase": {"enum": ["warmup", "measurement"]},
+        "seed": {"type": "integer", "minimum": 0, "maximum": 4294967295},
+        "repetition": {"type": "integer", "minimum": 0, "maximum": 3},
+        "pair_id": {"type": "string", "pattern": "^f4-[wm]-(0|[1-9][0-9]{0,9})-[0-3]$"},
+        "target": {"$ref": "#/$defs/target_task"},
+        "survivor": {"$ref": "#/$defs/survivor_task"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"phase": {"const": "warmup"}}, "required": ["phase"]},
+          "then": {
+            "properties": {
+              "pair_id": {"pattern": "^f4-w-"},
+              "target": {
+                "properties": {
+                  "id": {"pattern": "^f4-w-"},
+                  "workflow_id": {"pattern": "^f4-w-"},
+                  "idempotency_key": {"pattern": "^f4-w-"}
+                }
+              },
+              "survivor": {
+                "properties": {
+                  "id": {"pattern": "^f4-w-"},
+                  "workflow_id": {"pattern": "^f4-w-"},
+                  "idempotency_key": {"pattern": "^f4-w-"}
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "pair_id": {"pattern": "^f4-m-"},
+              "target": {
+                "properties": {
+                  "id": {"pattern": "^f4-m-"},
+                  "workflow_id": {"pattern": "^f4-m-"},
+                  "idempotency_key": {"pattern": "^f4-m-"}
+                }
+              },
+              "survivor": {
+                "properties": {
+                  "id": {"pattern": "^f4-m-"},
+                  "workflow_id": {"pattern": "^f4-m-"},
+                  "idempotency_key": {"pattern": "^f4-m-"}
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

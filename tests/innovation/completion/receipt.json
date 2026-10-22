@@ -1,0 +1,9 @@
+{
+  "archive": "evidence.zip",
+  "sha256": "7435e038c3d507773b9356783a533ac23e239e99783c07ee790232b21d35de58",
+  "files": 981,
+  "source": "25 task-boundary fault trials; historical native run",
+  "anonymized_files": 30,
+  "original_measurement_preserved": true,
+  "new_experiment_executed": false
+}

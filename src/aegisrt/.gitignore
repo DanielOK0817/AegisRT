@@ -1,0 +1,47 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.token
+agents.local.json
+
+# Go build and test artifacts
+/bin/
+/dist/
+*.exe
+*.test
+*.out
+coverage.*
+
+# Python SDK artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+
+# Runtime state and experiment output
+/data/
+/logs/
+/tmp/
+/output/doc/AegisRT-项目说明书.docx
+/docs/submission/figures/project-manual/drawio/
+*.state
+*.state.context
+*.state.lock
+*.state.context.lock
+/experiments/raw/*
+!/experiments/raw/.gitignore
+!/experiments/raw/README.md
+/experiments/processed/
+/experiments/figures/
+
+# IDE and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+~$*.docx

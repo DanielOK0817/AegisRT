@@ -1,0 +1,48 @@
+[Unit]
+Description=AegisRT single-node Agent Runtime
+After=network.target
+
+[Service]
+Type=simple
+User=aegisrt
+Group=aegisrt
+UMask=0077
+StateDirectory=aegisrt
+StateDirectoryMode=0700
+ConfigurationDirectory=aegisrt
+ConfigurationDirectoryMode=0700
+WorkingDirectory=/var/lib/aegisrt
+ExecStart=/usr/local/libexec/aegisrt/aegisrt \
+  -listen 127.0.0.1:8080 \
+  -agents-file /etc/aegisrt/agents.json \
+  -auth-token-file /etc/aegisrt/api.token \
+  -state-file /var/lib/aegisrt/runtime.state \
+  -max-workers 4 \
+  -scheduler-policy dag-drcfs \
+  -poll-interval 25ms \
+  -cgroup-root auto \
+  -pids-max 256
+Restart=on-failure
+RestartSec=2s
+TimeoutStopSec=20s
+KillMode=mixed
+Delegate=cpu memory pids
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectClock=yes
+ProtectHostname=yes
+ProtectProc=invisible
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+LockPersonality=yes
+RemoveIPC=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target

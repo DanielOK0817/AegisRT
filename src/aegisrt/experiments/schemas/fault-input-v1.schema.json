@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aegisrt:experiment:fault-input:v1",
+  "title": "AegisRT Fault F1/F2/F3 functional smoke input v1",
+  "description": "Closed canonical input contract for the Windows functional fault-containment and service-restart smoke profile.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "plan_id",
+    "workload_version",
+    "fixture_protocol",
+    "evidence_scope",
+    "clock_mode",
+    "warmup_pairs",
+    "pairing",
+    "counterbalance",
+    "bootstrap_seed",
+    "bootstrap_resamples",
+    "plan",
+    "modes",
+    "workload_sha256"
+  ],
+  "properties": {
+    "kind": {"const": "fault"},
+    "plan_id": {"const": "fault-containment-restart-smoke-v1"},
+    "workload_version": {"const": "fault-safe-process-workload-v1"},
+    "fixture_protocol": {"const": "aegisbench-fault-agent-v1"},
+    "evidence_scope": {"const": "windows-functional"},
+    "clock_mode": {"const": "harness-monotonic-v1"},
+    "warmup_pairs": {"const": 0},
+    "pairing": {"const": "seed-and-repetition-v1"},
+    "counterbalance": {"const": "alternating-seed-index-v1"},
+    "bootstrap_seed": {"const": 424242},
+    "bootstrap_resamples": {"const": 10000},
+    "plan": {"$ref": "#/$defs/plan"},
+    "modes": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        {"$ref": "#/$defs/f1_baseline"},
+        {"$ref": "#/$defs/f1_treatment"},
+        {"$ref": "#/$defs/f2_baseline"},
+        {"$ref": "#/$defs/f2_treatment"},
+        {"$ref": "#/$defs/f3_baseline"},
+        {"$ref": "#/$defs/f3_treatment"}
+      ],
+      "items": false
+    },
+    "workload_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["seeds", "repetitions"],
+      "properties": {
+        "seeds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967295
+          }
+        },
+        "repetitions": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16
+        }
+      }
+    },
+    "f1_baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "treatment", "role", "fault_mode", "injection_boundary", "expected_recovery"],
+      "properties": {
+        "case_id": {"const": "F1-smoke"},
+        "treatment": {"const": "no-injection"},
+        "role": {"const": "baseline"},
+        "fault_mode": {"const": "none"},
+        "injection_boundary": {"const": "matched-dispatch-control"},
+        "expected_recovery": {"const": "normal-completion"}
+      }
+    },
+    "f1_treatment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "treatment", "role", "fault_mode", "injection_boundary", "expected_recovery"],
+      "properties": {
+        "case_id": {"const": "F1-smoke"},
+        "treatment": {"const": "agent-exit"},
+        "role": {"const": "treatment"},
+        "fault_mode": {"const": "agent_exit"},
+        "injection_boundary": {"const": "agent-process-start"},
+        "expected_recovery": {"const": "contained-terminal-failure"}
+      }
+    },
+    "f2_baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "treatment", "role", "fault_mode", "injection_boundary", "expected_recovery"],
+      "properties": {
+        "case_id": {"const": "F2-smoke"},
+        "treatment": {"const": "no-injection"},
+        "role": {"const": "baseline"},
+        "fault_mode": {"const": "none"},
+        "injection_boundary": {"const": "matched-dispatch-control"},
+        "expected_recovery": {"const": "normal-completion"}
+      }
+    },
+    "f2_treatment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "treatment", "role", "fault_mode", "injection_boundary", "expected_recovery"],
+      "properties": {
+        "case_id": {"const": "F2-smoke"},
+        "treatment": {"const": "agent-timeout"},
+        "role": {"const": "treatment"},
+        "fault_mode": {"const": "agent_timeout"},
+        "injection_boundary": {"const": "configured-agent-deadline"},
+        "expected_recovery": {"const": "contained-terminal-failure"}
+      }
+    },
+    "f3_baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "treatment", "role", "fault_mode", "injection_boundary", "expected_recovery"],
+      "properties": {
+        "case_id": {"const": "F3-service-smoke"},
+        "treatment": {"const": "no-injection"},
+        "role": {"const": "baseline"},
+        "fault_mode": {"const": "none"},
+        "injection_boundary": {"const": "matched-service-control"},
+        "expected_recovery": {"const": "normal-completion"}
+      }
+    },
+    "f3_treatment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "treatment", "role", "fault_mode", "injection_boundary", "expected_recovery"],
+      "properties": {
+        "case_id": {"const": "F3-service-smoke"},
+        "treatment": {"const": "runservice-graceful-restart"},
+        "role": {"const": "treatment"},
+        "fault_mode": {"const": "runservice_graceful_restart"},
+        "injection_boundary": {"const": "active-attempt-root-cancel"},
+        "expected_recovery": {"const": "requeue-then-complete"}
+      }
+    }
+  }
+}

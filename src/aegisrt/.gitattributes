@@ -1,0 +1,7 @@
+*.sh text eol=lf
+*.service text eol=lf
+*.sysusers text eol=lf
+experiments/raw/** -text
+evidence/openeuler/*-run-*/* -text
+evidence/repoops/formal-run-*/** -text
+evidence/repoops/ab-run-*/** -text

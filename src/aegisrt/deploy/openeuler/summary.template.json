@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "overall": "__OVERALL__",
+  "checks": {
+    "preflight": "__PREFLIGHT__",
+    "service": "__SERVICE__",
+    "health": "__HEALTH__",
+    "resource_pressure_test": {
+      "status": "SKIPPED",
+      "reason": "not implemented in this verification slice; no performance claim is made"
+    },
+    "fault_injection_test": {
+      "status": "SKIPPED",
+      "reason": "not implemented in this verification slice; no recovery claim is made"
+    },
+    "application_test": {
+      "status": "NOT_RUN",
+      "reason": "Run the separately documented application verification"
+    }
+  },
+  "message": "__MESSAGE__",
+  "claim_boundary": "environment and service delegation only"
+}

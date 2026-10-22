@@ -1,0 +1,118 @@
+{
+  "topic": "2026年爱知·名古屋亚运会中国代表队成绩",
+  "comments": [
+    {
+      "comment_id": "weibo-post-5350386565123151",
+      "content": "银牌铜牌一样鼓掌，拼过就值得尊重。但尊重拼搏≠假装看不见问题。",
+      "source_url": "https://weibo.com/2/detail/5350386565123151",
+      "platform": "weibo",
+      "sample_kind": "public_commentary_post_excerpt",
+      "excerpt": true
+    },
+    {
+      "comment_id": "weibo-post-5350256759800962",
+      "content": "金牌总数虽然亮眼，但基础大项和集体项目的厚度仍有提升空间。",
+      "source_url": "https://weibo.com/2/detail/5350256759800962",
+      "platform": "weibo",
+      "sample_kind": "public_commentary_post_excerpt",
+      "excerpt": true
+    },
+    {
+      "comment_id": "weibo-post-5347186260312602",
+      "content": "中国游泳队，永远可以相信！",
+      "source_url": "https://weibo.com/2/detail/5347186260312602",
+      "platform": "weibo",
+      "sample_kind": "public_commentary_post_excerpt",
+      "excerpt": true
+    },
+    {
+      "comment_id": "weibo-post-5347150054560331",
+      "content": "亚洲赛场的统治力不等于世界赛场的优势，真正的检验还在世锦赛和奥运周期。",
+      "source_url": "https://weibo.com/2/detail/5347150054560331",
+      "platform": "weibo",
+      "sample_kind": "public_commentary_post_excerpt",
+      "excerpt": true
+    },
+    {
+      "comment_id": "weibo-post-5350621806330063",
+      "content": "不只有金牌的荣光，还有突破极限、尊重对手、享受比赛的动人瞬间。",
+      "source_url": "https://m.weibo.cn/2/detail/5350621806330063",
+      "platform": "weibo",
+      "sample_kind": "public_commentary_post_excerpt",
+      "excerpt": true
+    },
+    {
+      "comment_id": "weibo-post-5350219823972738",
+      "content": "恭喜中国队，致敬拼搏！",
+      "source_url": "https://weibo.com/2/detail/5350219823972738",
+      "platform": "weibo",
+      "sample_kind": "public_commentary_post_excerpt",
+      "excerpt": true
+    }
+  ],
+  "provenance": {
+    "topic": "2026年爱知·名古屋亚运会中国代表队成绩",
+    "finished_at": "2026-10-07T05:55:47.276800+00:00",
+    "sample_type": "公开评论性帖文的原文节选",
+    "collection_method": "从六个公开网页逐条核对并节选，保留来源，不包含昵称与账号资料。",
+    "scope": "6条人工选取的评论性帖文节选，仅用于本轮有限样本分析，不代表总体舆情；不将帖子观点作为比赛成绩事实。",
+    "sources": [
+      {
+        "id": "5350386565123151",
+        "url": "https://weibo.com/2/detail/5350386565123151",
+        "http_status": 200,
+        "sha256": "627b0d3a945f616cf5162426a7af18cd3c72b5bfbe20789c67cc8ee851fcce17",
+        "exact_excerpt_verified": true
+      },
+      {
+        "id": "5350256759800962",
+        "url": "https://weibo.com/2/detail/5350256759800962",
+        "http_status": 200,
+        "sha256": "e779851853250ef154bbb32c183b49186d9e80543049c02f039757f25f16cb29",
+        "exact_excerpt_verified": true
+      },
+      {
+        "id": "5347186260312602",
+        "url": "https://weibo.com/2/detail/5347186260312602",
+        "http_status": 200,
+        "sha256": "4de5e32645e9232a653eda4a7f35561940b784bda18c0a29452313c52944a849",
+        "exact_excerpt_verified": true
+      },
+      {
+        "id": "5347150054560331",
+        "url": "https://weibo.com/2/detail/5347150054560331",
+        "http_status": 200,
+        "sha256": "09948b7f6eb4c73faffa62c704621195aa004a3c91fd0e7bb9b0ef1ac4ba4fb2",
+        "exact_excerpt_verified": true
+      },
+      {
+        "id": "5350621806330063",
+        "url": "https://m.weibo.cn/2/detail/5350621806330063",
+        "http_status": 200,
+        "sha256": "c01322e0a0ae135b0ba26930d72994f7fb9a004245edbebccdc41e0f79db25d7",
+        "exact_excerpt_verified": true
+      },
+      {
+        "id": "5350219823972738",
+        "url": "https://weibo.com/2/detail/5350219823972738",
+        "http_status": 200,
+        "sha256": "d71db0ec4ad849366ce045f118e04ec4017f4e4ccaca611ed1b6e39faf4ef198",
+        "exact_excerpt_verified": true
+      },
+      {
+        "id": "official-results",
+        "url": "https://www.news.cn/20261004/3c62f48b2be844c69e403e73900f38d2/c.html",
+        "http_status": 200,
+        "sha256": "698058631b42f0a62842379ea67c08cc85ddf1556b5a57cbea437129e9d0c2cd",
+        "exact_excerpt_verified": false
+      },
+      {
+        "id": "sports-summary",
+        "url": "https://www.sport.org.cn/shouye/jjty/2026/1004/710828.html",
+        "http_status": 200,
+        "sha256": "b8da0d948185b3a7a477a49c8200bb85eeb8a7ed11303f49f21daaa92272a1c9",
+        "exact_excerpt_verified": false
+      }
+    ]
+  }
+}

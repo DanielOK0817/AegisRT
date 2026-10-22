@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aegisrt:experiment:fault-kernel-input:v1",
+  "title": "AegisRT openEuler F4 kernel fault input v1",
+  "description": "Closed canonical input for the delegated cgroup v2 daemon-SIGKILL recovery experiment. It is independent from the Windows F1/F2/F3 smoke contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "kind",
+    "profile",
+    "plan_id",
+    "case_id",
+    "workload_version",
+    "fixture_protocol",
+    "evidence_scope",
+    "clock_mode",
+    "isolation_mode",
+    "daemon_control",
+    "protocol",
+    "modes",
+    "workload_sha256",
+    "component_manifest_sha256",
+    "runtime_config_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "aegisrt.experiment.fault-kernel-input/v1"},
+    "kind": {"const": "fault-kernel"},
+    "profile": {"enum": ["smoke", "formal"]},
+    "plan_id": {"enum": ["f4-daemon-sigkill-cgroup-smoke-v1", "f4-daemon-sigkill-cgroup-v1"]},
+    "case_id": {"enum": ["F4-kernel-smoke", "F4"]},
+    "workload_version": {"const": "f4-deterministic-agent-tree-v1"},
+    "fixture_protocol": {"const": "aegisbench-fault-kernel-agent-v1"},
+    "evidence_scope": {"const": "openeuler-kernel"},
+    "clock_mode": {"const": "harness-monotonic-v1"},
+    "isolation_mode": {"const": "cgroup-v2-clone-placement-v1"},
+    "daemon_control": {"const": "direct-child-process-v1"},
+    "protocol": {"$ref": "#/$defs/protocol"},
+    "modes": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "prefixItems": [
+        {"$ref": "#/$defs/baseline"},
+        {"$ref": "#/$defs/treatment"}
+      ],
+      "items": false
+    },
+    "workload_sha256": {"$ref": "#/$defs/sha256"},
+    "component_manifest_sha256": {"$ref": "#/$defs/sha256"},
+    "runtime_config_sha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "warmup_seeds",
+        "measured_seeds",
+        "repetitions",
+        "pairing",
+        "counterbalance",
+        "trial_timeout_ms",
+        "bootstrap_seed",
+        "bootstrap_resamples"
+      ],
+      "properties": {
+        "warmup_seeds": {
+          "type": "array",
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/seed"}
+        },
+        "measured_seeds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 30,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/seed"}
+        },
+        "repetitions": {"type": "integer", "minimum": 1, "maximum": 4},
+        "pairing": {"const": "seed-and-repetition-v1"},
+        "counterbalance": {"const": "alternating-seed-index-v1"},
+        "trial_timeout_ms": {"type": "integer", "minimum": 30000, "maximum": 300000},
+        "bootstrap_seed": {"const": 424242},
+        "bootstrap_resamples": {"const": 10000}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"repetitions": {"const": 2}}, "required": ["repetitions"]},
+          "then": {"properties": {"measured_seeds": {"maxItems": 2}}}
+        },
+        {
+          "if": {"properties": {"repetitions": {"minimum": 3}}, "required": ["repetitions"]},
+          "then": {"properties": {"measured_seeds": {"maxItems": 1}}}
+        }
+      ]
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["treatment", "role", "fault_mode", "injection_boundary", "expected_recovery"],
+      "properties": {
+        "treatment": {"const": "no-injection"},
+        "role": {"const": "baseline"},
+        "fault_mode": {"const": "none"},
+        "injection_boundary": {"const": "matched-attempt-control"},
+        "expected_recovery": {"const": "attempt1-normal-completion"}
+      }
+    },
+    "treatment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["treatment", "role", "fault_mode", "injection_boundary", "expected_recovery"],
+      "properties": {
+        "treatment": {"const": "daemon-sigkill"},
+        "role": {"const": "treatment"},
+        "fault_mode": {"const": "daemon_sigkill"},
+        "injection_boundary": {"const": "attempt1-ready-and-populated"},
+        "expected_recovery": {"const": "restart-cleanup-requeue-attempt2"}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"profile": {"const": "smoke"}}, "required": ["profile"]},
+      "then": {
+        "properties": {
+          "plan_id": {"const": "f4-daemon-sigkill-cgroup-smoke-v1"},
+          "case_id": {"const": "F4-kernel-smoke"},
+          "protocol": {
+            "properties": {
+              "warmup_seeds": {"maxItems": 0},
+              "measured_seeds": {"maxItems": 4}
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "plan_id": {"const": "f4-daemon-sigkill-cgroup-v1"},
+          "case_id": {"const": "F4"},
+          "protocol": {
+            "properties": {
+              "warmup_seeds": {"const": [104701, 104707, 104711]},
+              "measured_seeds": {
+                "const": [104729, 104743, 104759, 104761, 104773, 104779, 104789, 104801, 104803, 104827, 104831, 104849, 104851, 104869, 104879, 104891, 104911, 104917, 104933, 104947, 104953, 104959, 104971, 104987, 104999, 105019, 105023, 105031, 105037, 105071]
+              },
+              "repetitions": {"const": 1}
+            }
+          }
+        }
+      }
+    }
+  ]
+}

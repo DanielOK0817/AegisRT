@@ -1,0 +1,844 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aegisrt:experiment:context-trial-trace:v1",
+  "title": "AegisRT Context C1/C2 functional smoke trial trace v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "evidence_scope",
+    "plan_id",
+    "case_id",
+    "pair_id",
+    "seed",
+    "repetition",
+    "trial_order",
+    "treatment",
+    "role",
+    "counter_name",
+    "context_mode",
+    "provider_cache_mode",
+    "workload_sha256",
+    "input_sha256",
+    "status",
+    "comparison_target_budget",
+    "summarizer_mode",
+    "elapsed_ns",
+    "manifest_operations",
+    "manifest_conflicts",
+    "stores",
+    "dispatches",
+    "acl_probes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "aegisrt.experiment.context-trial-trace/v1"
+    },
+    "run_id": {
+      "type": "string",
+      "pattern": "^run-[0-9a-f]{24}$"
+    },
+    "evidence_scope": {
+      "const": "windows-functional"
+    },
+    "plan_id": {
+      "const": "context-dedup-budget-drop-smoke-v1"
+    },
+    "case_id": {
+      "enum": ["C1-smoke", "C2-smoke"]
+    },
+    "pair_id": {
+      "type": "string",
+      "pattern": "^c[12]-smoke-(?:0|[1-9][0-9]{0,9})-(?:0|[1-9][0-9]{0,2})$"
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "repetition": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 999
+    },
+    "trial_order": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "treatment": {
+      "enum": [
+        "copy-per-task",
+        "contextvm-dedup",
+        "unbudgeted-logical",
+        "contextvm-budgeted"
+      ]
+    },
+    "role": {
+      "enum": ["baseline", "treatment"]
+    },
+    "counter_name": {
+      "const": "whitespace-v1"
+    },
+    "context_mode": {
+      "enum": [
+        "isolated-store-copy-v1",
+        "shared-store-blob-dedup-v1",
+        "unbudgeted-assembly-v1",
+        "budgeted-drop-no-summary-v1"
+      ]
+    },
+    "provider_cache_mode": {
+      "const": "none"
+    },
+    "workload_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "input_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "status": {
+      "const": "SUCCEEDED"
+    },
+    "comparison_target_budget": {
+      "const": 6
+    },
+    "summarizer_mode": {
+      "const": "disabled"
+    },
+    "elapsed_ns": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 60000000000
+    },
+    "manifest_operations": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4
+    },
+    "manifest_conflicts": {
+      "const": 0
+    },
+    "stores": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/store"
+      }
+    },
+    "dispatches": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/dispatch"
+      }
+    },
+    "acl_probes": {
+      "oneOf": [
+        {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/acl_probe"
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "store": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "store_id",
+        "put_calls",
+        "unique_pages",
+        "unique_blobs",
+        "reused_puts",
+        "logical_tokens",
+        "physical_tokens",
+        "reused_tokens"
+      ],
+      "properties": {
+        "store_id": {
+          "enum": ["store-0", "store-1", "store-2", "store-3", "store-shared", "store-context"]
+        },
+        "put_calls": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "unique_pages": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "unique_blobs": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "reused_puts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "logical_tokens": {
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 24
+        },
+        "physical_tokens": {
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 24
+        },
+        "reused_tokens": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18
+        }
+      }
+    },
+    "dispatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_id",
+        "agent_id",
+        "store_id",
+        "assembled_text_sha256",
+        "applied_budget",
+        "referenced_tokens",
+        "assembled_tokens",
+        "reused_ref_tokens",
+        "dropped_tokens",
+        "selected_pages",
+        "dropped_pages",
+        "summary_pages",
+        "summarized_source_tokens",
+        "summary_tokens",
+        "pinned_page_required",
+        "pinned_page_preserved",
+        "pages"
+      ],
+      "properties": {
+        "task_id": {
+          "enum": ["task-agent-1", "task-agent-2", "task-agent-3", "task-agent-4", "task-context"]
+        },
+        "agent_id": {
+          "enum": ["agent-1", "agent-2", "agent-3", "agent-4", "agent-context"]
+        },
+        "store_id": {
+          "enum": ["store-0", "store-1", "store-2", "store-3", "store-shared", "store-context"]
+        },
+        "assembled_text_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "applied_budget": {
+          "type": "integer",
+          "minimum": 6,
+          "maximum": 12
+        },
+        "referenced_tokens": {
+          "type": "integer",
+          "minimum": 6,
+          "maximum": 12
+        },
+        "assembled_tokens": {
+          "type": "integer",
+          "minimum": 6,
+          "maximum": 12
+        },
+        "reused_ref_tokens": {
+          "const": 0
+        },
+        "dropped_tokens": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6
+        },
+        "selected_pages": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "dropped_pages": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "summary_pages": {
+          "const": 0
+        },
+        "summarized_source_tokens": {
+          "const": 0
+        },
+        "summary_tokens": {
+          "const": 0
+        },
+        "pinned_page_required": {
+          "type": "boolean"
+        },
+        "pinned_page_preserved": {
+          "const": true
+        },
+        "pages": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/page_outcome"
+          }
+        }
+      }
+    },
+    "page_outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "page_id",
+        "content_sha256",
+        "scope",
+        "owner_agent_id",
+        "token_count",
+        "pin",
+        "cold",
+        "outcome"
+      ],
+      "properties": {
+        "page_id": {
+          "$ref": "#/$defs/sha256"
+        },
+        "content_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "scope": {
+          "enum": ["agent", "workflow"]
+        },
+        "owner_agent_id": {
+          "enum": ["", "agent-1", "agent-2", "agent-3", "agent-4"]
+        },
+        "token_count": {
+          "type": "integer",
+          "minimum": 3,
+          "maximum": 6
+        },
+        "pin": {
+          "type": "boolean"
+        },
+        "cold": {
+          "type": "boolean"
+        },
+        "outcome": {
+          "enum": ["selected", "dropped"]
+        }
+      }
+    },
+    "acl_probe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["page_id", "owner_agent_id", "request_agent_id", "result_code"],
+      "properties": {
+        "page_id": {
+          "$ref": "#/$defs/sha256"
+        },
+        "owner_agent_id": {
+          "const": "agent-1"
+        },
+        "request_agent_id": {
+          "const": "agent-2"
+        },
+        "result_code": {
+          "const": "ACCESS_DENIED"
+        }
+      }
+    },
+    "c1_isolated_store": {
+      "allOf": [
+        {"$ref": "#/$defs/store"},
+        {
+          "properties": {
+            "store_id": {"enum": ["store-0", "store-1", "store-2", "store-3"]},
+            "put_calls": {"const": 1},
+            "unique_pages": {"const": 1},
+            "unique_blobs": {"const": 1},
+            "reused_puts": {"const": 0},
+            "logical_tokens": {"const": 6},
+            "physical_tokens": {"const": 6},
+            "reused_tokens": {"const": 0}
+          }
+        }
+      ]
+    },
+    "c1_shared_store": {
+      "allOf": [
+        {"$ref": "#/$defs/store"},
+        {
+          "properties": {
+            "store_id": {"const": "store-shared"},
+            "put_calls": {"const": 4},
+            "unique_pages": {"const": 4},
+            "unique_blobs": {"const": 1},
+            "reused_puts": {"const": 3},
+            "logical_tokens": {"const": 24},
+            "physical_tokens": {"const": 6},
+            "reused_tokens": {"const": 18}
+          }
+        }
+      ]
+    },
+    "c2_store": {
+      "allOf": [
+        {"$ref": "#/$defs/store"},
+        {
+          "properties": {
+            "store_id": {"const": "store-context"},
+            "put_calls": {"const": 3},
+            "unique_pages": {"const": 3},
+            "unique_blobs": {"const": 3},
+            "reused_puts": {"const": 0},
+            "logical_tokens": {"const": 12},
+            "physical_tokens": {"const": 12},
+            "reused_tokens": {"const": 0}
+          }
+        }
+      ]
+    },
+    "c1_page": {
+      "allOf": [
+        {"$ref": "#/$defs/page_outcome"},
+        {
+          "properties": {
+            "scope": {"const": "agent"},
+            "owner_agent_id": {"enum": ["agent-1", "agent-2", "agent-3", "agent-4"]},
+            "token_count": {"const": 6},
+            "pin": {"const": false},
+            "cold": {"const": false},
+            "outcome": {"const": "selected"}
+          }
+        }
+      ]
+    },
+    "c1_dispatch": {
+      "allOf": [
+        {"$ref": "#/$defs/dispatch"},
+        {
+          "properties": {
+            "task_id": {"enum": ["task-agent-1", "task-agent-2", "task-agent-3", "task-agent-4"]},
+            "agent_id": {"enum": ["agent-1", "agent-2", "agent-3", "agent-4"]},
+            "applied_budget": {"const": 6},
+            "referenced_tokens": {"const": 6},
+            "assembled_tokens": {"const": 6},
+            "reused_ref_tokens": {"const": 0},
+            "dropped_tokens": {"const": 0},
+            "selected_pages": {"const": 1},
+            "dropped_pages": {"const": 0},
+            "summary_pages": {"const": 0},
+            "summarized_source_tokens": {"const": 0},
+            "summary_tokens": {"const": 0},
+            "pinned_page_required": {"const": false},
+            "pinned_page_preserved": {"const": true},
+            "pages": {
+              "minItems": 1,
+              "maxItems": 1,
+              "items": {"$ref": "#/$defs/c1_page"}
+            }
+          }
+        }
+      ]
+    },
+    "c2_large_selected": {
+      "allOf": [
+        {"$ref": "#/$defs/page_outcome"},
+        {
+          "properties": {
+            "scope": {"const": "workflow"},
+            "owner_agent_id": {"const": ""},
+            "token_count": {"const": 6},
+            "pin": {"const": false},
+            "cold": {"const": true},
+            "outcome": {"const": "selected"}
+          }
+        }
+      ]
+    },
+    "c2_large_dropped": {
+      "allOf": [
+        {"$ref": "#/$defs/page_outcome"},
+        {
+          "properties": {
+            "scope": {"const": "workflow"},
+            "owner_agent_id": {"const": ""},
+            "token_count": {"const": 6},
+            "pin": {"const": false},
+            "cold": {"const": true},
+            "outcome": {"const": "dropped"}
+          }
+        }
+      ]
+    },
+    "c2_small_selected": {
+      "allOf": [
+        {"$ref": "#/$defs/page_outcome"},
+        {
+          "properties": {
+            "scope": {"const": "workflow"},
+            "owner_agent_id": {"const": ""},
+            "token_count": {"const": 3},
+            "pin": {"const": false},
+            "cold": {"const": false},
+            "outcome": {"const": "selected"}
+          }
+        }
+      ]
+    },
+    "c2_pinned_selected": {
+      "allOf": [
+        {"$ref": "#/$defs/page_outcome"},
+        {
+          "properties": {
+            "scope": {"const": "workflow"},
+            "owner_agent_id": {"const": ""},
+            "token_count": {"const": 3},
+            "pin": {"const": true},
+            "cold": {"const": false},
+            "outcome": {"const": "selected"}
+          }
+        }
+      ]
+    },
+    "c2_baseline_dispatch": {
+      "allOf": [
+        {"$ref": "#/$defs/dispatch"},
+        {
+          "properties": {
+            "task_id": {"const": "task-context"},
+            "agent_id": {"const": "agent-context"},
+            "store_id": {"const": "store-context"},
+            "applied_budget": {"const": 12},
+            "referenced_tokens": {"const": 12},
+            "assembled_tokens": {"const": 12},
+            "reused_ref_tokens": {"const": 0},
+            "dropped_tokens": {"const": 0},
+            "selected_pages": {"const": 3},
+            "dropped_pages": {"const": 0},
+            "summary_pages": {"const": 0},
+            "summarized_source_tokens": {"const": 0},
+            "summary_tokens": {"const": 0},
+            "pinned_page_required": {"const": true},
+            "pinned_page_preserved": {"const": true},
+            "pages": {
+              "minItems": 3,
+              "maxItems": 3,
+              "prefixItems": [
+                {"$ref": "#/$defs/c2_large_selected"},
+                {"$ref": "#/$defs/c2_small_selected"},
+                {"$ref": "#/$defs/c2_pinned_selected"}
+              ],
+              "items": false
+            }
+          }
+        }
+      ]
+    },
+    "c2_treatment_dispatch": {
+      "allOf": [
+        {"$ref": "#/$defs/dispatch"},
+        {
+          "properties": {
+            "task_id": {"const": "task-context"},
+            "agent_id": {"const": "agent-context"},
+            "store_id": {"const": "store-context"},
+            "applied_budget": {"const": 6},
+            "referenced_tokens": {"const": 12},
+            "assembled_tokens": {"const": 6},
+            "reused_ref_tokens": {"const": 0},
+            "dropped_tokens": {"const": 6},
+            "selected_pages": {"const": 2},
+            "dropped_pages": {"const": 1},
+            "summary_pages": {"const": 0},
+            "summarized_source_tokens": {"const": 0},
+            "summary_tokens": {"const": 0},
+            "pinned_page_required": {"const": true},
+            "pinned_page_preserved": {"const": true},
+            "pages": {
+              "minItems": 3,
+              "maxItems": 3,
+              "prefixItems": [
+                {"$ref": "#/$defs/c2_large_dropped"},
+                {"$ref": "#/$defs/c2_small_selected"},
+                {"$ref": "#/$defs/c2_pinned_selected"}
+              ],
+              "items": false
+            }
+          }
+        }
+      ]
+    },
+    "c1_isolated_dispatch_set": {
+      "allOf": [
+        {
+          "contains": {
+            "properties": {
+              "task_id": {"const": "task-agent-1"},
+              "agent_id": {"const": "agent-1"},
+              "store_id": {"const": "store-0"},
+              "pages": {
+                "prefixItems": [{"properties": {"owner_agent_id": {"const": "agent-1"}}}],
+                "items": false
+              }
+            },
+            "required": ["task_id", "agent_id", "store_id", "pages"]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "properties": {
+              "task_id": {"const": "task-agent-2"},
+              "agent_id": {"const": "agent-2"},
+              "store_id": {"const": "store-1"},
+              "pages": {
+                "prefixItems": [{"properties": {"owner_agent_id": {"const": "agent-2"}}}],
+                "items": false
+              }
+            },
+            "required": ["task_id", "agent_id", "store_id", "pages"]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "properties": {
+              "task_id": {"const": "task-agent-3"},
+              "agent_id": {"const": "agent-3"},
+              "store_id": {"const": "store-2"},
+              "pages": {
+                "prefixItems": [{"properties": {"owner_agent_id": {"const": "agent-3"}}}],
+                "items": false
+              }
+            },
+            "required": ["task_id", "agent_id", "store_id", "pages"]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "properties": {
+              "task_id": {"const": "task-agent-4"},
+              "agent_id": {"const": "agent-4"},
+              "store_id": {"const": "store-3"},
+              "pages": {
+                "prefixItems": [{"properties": {"owner_agent_id": {"const": "agent-4"}}}],
+                "items": false
+              }
+            },
+            "required": ["task_id", "agent_id", "store_id", "pages"]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ]
+    },
+    "c1_shared_dispatch_set": {
+      "allOf": [
+        {
+          "contains": {
+            "properties": {
+              "task_id": {"const": "task-agent-1"},
+              "agent_id": {"const": "agent-1"},
+              "store_id": {"const": "store-shared"},
+              "pages": {
+                "prefixItems": [{"properties": {"owner_agent_id": {"const": "agent-1"}}}],
+                "items": false
+              }
+            },
+            "required": ["task_id", "agent_id", "store_id", "pages"]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "properties": {
+              "task_id": {"const": "task-agent-2"},
+              "agent_id": {"const": "agent-2"},
+              "store_id": {"const": "store-shared"},
+              "pages": {
+                "prefixItems": [{"properties": {"owner_agent_id": {"const": "agent-2"}}}],
+                "items": false
+              }
+            },
+            "required": ["task_id", "agent_id", "store_id", "pages"]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "properties": {
+              "task_id": {"const": "task-agent-3"},
+              "agent_id": {"const": "agent-3"},
+              "store_id": {"const": "store-shared"},
+              "pages": {
+                "prefixItems": [{"properties": {"owner_agent_id": {"const": "agent-3"}}}],
+                "items": false
+              }
+            },
+            "required": ["task_id", "agent_id", "store_id", "pages"]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "properties": {
+              "task_id": {"const": "task-agent-4"},
+              "agent_id": {"const": "agent-4"},
+              "store_id": {"const": "store-shared"},
+              "pages": {
+                "prefixItems": [{"properties": {"owner_agent_id": {"const": "agent-4"}}}],
+                "items": false
+              }
+            },
+            "required": ["task_id", "agent_id", "store_id", "pages"]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ]
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "case_id": {"const": "C1-smoke"},
+        "pair_id": {"pattern": "^c1-smoke-"},
+        "treatment": {"const": "copy-per-task"},
+        "role": {"const": "baseline"},
+        "context_mode": {"const": "isolated-store-copy-v1"},
+        "manifest_operations": {"const": 4},
+        "manifest_conflicts": {"const": 0},
+        "stores": {
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/c1_isolated_store"}
+        },
+        "dispatches": {
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/c1_dispatch"},
+          "allOf": [
+            {"$ref": "#/$defs/c1_isolated_dispatch_set"}
+          ]
+        },
+        "acl_probes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {"$ref": "#/$defs/acl_probe"}
+        }
+      }
+    },
+    {
+      "properties": {
+        "case_id": {"const": "C1-smoke"},
+        "pair_id": {"pattern": "^c1-smoke-"},
+        "treatment": {"const": "contextvm-dedup"},
+        "role": {"const": "treatment"},
+        "context_mode": {"const": "shared-store-blob-dedup-v1"},
+        "manifest_operations": {"const": 4},
+        "manifest_conflicts": {"const": 0},
+        "stores": {
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {"$ref": "#/$defs/c1_shared_store"}
+        },
+        "dispatches": {
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": {"$ref": "#/$defs/c1_dispatch"},
+          "allOf": [
+            {"$ref": "#/$defs/c1_shared_dispatch_set"}
+          ]
+        },
+        "acl_probes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {"$ref": "#/$defs/acl_probe"}
+        }
+      }
+    },
+    {
+      "properties": {
+        "case_id": {"const": "C2-smoke"},
+        "pair_id": {"pattern": "^c2-smoke-"},
+        "treatment": {"const": "unbudgeted-logical"},
+        "role": {"const": "baseline"},
+        "context_mode": {"const": "unbudgeted-assembly-v1"},
+        "manifest_operations": {"const": 1},
+        "manifest_conflicts": {"const": 0},
+        "stores": {
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {"$ref": "#/$defs/c2_store"}
+        },
+        "dispatches": {
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {"$ref": "#/$defs/c2_baseline_dispatch"}
+        },
+        "acl_probes": {
+          "type": "null"
+        }
+      }
+    },
+    {
+      "properties": {
+        "case_id": {"const": "C2-smoke"},
+        "pair_id": {"pattern": "^c2-smoke-"},
+        "treatment": {"const": "contextvm-budgeted"},
+        "role": {"const": "treatment"},
+        "context_mode": {"const": "budgeted-drop-no-summary-v1"},
+        "manifest_operations": {"const": 1},
+        "manifest_conflicts": {"const": 0},
+        "stores": {
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {"$ref": "#/$defs/c2_store"}
+        },
+        "dispatches": {
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {"$ref": "#/$defs/c2_treatment_dispatch"}
+        },
+        "acl_probes": {
+          "type": "null"
+        }
+      }
+    }
+  ]
+}

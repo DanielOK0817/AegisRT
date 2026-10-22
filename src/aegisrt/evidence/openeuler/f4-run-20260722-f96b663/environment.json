@@ -1,0 +1,20 @@
+{
+  "evidence_scope": "openeuler-kernel",
+  "os_family": "linux",
+  "distribution_id": "openEuler",
+  "distribution_version": "24.03",
+  "kernel_release": "6.6.0-159.4.3.154.oe2403sp4.x86_64",
+  "architecture": "amd64",
+  "logical_cpu_count": 4,
+  "memory_total_bytes": 3570421760,
+  "cgroup": {
+    "version": "v2",
+    "controllers": [
+      "cpu",
+      "memory",
+      "pids"
+    ],
+    "delegation": "delegated",
+    "psi": "available"
+  }
+}

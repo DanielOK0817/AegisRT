@@ -1,0 +1,727 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aegisrt:experiment:fault-trial-trace:v1",
+  "title": "AegisRT Fault F1/F2/F3 functional smoke trial trace v1",
+  "description": "Closed, allowlisted trace contract for tracked child-process containment and a service-level graceful restart smoke. It is not daemon hard-kill, cgroup, or exactly-once evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "evidence_scope",
+    "plan_id",
+    "case_id",
+    "pair_id",
+    "seed",
+    "repetition",
+    "trial_order",
+    "treatment",
+    "role",
+    "workload_sha256",
+    "input_sha256",
+    "status",
+    "timeout_ms",
+    "clock_mode",
+    "protocol",
+    "milestones",
+    "target",
+    "unaffected_tasks",
+    "publications",
+    "duplicate_artifacts",
+    "cleanup",
+    "recovery",
+    "observed_reason_code",
+    "reason_code"
+  ],
+  "properties": {
+    "schema_version": {"const": "aegisrt.experiment.fault-trial-trace/v1"},
+    "run_id": {
+      "type": "string",
+      "pattern": "^run-[0-9a-f]{24}$"
+    },
+    "evidence_scope": {"const": "windows-functional"},
+    "plan_id": {"const": "fault-containment-restart-smoke-v1"},
+    "case_id": {"enum": ["F1-smoke", "F2-smoke", "F3-service-smoke"]},
+    "pair_id": {
+      "type": "string",
+      "pattern": "^(?:f1|f2|f3-service)-smoke-(?:0|[1-9][0-9]{0,9})-(?:0|[1-9][0-9]{0,2})$"
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "repetition": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 999
+    },
+    "trial_order": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "treatment": {
+      "enum": ["no-injection", "agent-exit", "agent-timeout", "runservice-graceful-restart"]
+    },
+    "role": {"enum": ["baseline", "treatment"]},
+    "workload_sha256": {"$ref": "#/$defs/sha256"},
+    "input_sha256": {"$ref": "#/$defs/sha256"},
+    "status": {"const": "SUCCEEDED"},
+    "timeout_ms": {"const": 60000},
+    "clock_mode": {"const": "harness-monotonic-v1"},
+    "protocol": {"$ref": "#/$defs/protocol"},
+    "milestones": {"$ref": "#/$defs/milestones"},
+    "target": {"$ref": "#/$defs/task"},
+    "unaffected_tasks": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "prefixItems": [{"$ref": "#/$defs/survivor_task"}],
+      "items": false
+    },
+    "publications": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/publication"}
+    },
+    "duplicate_artifacts": {
+      "description": "Sum of publisher callback observations beyond the first for each (task_id, artifact_key). This is not a durable Context commit or exactly-once metric.",
+      "const": 0
+    },
+    "cleanup": {"$ref": "#/$defs/cleanup"},
+    "recovery": {"$ref": "#/$defs/recovery"},
+    "observed_reason_code": {
+      "enum": ["NONE", "AGENT_EXIT", "AGENT_TIMEOUT", "RUNSERVICE_GRACEFUL_RESTART"]
+    },
+    "reason_code": {"const": "NONE"}
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nullable_ns": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "maximum": 60000000000
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["fault_mode", "injection_boundary", "isolation_mode", "expected_recovery"],
+      "properties": {
+        "fault_mode": {"enum": ["none", "agent_exit", "agent_timeout", "runservice_graceful_restart"]},
+        "injection_boundary": {
+          "enum": [
+            "matched-dispatch-control",
+            "agent-process-start",
+            "configured-agent-deadline",
+            "matched-service-control",
+            "active-attempt-root-cancel"
+          ]
+        },
+        "isolation_mode": {"const": "tracked-child-process"},
+        "expected_recovery": {
+          "enum": ["normal-completion", "contained-terminal-failure", "requeue-then-complete"]
+        }
+      }
+    },
+    "milestones": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["agent_ready_ns", "injected_ns", "detected_ns", "requeued_ns", "resumed_ns", "recovered_ns", "cleanup_ns", "finished_ns"],
+      "properties": {
+        "agent_ready_ns": {
+          "description": "F3 treatment readiness marker observed before root-context cancellation; null in every other branch.",
+          "$ref": "#/$defs/nullable_ns"
+        },
+        "injected_ns": {"$ref": "#/$defs/nullable_ns"},
+        "detected_ns": {"$ref": "#/$defs/nullable_ns"},
+        "requeued_ns": {"$ref": "#/$defs/nullable_ns"},
+        "resumed_ns": {"$ref": "#/$defs/nullable_ns"},
+        "recovered_ns": {"$ref": "#/$defs/nullable_ns"},
+        "cleanup_ns": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60000000000
+        },
+        "finished_ns": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60000000000
+        }
+      }
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["number", "status", "exit_code", "timed_out", "canceled", "process_wait_completed", "run_elapsed_ns", "reason_code"],
+      "properties": {
+        "number": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2
+        },
+        "status": {"enum": ["SUCCEEDED", "FAILED", "LOST"]},
+        "exit_code": {"type": ["integer", "null"]},
+        "timed_out": {"type": "boolean"},
+        "canceled": {"type": "boolean"},
+        "process_wait_completed": {"type": "boolean"},
+        "run_elapsed_ns": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60000000000
+        },
+        "reason_code": {"enum": ["NONE", "AGENT_EXIT", "AGENT_TIMEOUT", "RUNTIME_INTERRUPTED"]}
+      }
+    },
+    "success_attempt_1": {
+      "allOf": [
+        {"$ref": "#/$defs/attempt"},
+        {
+          "properties": {
+            "number": {"const": 1},
+            "status": {"const": "SUCCEEDED"},
+            "exit_code": {"const": 0},
+            "timed_out": {"const": false},
+            "canceled": {"const": false},
+            "process_wait_completed": {"const": true},
+            "reason_code": {"const": "NONE"}
+          }
+        }
+      ]
+    },
+    "success_attempt_2": {
+      "allOf": [
+        {"$ref": "#/$defs/attempt"},
+        {
+          "properties": {
+            "number": {"const": 2},
+            "status": {"const": "SUCCEEDED"},
+            "exit_code": {"const": 0},
+            "timed_out": {"const": false},
+            "canceled": {"const": false},
+            "process_wait_completed": {"const": true},
+            "reason_code": {"const": "NONE"}
+          }
+        }
+      ]
+    },
+    "exit_attempt": {
+      "allOf": [
+        {"$ref": "#/$defs/attempt"},
+        {
+          "properties": {
+            "number": {"const": 1},
+            "status": {"const": "FAILED"},
+            "exit_code": {"const": 7},
+            "timed_out": {"const": false},
+            "canceled": {"const": false},
+            "process_wait_completed": {"const": true},
+            "reason_code": {"const": "AGENT_EXIT"}
+          }
+        }
+      ]
+    },
+    "timeout_attempt": {
+      "allOf": [
+        {"$ref": "#/$defs/attempt"},
+        {
+          "properties": {
+            "number": {"const": 1},
+            "status": {"const": "FAILED"},
+            "exit_code": {"type": "integer"},
+            "timed_out": {"const": true},
+            "canceled": {"const": false},
+            "process_wait_completed": {"const": true},
+            "reason_code": {"const": "AGENT_TIMEOUT"}
+          }
+        }
+      ]
+    },
+    "lost_attempt": {
+      "allOf": [
+        {"$ref": "#/$defs/attempt"},
+        {
+          "properties": {
+            "number": {"const": 1},
+            "status": {"const": "LOST"},
+            "exit_code": {"type": "integer"},
+            "timed_out": {"const": false},
+            "process_wait_completed": {"const": true},
+            "reason_code": {"const": "RUNTIME_INTERRUPTED"}
+          }
+        }
+      ]
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["task_id", "max_attempts", "final_status", "attempt_count", "attempts"],
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "pattern": "^f[123]-(?:target|survivor)-(?:0|[1-9][0-9]{0,9})$"
+        },
+        "max_attempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2
+        },
+        "final_status": {"enum": ["SUCCEEDED", "FAILED"]},
+        "attempt_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2
+        },
+        "attempts": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2,
+          "items": {"$ref": "#/$defs/attempt"}
+        }
+      }
+    },
+    "survivor_task": {
+      "allOf": [
+        {"$ref": "#/$defs/task"},
+        {
+          "properties": {
+            "task_id": {"pattern": "^f[123]-survivor-(?:0|[1-9][0-9]{0,9})$"},
+            "max_attempts": {"const": 1},
+            "final_status": {"const": "SUCCEEDED"},
+            "attempt_count": {"const": 1},
+            "attempts": {
+              "minItems": 1,
+              "maxItems": 1,
+              "prefixItems": [{"$ref": "#/$defs/success_attempt_1"}],
+              "items": false
+            }
+          }
+        }
+      ]
+    },
+    "publication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["task_id", "artifact_key", "content_sha256", "observed_count"],
+      "properties": {
+        "task_id": {
+          "type": "string",
+          "pattern": "^f[123]-(?:target|survivor)-(?:0|[1-9][0-9]{0,9})$"
+        },
+        "artifact_key": {"const": "result"},
+        "content_sha256": {"$ref": "#/$defs/sha256"},
+        "observed_count": {
+          "description": "Number of invocations observed by the in-memory publisher callback for this task/artifact pair; not a durable commit count.",
+          "const": 1
+        }
+      }
+    },
+    "cleanup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cleanup_observed", "resources_released", "child_processes_started", "child_processes_reaped", "orphan_processes", "orphan_cgroups"],
+      "properties": {
+        "cleanup_observed": {"const": true},
+        "resources_released": {"const": true},
+        "child_processes_started": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 3
+        },
+        "child_processes_reaped": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 3
+        },
+        "orphan_processes": {
+          "description": "Tracked child processes still unreaped after the smoke cleanup boundary.",
+          "const": 0
+        },
+        "orphan_cgroups": {
+          "description": "Unavailable for windows-functional evidence; null is required and is not evidence of zero orphan cgroups.",
+          "type": "null"
+        }
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checkpoint_backend", "checkpoint_loaded", "recovery_performed_on_open", "runtime_reopened", "requeued", "retry_count"],
+      "properties": {
+        "checkpoint_backend": {"enum": ["none", "statefile-v1"]},
+        "checkpoint_loaded": {"type": "boolean"},
+        "recovery_performed_on_open": {
+          "description": "Whether opening the persistent Runtime itself transformed an interrupted active Attempt. This smoke always requires false because graceful cancellation had already persisted READY before reopen.",
+          "const": false
+        },
+        "runtime_reopened": {"type": "boolean"},
+        "requeued": {"type": "boolean"},
+        "retry_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "baseline_milestones": {
+      "allOf": [
+        {"$ref": "#/$defs/milestones"},
+        {
+          "properties": {
+            "agent_ready_ns": {"type": "null"},
+            "injected_ns": {"type": "null"},
+            "detected_ns": {"type": "null"},
+            "requeued_ns": {"type": "null"},
+            "resumed_ns": {"type": "null"},
+            "recovered_ns": {"type": "null"}
+          }
+        }
+      ]
+    },
+    "contained_treatment_milestones": {
+      "allOf": [
+        {"$ref": "#/$defs/milestones"},
+        {
+          "properties": {
+            "agent_ready_ns": {"type": "null"},
+            "injected_ns": {"type": "integer"},
+            "detected_ns": {"type": "integer"},
+            "requeued_ns": {"type": "null"},
+            "resumed_ns": {"type": "null"},
+            "recovered_ns": {"type": "integer"}
+          }
+        }
+      ]
+    },
+    "service_treatment_milestones": {
+      "$comment": "Draft 2020-12 cannot compare sibling numeric properties. The collector validator additionally requires agent_ready_ns <= injected_ns and ordered detection, requeue, resume, and recovery milestones.",
+      "allOf": [
+        {"$ref": "#/$defs/milestones"},
+        {
+          "properties": {
+            "agent_ready_ns": {"type": "integer"},
+            "injected_ns": {"type": "integer"},
+            "detected_ns": {"type": "integer"},
+            "requeued_ns": {"type": "integer"},
+            "resumed_ns": {"type": "integer"},
+            "recovered_ns": {"type": "integer"}
+          }
+        }
+      ]
+    },
+    "no_recovery": {
+      "allOf": [
+        {"$ref": "#/$defs/recovery"},
+        {
+          "properties": {
+            "checkpoint_backend": {"const": "none"},
+            "checkpoint_loaded": {"const": false},
+            "runtime_reopened": {"const": false},
+            "requeued": {"const": false},
+            "retry_count": {"const": 0}
+          }
+        }
+      ]
+    },
+    "statefile_baseline": {
+      "allOf": [
+        {"$ref": "#/$defs/recovery"},
+        {
+          "properties": {
+            "checkpoint_backend": {"const": "statefile-v1"},
+            "checkpoint_loaded": {"const": false},
+            "runtime_reopened": {"const": false},
+            "requeued": {"const": false},
+            "retry_count": {"const": 0}
+          }
+        }
+      ]
+    },
+    "statefile_restart": {
+      "allOf": [
+        {"$ref": "#/$defs/recovery"},
+        {
+          "properties": {
+            "checkpoint_backend": {"const": "statefile-v1"},
+            "checkpoint_loaded": {"const": true},
+            "runtime_reopened": {"const": true},
+            "requeued": {"const": true},
+            "retry_count": {"const": 1}
+          }
+        }
+      ]
+    },
+    "f1_baseline_target": {
+      "allOf": [
+        {"$ref": "#/$defs/task"},
+        {
+          "properties": {
+            "task_id": {"pattern": "^f1-target-(?:0|[1-9][0-9]{0,9})$"},
+            "max_attempts": {"const": 1},
+            "final_status": {"const": "SUCCEEDED"},
+            "attempt_count": {"const": 1},
+            "attempts": {
+              "minItems": 1,
+              "maxItems": 1,
+              "prefixItems": [{"$ref": "#/$defs/success_attempt_1"}],
+              "items": false
+            }
+          }
+        }
+      ]
+    },
+    "f1_treatment_target": {
+      "allOf": [
+        {"$ref": "#/$defs/task"},
+        {
+          "properties": {
+            "task_id": {"pattern": "^f1-target-(?:0|[1-9][0-9]{0,9})$"},
+            "max_attempts": {"const": 1},
+            "final_status": {"const": "FAILED"},
+            "attempt_count": {"const": 1},
+            "attempts": {
+              "minItems": 1,
+              "maxItems": 1,
+              "prefixItems": [{"$ref": "#/$defs/exit_attempt"}],
+              "items": false
+            }
+          }
+        }
+      ]
+    },
+    "f2_baseline_target": {
+      "allOf": [
+        {"$ref": "#/$defs/task"},
+        {
+          "properties": {
+            "task_id": {"pattern": "^f2-target-(?:0|[1-9][0-9]{0,9})$"},
+            "max_attempts": {"const": 1},
+            "final_status": {"const": "SUCCEEDED"},
+            "attempt_count": {"const": 1},
+            "attempts": {
+              "minItems": 1,
+              "maxItems": 1,
+              "prefixItems": [{"$ref": "#/$defs/success_attempt_1"}],
+              "items": false
+            }
+          }
+        }
+      ]
+    },
+    "f2_treatment_target": {
+      "allOf": [
+        {"$ref": "#/$defs/task"},
+        {
+          "properties": {
+            "task_id": {"pattern": "^f2-target-(?:0|[1-9][0-9]{0,9})$"},
+            "max_attempts": {"const": 1},
+            "final_status": {"const": "FAILED"},
+            "attempt_count": {"const": 1},
+            "attempts": {
+              "minItems": 1,
+              "maxItems": 1,
+              "prefixItems": [{"$ref": "#/$defs/timeout_attempt"}],
+              "items": false
+            }
+          }
+        }
+      ]
+    },
+    "f3_baseline_target": {
+      "allOf": [
+        {"$ref": "#/$defs/task"},
+        {
+          "properties": {
+            "task_id": {"pattern": "^f3-target-(?:0|[1-9][0-9]{0,9})$"},
+            "max_attempts": {"const": 2},
+            "final_status": {"const": "SUCCEEDED"},
+            "attempt_count": {"const": 1},
+            "attempts": {
+              "minItems": 1,
+              "maxItems": 1,
+              "prefixItems": [{"$ref": "#/$defs/success_attempt_1"}],
+              "items": false
+            }
+          }
+        }
+      ]
+    },
+    "f3_treatment_target": {
+      "allOf": [
+        {"$ref": "#/$defs/task"},
+        {
+          "properties": {
+            "task_id": {"pattern": "^f3-target-(?:0|[1-9][0-9]{0,9})$"},
+            "max_attempts": {"const": 2},
+            "final_status": {"const": "SUCCEEDED"},
+            "attempt_count": {"const": 2},
+            "attempts": {
+              "minItems": 2,
+              "maxItems": 2,
+              "prefixItems": [
+                {"$ref": "#/$defs/lost_attempt"},
+                {"$ref": "#/$defs/success_attempt_2"}
+              ],
+              "items": false
+            }
+          }
+        }
+      ]
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "case_id": {"const": "F1-smoke"},
+        "pair_id": {"pattern": "^f1-smoke-(?:0|[1-9][0-9]{0,9})-(?:0|[1-9][0-9]{0,2})$"},
+        "treatment": {"const": "no-injection"},
+        "role": {"const": "baseline"},
+        "protocol": {
+          "allOf": [
+            {"$ref": "#/$defs/protocol"},
+            {"properties": {"fault_mode": {"const": "none"}, "injection_boundary": {"const": "matched-dispatch-control"}, "expected_recovery": {"const": "normal-completion"}}}
+          ]
+        },
+        "milestones": {"$ref": "#/$defs/baseline_milestones"},
+        "target": {"$ref": "#/$defs/f1_baseline_target"},
+        "publications": {"minItems": 2, "maxItems": 2},
+        "cleanup": {"allOf": [{"$ref": "#/$defs/cleanup"}, {"properties": {"child_processes_started": {"const": 2}, "child_processes_reaped": {"const": 2}}}]},
+        "recovery": {"$ref": "#/$defs/no_recovery"},
+        "observed_reason_code": {"const": "NONE"}
+      }
+    },
+    {
+      "properties": {
+        "case_id": {"const": "F1-smoke"},
+        "pair_id": {"pattern": "^f1-smoke-(?:0|[1-9][0-9]{0,9})-(?:0|[1-9][0-9]{0,2})$"},
+        "treatment": {"const": "agent-exit"},
+        "role": {"const": "treatment"},
+        "protocol": {
+          "allOf": [
+            {"$ref": "#/$defs/protocol"},
+            {"properties": {"fault_mode": {"const": "agent_exit"}, "injection_boundary": {"const": "agent-process-start"}, "expected_recovery": {"const": "contained-terminal-failure"}}}
+          ]
+        },
+        "milestones": {
+          "allOf": [
+            {"$ref": "#/$defs/contained_treatment_milestones"},
+            {
+              "properties": {
+                "injected_ns": {
+                  "description": "Actual successful command-start time (ProcessStartedAt) relative to the trial origin, not a synthetic zero boundary.",
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 60000000000
+                }
+              }
+            }
+          ]
+        },
+        "target": {"$ref": "#/$defs/f1_treatment_target"},
+        "publications": {"minItems": 1, "maxItems": 1},
+        "cleanup": {"allOf": [{"$ref": "#/$defs/cleanup"}, {"properties": {"child_processes_started": {"const": 2}, "child_processes_reaped": {"const": 2}}}]},
+        "recovery": {"$ref": "#/$defs/no_recovery"},
+        "observed_reason_code": {"const": "AGENT_EXIT"}
+      }
+    },
+    {
+      "properties": {
+        "case_id": {"const": "F2-smoke"},
+        "pair_id": {"pattern": "^f2-smoke-(?:0|[1-9][0-9]{0,9})-(?:0|[1-9][0-9]{0,2})$"},
+        "treatment": {"const": "no-injection"},
+        "role": {"const": "baseline"},
+        "protocol": {
+          "allOf": [
+            {"$ref": "#/$defs/protocol"},
+            {"properties": {"fault_mode": {"const": "none"}, "injection_boundary": {"const": "matched-dispatch-control"}, "expected_recovery": {"const": "normal-completion"}}}
+          ]
+        },
+        "milestones": {"$ref": "#/$defs/baseline_milestones"},
+        "target": {"$ref": "#/$defs/f2_baseline_target"},
+        "publications": {"minItems": 2, "maxItems": 2},
+        "cleanup": {"allOf": [{"$ref": "#/$defs/cleanup"}, {"properties": {"child_processes_started": {"const": 2}, "child_processes_reaped": {"const": 2}}}]},
+        "recovery": {"$ref": "#/$defs/no_recovery"},
+        "observed_reason_code": {"const": "NONE"}
+      }
+    },
+    {
+      "properties": {
+        "case_id": {"const": "F2-smoke"},
+        "pair_id": {"pattern": "^f2-smoke-(?:0|[1-9][0-9]{0,9})-(?:0|[1-9][0-9]{0,2})$"},
+        "treatment": {"const": "agent-timeout"},
+        "role": {"const": "treatment"},
+        "protocol": {
+          "allOf": [
+            {"$ref": "#/$defs/protocol"},
+            {"properties": {"fault_mode": {"const": "agent_timeout"}, "injection_boundary": {"const": "configured-agent-deadline"}, "expected_recovery": {"const": "contained-terminal-failure"}}}
+          ]
+        },
+        "milestones": {
+          "allOf": [
+            {"$ref": "#/$defs/contained_treatment_milestones"},
+            {
+              "properties": {
+                "injected_ns": {
+                  "description": "Actual executor DeadlineAt relative to the trial origin. It includes process-start offset and therefore is not fixed to the configured 500 ms duration.",
+                  "type": "integer",
+                  "minimum": 500000000,
+                  "maximum": 60000000000
+                }
+              }
+            }
+          ]
+        },
+        "target": {"$ref": "#/$defs/f2_treatment_target"},
+        "publications": {"minItems": 1, "maxItems": 1},
+        "cleanup": {"allOf": [{"$ref": "#/$defs/cleanup"}, {"properties": {"child_processes_started": {"const": 2}, "child_processes_reaped": {"const": 2}}}]},
+        "recovery": {"$ref": "#/$defs/no_recovery"},
+        "observed_reason_code": {"const": "AGENT_TIMEOUT"}
+      }
+    },
+    {
+      "properties": {
+        "case_id": {"const": "F3-service-smoke"},
+        "pair_id": {"pattern": "^f3-service-smoke-(?:0|[1-9][0-9]{0,9})-(?:0|[1-9][0-9]{0,2})$"},
+        "treatment": {"const": "no-injection"},
+        "role": {"const": "baseline"},
+        "protocol": {
+          "allOf": [
+            {"$ref": "#/$defs/protocol"},
+            {"properties": {"fault_mode": {"const": "none"}, "injection_boundary": {"const": "matched-service-control"}, "expected_recovery": {"const": "normal-completion"}}}
+          ]
+        },
+        "milestones": {"$ref": "#/$defs/baseline_milestones"},
+        "target": {"$ref": "#/$defs/f3_baseline_target"},
+        "publications": {"minItems": 2, "maxItems": 2},
+        "cleanup": {"allOf": [{"$ref": "#/$defs/cleanup"}, {"properties": {"child_processes_started": {"const": 2}, "child_processes_reaped": {"const": 2}}}]},
+        "recovery": {"$ref": "#/$defs/statefile_baseline"},
+        "observed_reason_code": {"const": "NONE"}
+      }
+    },
+    {
+      "properties": {
+        "case_id": {"const": "F3-service-smoke"},
+        "pair_id": {"pattern": "^f3-service-smoke-(?:0|[1-9][0-9]{0,9})-(?:0|[1-9][0-9]{0,2})$"},
+        "treatment": {"const": "runservice-graceful-restart"},
+        "role": {"const": "treatment"},
+        "protocol": {
+          "allOf": [
+            {"$ref": "#/$defs/protocol"},
+            {"properties": {"fault_mode": {"const": "runservice_graceful_restart"}, "injection_boundary": {"const": "active-attempt-root-cancel"}, "expected_recovery": {"const": "requeue-then-complete"}}}
+          ]
+        },
+        "milestones": {"$ref": "#/$defs/service_treatment_milestones"},
+        "target": {"$ref": "#/$defs/f3_treatment_target"},
+        "publications": {"minItems": 2, "maxItems": 2},
+        "cleanup": {"allOf": [{"$ref": "#/$defs/cleanup"}, {"properties": {"child_processes_started": {"const": 3}, "child_processes_reaped": {"const": 3}}}]},
+        "recovery": {"$ref": "#/$defs/statefile_restart"},
+        "observed_reason_code": {"const": "RUNSERVICE_GRACEFUL_RESTART"}
+      }
+    }
+  ]
+}

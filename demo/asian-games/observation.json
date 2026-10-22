@@ -1,0 +1,660 @@
+{
+  "time_s": 194.507,
+  "utc": "2026-10-07T06:29:38.993Z",
+  "status": {
+    "message": null,
+    "model_requests": {
+      "attempts": 30,
+      "limit": 58
+    },
+    "query": "2026年爱知·名古屋亚运会中国代表队成绩",
+    "report_url": null,
+    "sample_count": 6,
+    "status": "RUNNING",
+    "success": true,
+    "tasks": [
+      {
+        "name": "信息检索",
+        "role": "query",
+        "status": "SUCCEEDED"
+      },
+      {
+        "name": "媒体分析",
+        "role": "media",
+        "status": "SUCCEEDED"
+      },
+      {
+        "name": "评论分析",
+        "role": "insight",
+        "status": "SUCCEEDED"
+      },
+      {
+        "name": "汇总讨论",
+        "role": "forum",
+        "status": "SUCCEEDED"
+      },
+      {
+        "name": "信息检索补充研究",
+        "role": "query-feedback",
+        "status": "RUNNING"
+      },
+      {
+        "name": "媒体分析补充研究",
+        "role": "media-feedback",
+        "status": "RUNNING"
+      },
+      {
+        "name": "评论分析补充研究",
+        "role": "insight-feedback",
+        "status": "RUNNING"
+      },
+      {
+        "name": "最终讨论",
+        "role": "forum-final",
+        "status": "WAITING_DEPENDENCY"
+      },
+      {
+        "name": "生成报告",
+        "role": "report",
+        "status": "WAITING_DEPENDENCY"
+      }
+    ],
+    "workflow_id": "bf-entry-20261006-213814-6990a77bf8"
+  },
+  "monitor": {
+    "context": {
+      "available": true,
+      "counter_identity": "unicode-segment-v1",
+      "logical_tokens": 3664,
+      "page_count": 10,
+      "source": "context_checkpoint"
+    },
+    "elapsed_seconds": 194.586,
+    "host": {
+      "available": true,
+      "cpu_basis": "all_cores",
+      "cpu_percent": 58.1,
+      "memory_total_bytes": 3570425856,
+      "memory_used_bytes": 1559998464,
+      "source": "procfs"
+    },
+    "runtime": {
+      "allocated": {
+        "cpu_milli": 1500,
+        "llm_slots": 3,
+        "memory_mib": 3072,
+        "token_budget": 48000
+      },
+      "capacity": {
+        "cpu_milli": 4000,
+        "llm_slots": 3,
+        "memory_mib": 4096,
+        "token_budget": 64000
+      },
+      "live": true,
+      "policy": "dag-drcfs"
+    },
+    "sampled_at": "2026-10-06T21:41:29.500604+00:00",
+    "schema": "aegisrt.presentation-monitor/v1",
+    "success": true,
+    "tasks": [
+      {
+        "agent_id": "bettafish-query",
+        "attempt_count": 1,
+        "context": {
+          "available": true,
+          "logical_tokens": 662,
+          "manifest_id": "945c762f70e2123f0b5fb30277740a261c69f731be07de58a6bba21fc3164ae2",
+          "page_count": 2,
+          "pinned_tokens": 0,
+          "private_page_count": 0,
+          "revision": 3,
+          "shared_page_count": 2,
+          "source": "context_checkpoint"
+        },
+        "dependencies": [],
+        "id": "bf-entry-20261006-213814-6990a77bf8-query",
+        "max_attempts": 1,
+        "measurement": {
+          "available": false,
+          "cpu_basis": "one_core",
+          "cpu_percent": null,
+          "memory_rss_bytes": null,
+          "process_count": 0,
+          "source": "procfs"
+        },
+        "output": {
+          "artifact_count": null,
+          "content_bytes": null
+        },
+        "resources": {
+          "cpu_milli": 500,
+          "llm_slots": 1,
+          "memory_mib": 512,
+          "token_budget": 16000
+        },
+        "role": "query",
+        "stage": "query",
+        "status": "SUCCEEDED",
+        "timing": {
+          "finished_at": "2026-10-06T21:39:27.821070+00:00",
+          "queue_ms": null,
+          "run_ms": null,
+          "started_at": "2026-10-06T21:38:16.985646+00:00"
+        }
+      },
+      {
+        "agent_id": "bettafish-media",
+        "attempt_count": 1,
+        "context": {
+          "available": true,
+          "logical_tokens": 662,
+          "manifest_id": "f78d7bab01d4f3050d022f4d2390752365773518f4a69f326164209f296a6f86",
+          "page_count": 2,
+          "pinned_tokens": 0,
+          "private_page_count": 0,
+          "revision": 3,
+          "shared_page_count": 2,
+          "source": "context_checkpoint"
+        },
+        "dependencies": [],
+        "id": "bf-entry-20261006-213814-6990a77bf8-media",
+        "max_attempts": 1,
+        "measurement": {
+          "available": false,
+          "cpu_basis": "one_core",
+          "cpu_percent": null,
+          "memory_rss_bytes": null,
+          "process_count": 0,
+          "source": "procfs"
+        },
+        "output": {
+          "artifact_count": null,
+          "content_bytes": null
+        },
+        "resources": {
+          "cpu_milli": 500,
+          "llm_slots": 1,
+          "memory_mib": 512,
+          "token_budget": 16000
+        },
+        "role": "media",
+        "stage": "media",
+        "status": "SUCCEEDED",
+        "timing": {
+          "finished_at": "2026-10-06T21:39:57.262615+00:00",
+          "queue_ms": null,
+          "run_ms": null,
+          "started_at": "2026-10-06T21:38:16.708222+00:00"
+        }
+      },
+      {
+        "agent_id": "bettafish-insight",
+        "attempt_count": 1,
+        "context": {
+          "available": true,
+          "logical_tokens": 841,
+          "manifest_id": "91747d9df0907e8c5b8f7539c10ccb099bbcbf7f791b9a9f3bd2a425974d9a60",
+          "page_count": 2,
+          "pinned_tokens": 0,
+          "private_page_count": 0,
+          "revision": 3,
+          "shared_page_count": 2,
+          "source": "context_checkpoint"
+        },
+        "dependencies": [],
+        "id": "bf-entry-20261006-213814-6990a77bf8-insight",
+        "max_attempts": 1,
+        "measurement": {
+          "available": false,
+          "cpu_basis": "one_core",
+          "cpu_percent": null,
+          "memory_rss_bytes": null,
+          "process_count": 0,
+          "source": "procfs"
+        },
+        "output": {
+          "artifact_count": null,
+          "content_bytes": null
+        },
+        "resources": {
+          "cpu_milli": 500,
+          "llm_slots": 1,
+          "memory_mib": 2048,
+          "token_budget": 16000
+        },
+        "role": "insight",
+        "stage": "insight",
+        "status": "SUCCEEDED",
+        "timing": {
+          "finished_at": "2026-10-06T21:40:04.068671+00:00",
+          "queue_ms": null,
+          "run_ms": null,
+          "started_at": "2026-10-06T21:38:16.970030+00:00"
+        }
+      },
+      {
+        "agent_id": "bettafish-forum",
+        "attempt_count": 1,
+        "context": {
+          "available": true,
+          "logical_tokens": 1499,
+          "manifest_id": "f72d0be5e978822ed610ac9e26204836222c3521da4915213b7506de42f665f7",
+          "page_count": 4,
+          "pinned_tokens": 0,
+          "private_page_count": 0,
+          "revision": 5,
+          "shared_page_count": 4,
+          "source": "context_checkpoint"
+        },
+        "dependencies": [
+          "query",
+          "media",
+          "insight"
+        ],
+        "id": "bf-entry-20261006-213814-6990a77bf8-forum",
+        "max_attempts": 1,
+        "measurement": {
+          "available": false,
+          "cpu_basis": "one_core",
+          "cpu_percent": null,
+          "memory_rss_bytes": null,
+          "process_count": 0,
+          "source": "procfs"
+        },
+        "output": {
+          "artifact_count": null,
+          "content_bytes": null
+        },
+        "resources": {
+          "cpu_milli": 500,
+          "llm_slots": 1,
+          "memory_mib": 512,
+          "token_budget": 16000
+        },
+        "role": "forum",
+        "stage": "forum",
+        "status": "SUCCEEDED",
+        "timing": {
+          "finished_at": "2026-10-06T21:40:55.705153+00:00",
+          "queue_ms": null,
+          "run_ms": null,
+          "started_at": "2026-10-06T21:40:09.210411+00:00"
+        }
+      },
+      {
+        "agent_id": "bettafish-query",
+        "attempt_count": 1,
+        "context": {
+          "available": true,
+          "logical_tokens": 662,
+          "manifest_id": "945c762f70e2123f0b5fb30277740a261c69f731be07de58a6bba21fc3164ae2",
+          "page_count": 2,
+          "pinned_tokens": 0,
+          "private_page_count": 0,
+          "revision": 3,
+          "shared_page_count": 2,
+          "source": "context_checkpoint"
+        },
+        "dependencies": [
+          "query",
+          "forum"
+        ],
+        "id": "bf-entry-20261006-213814-6990a77bf8-query-feedback",
+        "max_attempts": 1,
+        "measurement": {
+          "available": true,
+          "cpu_basis": "one_core",
+          "cpu_percent": 1,
+          "memory_rss_bytes": 91660288,
+          "process_count": 1,
+          "source": "procfs"
+        },
+        "output": {
+          "artifact_count": null,
+          "content_bytes": null
+        },
+        "resources": {
+          "cpu_milli": 500,
+          "llm_slots": 1,
+          "memory_mib": 512,
+          "token_budget": 16000
+        },
+        "role": "query",
+        "stage": "query-feedback",
+        "status": "RUNNING",
+        "timing": {
+          "finished_at": null,
+          "queue_ms": null,
+          "run_ms": null,
+          "started_at": "2026-10-06T21:40:58.684179+00:00"
+        }
+      },
+      {
+        "agent_id": "bettafish-media",
+        "attempt_count": 1,
+        "context": {
+          "available": true,
+          "logical_tokens": 662,
+          "manifest_id": "f78d7bab01d4f3050d022f4d2390752365773518f4a69f326164209f296a6f86",
+          "page_count": 2,
+          "pinned_tokens": 0,
+          "private_page_count": 0,
+          "revision": 3,
+          "shared_page_count": 2,
+          "source": "context_checkpoint"
+        },
+        "dependencies": [
+          "media",
+          "forum"
+        ],
+        "id": "bf-entry-20261006-213814-6990a77bf8-media-feedback",
+        "max_attempts": 1,
+        "measurement": {
+          "available": true,
+          "cpu_basis": "one_core",
+          "cpu_percent": 0.8,
+          "memory_rss_bytes": 84709376,
+          "process_count": 1,
+          "source": "procfs"
+        },
+        "output": {
+          "artifact_count": null,
+          "content_bytes": null
+        },
+        "resources": {
+          "cpu_milli": 500,
+          "llm_slots": 1,
+          "memory_mib": 512,
+          "token_budget": 16000
+        },
+        "role": "media",
+        "stage": "media-feedback",
+        "status": "RUNNING",
+        "timing": {
+          "finished_at": null,
+          "queue_ms": null,
+          "run_ms": null,
+          "started_at": "2026-10-06T21:40:58.551707+00:00"
+        }
+      },
+      {
+        "agent_id": "bettafish-insight",
+        "attempt_count": 1,
+        "context": {
+          "available": true,
+          "logical_tokens": 841,
+          "manifest_id": "91747d9df0907e8c5b8f7539c10ccb099bbcbf7f791b9a9f3bd2a425974d9a60",
+          "page_count": 2,
+          "pinned_tokens": 0,
+          "private_page_count": 0,
+          "revision": 3,
+          "shared_page_count": 2,
+          "source": "context_checkpoint"
+        },
+        "dependencies": [
+          "insight",
+          "forum"
+        ],
+        "id": "bf-entry-20261006-213814-6990a77bf8-insight-feedback",
+        "max_attempts": 1,
+        "measurement": {
+          "available": true,
+          "cpu_basis": "one_core",
+          "cpu_percent": 60,
+          "memory_rss_bytes": 500396032,
+          "process_count": 1,
+          "source": "procfs"
+        },
+        "output": {
+          "artifact_count": null,
+          "content_bytes": null
+        },
+        "resources": {
+          "cpu_milli": 500,
+          "llm_slots": 1,
+          "memory_mib": 2048,
+          "token_budget": 16000
+        },
+        "role": "insight",
+        "stage": "insight-feedback",
+        "status": "RUNNING",
+        "timing": {
+          "finished_at": null,
+          "queue_ms": null,
+          "run_ms": null,
+          "started_at": "2026-10-06T21:40:58.430611+00:00"
+        }
+      },
+      {
+        "agent_id": "bettafish-forum",
+        "attempt_count": 0,
+        "context": {
+          "available": true,
+          "logical_tokens": 1499,
+          "manifest_id": "f72d0be5e978822ed610ac9e26204836222c3521da4915213b7506de42f665f7",
+          "page_count": 4,
+          "pinned_tokens": 0,
+          "private_page_count": 0,
+          "revision": 5,
+          "shared_page_count": 4,
+          "source": "context_checkpoint"
+        },
+        "dependencies": [
+          "query-feedback",
+          "media-feedback",
+          "insight-feedback"
+        ],
+        "id": "bf-entry-20261006-213814-6990a77bf8-forum-final",
+        "max_attempts": 1,
+        "measurement": {
+          "available": false,
+          "cpu_basis": "one_core",
+          "cpu_percent": null,
+          "memory_rss_bytes": null,
+          "process_count": 0,
+          "source": "procfs"
+        },
+        "output": {
+          "artifact_count": null,
+          "content_bytes": null
+        },
+        "resources": {
+          "cpu_milli": 500,
+          "llm_slots": 1,
+          "memory_mib": 512,
+          "token_budget": 16000
+        },
+        "role": "forum",
+        "stage": "forum-final",
+        "status": "WAITING_DEPENDENCY",
+        "timing": {
+          "finished_at": null,
+          "queue_ms": null,
+          "run_ms": null,
+          "started_at": null
+        }
+      },
+      {
+        "agent_id": "bettafish-report",
+        "attempt_count": 0,
+        "context": {
+          "available": true,
+          "logical_tokens": 0,
+          "manifest_id": "d2f3c7a3ac314e45a13101ae643e31c1267adc28ae7cc7b183ecbf5461c678b6",
+          "page_count": 0,
+          "pinned_tokens": 0,
+          "private_page_count": 0,
+          "revision": 1,
+          "shared_page_count": 0,
+          "source": "context_checkpoint"
+        },
+        "dependencies": [
+          "query-feedback",
+          "media-feedback",
+          "insight-feedback",
+          "forum-final"
+        ],
+        "id": "bf-entry-20261006-213814-6990a77bf8-report",
+        "max_attempts": 1,
+        "measurement": {
+          "available": false,
+          "cpu_basis": "one_core",
+          "cpu_percent": null,
+          "memory_rss_bytes": null,
+          "process_count": 0,
+          "source": "procfs"
+        },
+        "output": {
+          "artifact_count": null,
+          "content_bytes": null
+        },
+        "resources": {
+          "cpu_milli": 500,
+          "llm_slots": 1,
+          "memory_mib": 512,
+          "token_budget": 16000
+        },
+        "role": "report",
+        "stage": "report",
+        "status": "WAITING_DEPENDENCY",
+        "timing": {
+          "finished_at": null,
+          "queue_ms": null,
+          "run_ms": null,
+          "started_at": null
+        }
+      }
+    ],
+    "workflow_id": "bf-entry-20261006-213814-6990a77bf8"
+  },
+  "content": {
+    "blocks": [
+      {
+        "id": "query:0",
+        "role": "query",
+        "source": "research_checkpoint",
+        "stage": "query",
+        "status": "SUCCEEDED",
+        "text": "【中国爱知·名古屋亚运会奖牌数据核查舆情分析】\n\n一、事件依据\n本轮检索围绕2026年爱知·名古屋亚运会（下称“本届亚运会”）中国代表团奖牌数据进行核查。多家信源在核心数字上一致：中国代表团最终成绩为169枚金牌、89枚银牌、83枚铜牌，合计341枚奖牌。可归为报道类的材料包括：新华社英文稿（english.news.cn，2026-10-04，引述中国代表团秘书长张新表态）、央视网英语频道转载新华社稿（2026-10-05）、中国日报亚洲版及全球版稿件、ESPN奖牌榜汇总页面。新华社社交账号（X平台@XHNews）、新华社Facebook账号、央视亚太Facebook账号及CGTN欧洲Instagram帖文亦发布同一组数字。材料中“张新称中国代表团连续十二届位居亚运会金牌榜首位、金牌总数创境外参赛新高”属当事人表述，其身份为代表团秘书长，转引自新华社。检索未返回亚奥理事会、亚组委官网的奖牌榜与每日公报原文，官方一级信源缺失。\n\n二、观点分歧与口径差异\n现有材料未出现对169金核心数据的实质性反驳，差异主要体现在统计口径与叙事侧重：\n（1）叙事侧重不同。新华社、央视网、中国日报侧重“中国连续12届金牌榜首”“境外参赛最佳战绩”“新人涌现”等角度；中国日报亚洲版同时列出日本83金、韩国39金等名次信息；维基百科“2026年亚运会奖牌榜”条目呈现的是比赛中期数据（中国92金35银22铜），与闭幕后的最终数据不具可比性，反映的是更新时点差异而非争议。\n（2）榜单采样差异。ESPN奖牌榜列出中国队169/89/83居首、日本83/95/91、韩国39/43/68等，其数据与新华社、中国日报一致，但ESPN页面未标明数据来源与更新时间，无法确认是否直接取自官方公报。此前检索到的联合新闻网榜单亦为同一组数字，但来源为台湾媒体、非官方渠道。\n（3）社交平台评论（如CGTN欧洲Instagram帖文下“牛逼”“India is gobar country”等留言）属情绪化评论推测，不构成对奖牌数据的独立核验，不应作为事实依据。\n\n三、传播表现\n奖牌数据传播以中文媒体与体育垂直平台为主，形成“官方表态—媒体转引—社交平台扩散”的链条：新华社发稿后，央视网、中国日报网、ESPN等转引或汇总，Facebook、X、Instagram、Threads等平台出现同一数字的帖文。Threads上一则帖文（@rvcjinsta）同时引用CGTN欧洲内容并汇总“中国341枚奖牌”的表述，显示该数字在社交平台被二次加工。需注意，检索结果中包含多条同一来源（新华社）在不同平台的分发内容，其相互印证价值有限，不构成独立信源。\n\n四、证据可靠性与待核验事项\n（1）可采信程度：新华社、央视网、中国日报、ESPN在核心数字（169/89/83，合计341）上相互一致，且新华社引述了代表团官员表态，整体可信度较高。但多数材料同源或转引，独立信源数量有限。\n（2）仍待核验事项：第一，未获取亚奥理事会或爱知·名古屋亚组委官网的奖牌榜与每日公报原文，无法确认最终修订版本及统计口径（如并列名次、团体项目计法）；第二，新华社与共同社等跨通讯社的原文比对不充分，检索材料中未出现共同社相关报道；第三，ESPN等第三方榜单的数据来源与更新时间未标明；第四，维基百科条目呈现的中期数据与最终数据的差异，需以官方公报确认最终版本。\n（3）未证实指控：本轮材料未发现针对奖牌数据的独立质疑或指控，亦无任何机构或个人被指存在数据造假；社交平台评论中的情绪化表述仅为个别网民评论，与奖牌事实无关。\n\n五、结论\n综合现有材料，中国代表团在本届亚运会获169金89银83铜、合计341枚、连续12届金牌榜首位的结论得到多家媒体报道印证，可视为当前可采信的主流事实，但仍缺少亚奥理事会或亚组委官网一级信源的直接核验。赛事最终榜单口径与修订情况应以官方公报为准；对第三方榜单、赛中阶段性数据及社交平台评论，应区分报道、当事人表述与评论推测，不作过度外推。",
+        "title": "官方奖牌数据核查",
+        "truncated": false
+      },
+      {
+        "id": "query:1",
+        "role": "query",
+        "source": "research_checkpoint",
+        "stage": "query",
+        "status": "SUCCEEDED",
+        "text": "截至2026年10月6日，围绕2026年爱知·名古屋亚运会反兴奋剂议题，已检索材料主要来自通讯社报道和官方机构页面，尚无任何一条涉及中国代表团成员被通报兴奋剂违规。新华社2026年9月27日报道称，国际检查机构（ITA）官网通报两名运动员兴奋剂检查呈阳性并被临时禁赛：土库曼斯坦空手道运动员凯莱利耶夫和乌兹别克斯坦综合格斗运动员沙夫卡托夫，后者还获得本届赛事男子现代71公斤级铜牌；通报称凯莱利耶夫9月20日赛外样本检出米屈肼，沙夫卡托夫9月22日赛外样本检出同种物质（来源：https://xinwen.bjd.com.cn/content/s6ab907f5e4b0e42f8f00e5e9.html）。同一报道还称，9月21日泰国羽毛球运动员碧查梦因样本检出呋塞米被临时禁赛，并说明米屈肼被列入世界反兴奋剂机构禁药名单S4类激素及代谢调节剂，赛内赛外均禁用；两名运动员已被临时禁赛，在案件审结前不得参加本届亚运会比赛、训练、执教或任何相关活动，且有权针对临时禁赛向国际体育仲裁法庭提出异议，也有权要求对B瓶样本进行检测。该报道系对ITA通报的转述，属当前材料中可靠性较高的部分，但报道本身未逐项披露样本采集、检测机构、是否已提出异议等细节。新华网2026年10月2日发布报道标题为“又有两人阳性 亚运会兴奋剂违规已有六例”（来源：https://www.news.cn/sports/20261002/9db58946cf374d86aeb4899ce456c625/c.html），内容称两名运动员分别是哈萨克斯坦田径运动员博拉特别克兹和塔吉克斯坦网球运动员沙里福夫，前者在9月27日赛内检查中被检出屈他雄酮代谢物（S1.1类蛋白同化雄性激素类固醇），后者在9月25日赛外检查中被检出S5类利尿剂和掩蔽剂坎利酮，两人均已被临时禁赛并享有向国际体育仲裁法庭提出异议或要求检测B瓶的权利；报道还称最近一例是乌兹别克斯坦皮划艇运动员艾格尔，在赛外检查中被检出S4类激素及代谢调节剂曲美他嗪，于9月28日被通报。上述内容仍以ITA通报为信息源、经新华社转述，具体身份、检测记录与程序进展待以ITA原始公告核验。此外，新浪转载页面称截至2026年10月3日已通报六例阳性、涉事运动员全部被临时禁赛（来源：https://k.sina.com.cn/article_7880068517_1d5b04da506802at9g.html?from=sports），属对既有通报数量的转述性概括，未提供新的原始证据。关于“成绩波动与争议疑点”中的裁判判罚申诉与运动员伤退声明，检索材料中未见亚奥理事会纪律页面原文、日本当地媒体独立报道或任何申诉与伤退信息，故该部分在现有材料下无证据支持，相关说法均为未证实或无从判断。传播表现上，反兴奋剂个案主要通过新华社等通讯社发布、由门户网站与社交平台转载，并以新华网亚运专题页聚合，形成以官方通报为核心的有限扩散；其中亦夹有赛前教育培训类官方信息，二者性质不同不应混同。证据可靠性方面，ITA通报经新华社转述的部分可靠性较高，但须以ITA原始公告核验；需要核验的事项包括9月27日报道所述三例的具体身份与检测细节、10月2日新增两例的完整信息、亚奥理事会是否发布纪律决定、是否出现针对判罚的申诉以及运动员伤退声明，以及是否存在任何涉及中国代表团成员的违规通报。在取得亚奥理事会纪律页面或权威原始公告前，不应将有关中国代表团兴奋剂违规、裁判争议或伤退的说法当作已确认事实。",
+        "title": "成绩波动与争议疑点",
+        "truncated": false
+      },
+      {
+        "id": "media:0",
+        "role": "media",
+        "source": "research_checkpoint",
+        "stage": "media",
+        "status": "SUCCEEDED",
+        "text": "一、事件依据与官方成绩核查\n2026年爱知·名古屋亚运会于10月4日闭幕。根据Olympics.com与新华社报道，中国体育代表团最终以169金89银83铜共341枚奖牌位列金牌榜首位（来源：http://m.toutiao.com/group/7692992556531057167/?upstream_biz=VolcEngine）。中国男足在半决赛1-2不敌韩国队后，于铜牌赛常规时间2-2战平并在点球大战中4-3击败乌兹别克斯坦队，时隔28年再次登上亚运领奖台（来源：https://www.olympics.com/zh/news/2026-aichi-nagoya-asian-games-chinese-mens-football-team-results-tracker）。\n\n二、判罚争议、成绩异议与申诉事件核实\n1. 竞走首金计时与AI误判风波：女子20公里竞走决赛中，马振霞率先撞线夺冠，但组委会采用的“多源融合计时系统”AI姿态识别模块误判其正常摆臂为“疑似犯规”，导致数据校验延误，大屏幕实时榜单一度滞后显示。经裁判组复核37分钟后确认马振霞以1小时28分32秒夺得首金，中国代表团曾就AI判罚权限及更新滞后提出正式申诉（来源：http://m.toutiao.com/group/7687578001487315479/?upstream_biz=VolcEngine）。\n2. 竞走跑鞋违规改判：女子马拉松竞走决赛中，哈萨克斯坦选手托克桑巴耶娃率先撞线，次日亚组委发布通报确认其跑鞋中底厚度超标且未列入世界田联认可清单，依据规则取消其成绩（DQ）。中国选手旦增曲宗、马丽顺位递补为金牌和银牌（来源：http://m.toutiao.com/group/7693127243362484738/?upstream_biz=VolcEngine ；http://m.163.com/dy/article_v5/L87POTTU05564X8X.html）。\n3. 男足半决赛点球与VAR未介入争议：男足半决赛中国队1-2负于韩国队，下半场补时阶段张玉宁射门疑似击中韩国防守球员金志洙手臂，裁判未判罚点球且VAR未介入。主帅安东尼奥因抗议吃到黄牌（新华社报道其赛后拒绝谈论判罚）；张玉宁赛后接受采访质疑“裁判为什么没有去看VAR”；记者马德兴推测可能存在不利于中国的判罚倾向。韩国媒体及解说则评论称裁判对抗尺度对中国队动作偏软，中韩两方各执一词（来源：http://www.xinhuanet.com/sports/20260930/6603cb56f1c649d9b18bcf4b637a50d2/c.html ；https://www.dongqiudi.com/articles/6424162.html ；https://www.dongqiudi.com/articles/6418625.html ；https://www.dongqiudi.com/articles/6425586.html）。\n4. 田径接力交接棒申诉：男子4×100米接力决赛中国队以38秒17夺冠，获得第四名的泰国队申诉质疑中国队第二、三棒交接越界，组委会调取高清录像核验接力棒处于合规区域后，正式驳回申诉并维持赛果（来源：http://m.toutiao.com/group/7691337059604152871/?upstream_biz=VolcEngine）。\n5. 柔道赛场反则负争议：女子柔道70公斤级1/4决赛中，中国选手唐婧在地面缠斗中被裁判认定有咬人动作，被直接判罚反则负（来源：http://m.toutiao.com/group/7692992556531057167/?upstream_biz=VolcEngine）。\n\n三、证据可靠性与待核验事项\n官方通报与专业赛事记录证实了竞走AI误判、马拉松竞走违规取消成绩、接力申诉被驳回等赛果流程，证据可靠。对于网络流传女子马拉松竞走系“日本选手梅野幸子举报”的说法，组委会官方公告未指明申诉人身份，该指控属于媒体知情传闻与网民推测，仍未获独立证实；关于男足半决赛VAR未介入的背后动机，相关言论属于个人评论与猜测，无官方调查结论支持。",
+        "title": "官方奖牌榜与优势项目赛果核实",
+        "truncated": false
+      },
+      {
+        "id": "media:1",
+        "role": "media",
+        "source": "research_checkpoint",
+        "stage": "media",
+        "status": "SUCCEEDED",
+        "text": "【事件依据与各项目战绩】\n2026年爱知·名古屋亚运会收官阶段，中国体育代表团在大盘上表现亮眼，据今日头条复盘报道（http://m.toutiao.com/group/7692764256571294269/?upstream_biz=VolcEngine），中国队共获得169金89银83铜共341枚奖牌，创下境外参赛历史最佳战绩。然而，在部分传统优势与重点球类项目上出现明显波动与预期落差：\n1. 乒乓球与羽毛球：国乒男团在决赛中大比分2比3惜败日本队，终结亚运连冠纪录，日本队则时隔数十年重夺男团金牌（https://news.china.com/socialgd/10000169/20260926/49765655_all.html）；羽毛球项目方面，据Olympics.com报道（https://www.olympics.com/zh/news/2026-aichi-nagoya-asian-games-chinese-badmintion-team-event-results-tracker），中国女团3比0完胜日本夺冠，但男团在2比0领先后遭印尼队连扳三盘以2比3惜败摘银，单打线亦出现男单无缘八强等低迷战绩（http://m.toutiao.com/group/7692764256571294269/?upstream_biz=VolcEngine）。\n2. 男子三大球及其他球类：中国蓝新闻报道（http://m.toutiao.com/group/7688566170064044567/?upstream_biz=VolcEngine），中国男篮半决赛以20分分差负于日本队二线阵容，季军战以70比79不敌伊朗队无缘奖牌；女篮亦惜败韩国无缘决赛（https://www.toutiao.com/w/1878099174780939/?upstream_biz=VolcEngine）。男足虽在半决赛失利，但通过点球大战摘得铜牌，时隔28年登上亚运领奖台（http://m.toutiao.com/group/7692948235974918684/?upstream_biz=VolcEngine）。\n\n【当事人表述与名宿发声】\n面对赛场失利，各方当事人与专业人士作出回应：\n1. 国乒方面：王楚钦赛后坦言自己准备不够充分、多线作战导致专注度和体力受限，主动承担第四盘失利责任；小将温瑞博承认关键球处理不足；主教练王皓解释本次布阵意在给年轻队员提供大赛锻炼机会，为洛杉矶奥运周期练兵（https://news.china.com/socialgd/10000169/20260926/49765655_all.html）。名宿邓亚萍指出，决赛排阵对王楚钦的容错要求极高，排兵相对冒险，温瑞博打二号位承受巨大压力，但年轻队员必须经历历练，应快速调整复盘（https://m.thepaper.cn/newsDetail_forward_34148049）。\n2. 国羽及男篮方面：李诗沣与梁伟铿/王昶在团体赛复盘中表示，场上节奏适应和逆风球果断性存在欠缺（https://www.olympics.com/zh/news/2026-aichi-nagoya-asian-games-chinese-badmintion-team-event-results-tracker）；男篮主教练赛后提出“大家所有人都非常辛苦”的表态，但在竞技结果不佳的背景下引发讨论（http://m.toutiao.com/group/7688566170064044567/?upstream_biz=VolcEngine）。\n\n【舆论观点分歧与传播表现】\n社交平台与自媒体围绕选拔机制与临场发挥展开热议，主要分歧集中在：\n1. “练兵代价”与“夺冠第一”之争：部分网民与评论认为亚运重头戏应全力保金，质疑教练组激进安排新人打关键场次是“豪赌”；另一派则认为主力梁靖崑等人有伤病，樊振东因主动退出世界排名积分清零不具备报名资格，梯队必须通过高强度对抗暴露短板（https://news.china.com/socialgd/10000169/20260926/49765655_all.html）。\n2. 选拔制度与商业化争议：部分微博舆论将丢冠归咎于长期选拔机制从绝对直通赛转向积分与综合评定，质疑存在“资源倾斜”（https://m.weibo.cn/detail/5348577796949389）；媒体评论则呼吁跳出悲情与谩骂叙事，关注三大球青训脱节与基本功底座厚度不足的深层问题（http://m.toutiao.com/group/7688566170064044567/?upstream_biz=VolcEngine）。\n\n【证据可靠性与待核验事项】\n官方及专业体育媒体报道的比赛比分、技术统计和当事人赛后采访具备较高可靠性；但自媒体与社交平台所称的“名额保送”、“赛场外围堵报警”等指控缺乏独立第三方的核验证据，属于未证实信息；关于多项目新老交替与长期选拔机制调整的实际成效，仍有待官方管理中心后续出具详细复盘报告予以确认。",
+        "title": "重点项目预期达成度与舆论反响排查",
+        "truncated": false
+      },
+      {
+        "id": "insight:0",
+        "role": "insight",
+        "source": "research_checkpoint",
+        "stage": "insight",
+        "status": "SUCCEEDED",
+        "text": "本轮舆情核查围绕“名古屋亚运会 中国代表团 奖牌榜 金牌 总数”展开。原定核查任务旨在通过亚奥理事会官网、赛事组委会及国家体育总局发布的最终奖牌榜与官方公报，比对金牌与奖牌总数，核实中国队在各具体项目上的实际夺牌数据，并排查自媒体流传的非官方统计及夸大失实信息。然而，基于本次检索所获得的材料，并未包含任何官方机构发布的权威奖牌榜单、赛事成绩公报或主流新闻报道，全部结果仅由4条微博平台的用户评论组成。由于缺乏官方核心事实依据，当前分析仅能客观呈现该有限样本中的舆论表达，无法对中国代表团的实际获奖总数及具体项目赛果进行实质性核验。\n\n在观点分歧与舆论倾向方面，现有微博评论均属于网络用户的个人评论推测，并非当事人或官方通报。样本中呈现出两种主要声音：一是正面赞扬与精神层面的肯定，有评论直接向队伍致意，称“恭喜中国队，致敬拼搏！”（来源：https://weibo.com/2/detail/5350219823972738），有评论点名赞赏优势项目队伍，称“中国游泳队，永远可以相信！”（来源：https://weibo.com/2/detail/5347186260312602），亦有言论跳出奖牌单一维度强调体育精神，提出“不只有金牌的荣光，还有突破极限、尊重对手、享受比赛的动人瞬间”（来源：https://m.weibo.cn/2/detail/5350621806330063）；二是带有反思与审视的理性评价，有网民在认可成绩的同时指出“金牌总数虽然亮眼，但基础大项和集体项目的厚度仍有提升空间”（来源：https://weibo.com/2/detail/5350256759800962）。\n\n关于传播表现与样本特征，本地分析模型针对本次检索到的4条微博评论样本进行了情感分类，结果显示包含正面、非常正面及审视性负面情绪。需要明确强调的是，该模型分析结论完全受限于当前选定的4条微量文本样本，属于特定文件样本特征，不代表全网网民的整体分布与真实比例，严禁作为宏观舆论结论予以推算。\n\n在证据可靠性与待核验事项方面，当前证据链条存在明显缺口：第一，官方权威依据完全缺失，亚奥理事会、赛事组委会及国家体育总局关于名古屋亚运会中国代表团的最终金牌总数、奖牌总数及官方公报尚未检索到位，赛事客观成绩属于未证实状态；第二，网民评论中所涉及的“中国游泳队”战绩表现以及“基础大项和集体项目”的竞技厚度，均缺乏官方赛事赛果和统计公报的独立核实，属于未经证实的网民单方观点；第三，对于网络自媒体是否存在夸大或失实统计信息的排查，由于缺乏权威基准数据比对，目前仍无法得出明确核验结论，后续必须补充官方发布的公报与正规媒体报道以补齐信息。",
+        "title": "官方奖牌榜与整体成绩核实",
+        "truncated": false
+      },
+      {
+        "id": "insight:1",
+        "role": "insight",
+        "source": "research_checkpoint",
+        "stage": "insight",
+        "status": "SUCCEEDED",
+        "text": "本期舆情分析围绕“焦点项目赛果与争议舆情溯源”这一主题展开。基于给定的检索样本，旨在对乒羽、游泳及三大球等关键赛事的赛果反响、潜在争议与公众讨论进行梳理、核验与评估。\n\n一、事件依据与已知证据梳理\n在本次限定的检索样本范围内（检索关键词涉及亚运、乒乓、羽毛球、男篮、女排、爆冷、裁判等），共检索并匹配到2条微博平台的用户评论内容，具体证据如下：\n1. 微博用户评论一（来源URL：https://weibo.com/2/detail/5350256759800962 ）提及：“金牌总数虽然亮眼，但基础大项和集体项目的厚度仍有提升空间。”该内容属于受众对赛事综合成绩的宏观审视与主观评论，侧重于指出竞技实力在基础大项与集体项目层面仍存在薄弱环节。\n2. 微博用户评论二（来源URL：https://weibo.com/2/detail/5347186260312602 ）表述为：“中国游泳队，永远可以相信！”该内容属于网民对特定重点运动队伍（中国游泳队）竞技表现的情绪化赞赏与信任支持。\n\n二、观点分歧与传播表现分析\n从当前给定的文本样本来看，舆论观点呈现出不同维度的反响与侧重：\n1. 针对具体优势项目的肯定倾向：以微博言论（https://weibo.com/2/detail/5347186260312602 ）为代表，体现出部分受众对表现出色的队伍持有高度认同感与积极正向的评价态度；\n2. 针对项目布局与后备厚度的反思倾向：以微博言论（https://weibo.com/2/detail/5350256759800962 ）为代表，反映出部分舆论跳出单一维度的金牌数关注，对基础大项与集体项目的可持续竞争力表达了审慎思考与提升诉求。\n需要特别强调的是，以上观点及传播表现仅基于本次给定的有限微观评论样本，结论仅适用于本组特定样本，不能据此推算或代表全网的实际舆论比例分布与传播全貌。\n\n三、证据可靠性评估与信息缺口\n对照查证目标，当前输入材料存在明显的证据局限与事实缺口：\n1. 官方报道与裁判记录缺失：材料中未包含任何关于乒乓球、羽毛球、游泳、男篮、女排等项目的官方现场战报、技术统计及裁判判罚记录，缺乏赛果事实的官方依据；\n2. 争议与爆冷事实无法核实：检索任务重点关注的“爆冷失利、破纪录传闻或争议判罚”，在当前样本中均未出现对应的具体场次、当事人表述或确切事件描述。网络上若存在针对具体赛事的争议指控，因缺乏独立核验材料，在此均定性为“未证实”；\n3. 官方声明缺位：样本中未见相关参赛代表队、教练组或赛事组委会的赛后官方声明，亦无权威媒体的深度核实报道。\n\n四、待核验事项\n为明确焦点项目的实际赛果与争议真实性，后续仍需重点核验以下事项：\n1. 调取官方裁判记录与赛事组委会官方战报，核实关键场次是否存在争议判罚及官方裁决结果；\n2. 核查乒羽、游泳及三大球等焦点项目的实际赛果，查证网传爆冷与破纪录信息的真实性；\n3. 结合权威媒体报道与参赛队伍赛后官方声明，对相关赛果反响与争议进行多方交叉核对。",
+        "title": "焦点项目赛果与争议舆情溯源",
+        "truncated": false
+      },
+      {
+        "id": "forum",
+        "role": "forum",
+        "source": "verified_forum_artifact",
+        "stage": "forum",
+        "status": "SUCCEEDED",
+        "text": "**来源对比**\ninsight仅依赖4条微博评论，缺乏官方与媒体信源；media综合了Olympics.com、新华社、今日头条等多类媒体与社交平台，信息维度广但包含自媒体推测；query聚焦新华社、央视网、ESPN等中外主流媒体并转述国际检查机构通报，信源层级较高但缺一级官方源头。三者信源重合度低，insight与另外两者在事实基础上存在断层。\n\n**分角色的检索与核查建议**\ninsight：应补充检索“名古屋亚运会 中国代表团 奖牌榜 官方公报”“亚奥理事会 成绩册”，需核对国家体育总局或亚组委官网来源，以补齐基础事实。\nmedia：应补充检索“亚运会 竞走 AI计时 申诉结果”“男足 韩国 VAR 亚足联 裁决”“乒乓球 男团 决赛 技术统计”，需核对亚组委裁判委员会公告、亚足联官方报告及Olympics.com原始战报，验证赛果与判罚细节。\nquery：应补充检索“OCA 2026 奖牌榜 最终版”“ITA 名古屋亚运会 兴奋剂 违规通报 原文”，需核对亚奥理事会官网公报及ITA独立发布页面，确认奖牌统计口径与兴奋剂检测原始记录。\n\n**争议与局限**\n三方在核心奖牌数据上，media与query通过媒体交叉印证达成一致，insight因信源受限未予确认。关于具体争议，media提及的“日本选手举报马拉松竞走违规”“男足VAR未介入存在不利倾向”“乒乓球名额保送”等指控均无官方调查或独立证据，只能注明未证实；query提及的裁判争议与伤退声明亦无证据支持。整体局限在于：三方均未获取亚奥理事会或亚组委的一手官方公报，导致奖牌最终口径、兴奋剂案件细节及判罚申诉结果均停留在媒体转述或网民推测层面，缺乏事实闭环。\n",
+        "title": "汇总讨论",
+        "truncated": false
+      },
+      {
+        "id": "query-feedback:0",
+        "role": "query",
+        "source": "research_checkpoint",
+        "stage": "query-feedback",
+        "status": "RUNNING",
+        "text": "【中国爱知·名古屋亚运会奖牌数据核查舆情分析】\n\n一、事件依据\n本轮检索围绕2026年爱知·名古屋亚运会（下称“本届亚运会”）中国代表团奖牌数据进行核查。多家信源在核心数字上一致：中国代表团最终成绩为169枚金牌、89枚银牌、83枚铜牌，合计341枚奖牌。可归为报道类的材料包括：新华社英文稿（english.news.cn，2026-10-04，引述中国代表团秘书长张新表态）、央视网英语频道转载新华社稿（2026-10-05）、中国日报亚洲版及全球版稿件、ESPN奖牌榜汇总页面。新华社社交账号（X平台@XHNews）、新华社Facebook账号、央视亚太Facebook账号及CGTN欧洲Instagram帖文亦发布同一组数字。材料中“张新称中国代表团连续十二届位居亚运会金牌榜首位、金牌总数创境外参赛新高”属当事人表述，其身份为代表团秘书长，转引自新华社。检索未返回亚奥理事会、亚组委官网的奖牌榜与每日公报原文，官方一级信源缺失。\n\n二、观点分歧与口径差异\n现有材料未出现对169金核心数据的实质性反驳，差异主要体现在统计口径与叙事侧重：\n（1）叙事侧重不同。新华社、央视网、中国日报侧重“中国连续12届金牌榜首”“境外参赛最佳战绩”“新人涌现”等角度；中国日报亚洲版同时列出日本83金、韩国39金等名次信息；维基百科“2026年亚运会奖牌榜”条目呈现的是比赛中期数据（中国92金35银22铜），与闭幕后的最终数据不具可比性，反映的是更新时点差异而非争议。\n（2）榜单采样差异。ESPN奖牌榜列出中国队169/89/83居首、日本83/95/91、韩国39/43/68等，其数据与新华社、中国日报一致，但ESPN页面未标明数据来源与更新时间，无法确认是否直接取自官方公报。此前检索到的联合新闻网榜单亦为同一组数字，但来源为台湾媒体、非官方渠道。\n（3）社交平台评论（如CGTN欧洲Instagram帖文下“牛逼”“India is gobar country”等留言）属情绪化评论推测，不构成对奖牌数据的独立核验，不应作为事实依据。\n\n三、传播表现\n奖牌数据传播以中文媒体与体育垂直平台为主，形成“官方表态—媒体转引—社交平台扩散”的链条：新华社发稿后，央视网、中国日报网、ESPN等转引或汇总，Facebook、X、Instagram、Threads等平台出现同一数字的帖文。Threads上一则帖文（@rvcjinsta）同时引用CGTN欧洲内容并汇总“中国341枚奖牌”的表述，显示该数字在社交平台被二次加工。需注意，检索结果中包含多条同一来源（新华社）在不同平台的分发内容，其相互印证价值有限，不构成独立信源。\n\n四、证据可靠性与待核验事项\n（1）可采信程度：新华社、央视网、中国日报、ESPN在核心数字（169/89/83，合计341）上相互一致，且新华社引述了代表团官员表态，整体可信度较高。但多数材料同源或转引，独立信源数量有限。\n（2）仍待核验事项：第一，未获取亚奥理事会或爱知·名古屋亚组委官网的奖牌榜与每日公报原文，无法确认最终修订版本及统计口径（如并列名次、团体项目计法）；第二，新华社与共同社等跨通讯社的原文比对不充分，检索材料中未出现共同社相关报道；第三，ESPN等第三方榜单的数据来源与更新时间未标明；第四，维基百科条目呈现的中期数据与最终数据的差异，需以官方公报确认最终版本。\n（3）未证实指控：本轮材料未发现针对奖牌数据的独立质疑或指控，亦无任何机构或个人被指存在数据造假；社交平台评论中的情绪化表述仅为个别网民评论，与奖牌事实无关。\n\n五、结论\n综合现有材料，中国代表团在本届亚运会获169金89银83铜、合计341枚、连续12届金牌榜首位的结论得到多家媒体报道印证，可视为当前可采信的主流事实，但仍缺少亚奥理事会或亚组委官网一级信源的直接核验。赛事最终榜单口径与修订情况应以官方公报为准；对第三方榜单、赛中阶段性数据及社交平台评论，应区分报道、当事人表述与评论推测，不作过度外推。",
+        "title": "官方奖牌数据核查",
+        "truncated": false
+      },
+      {
+        "id": "query-feedback:1",
+        "role": "query",
+        "source": "research_checkpoint",
+        "stage": "query-feedback",
+        "status": "RUNNING",
+        "text": "截至2026年10月6日，围绕2026年爱知·名古屋亚运会反兴奋剂议题，已检索材料主要来自通讯社报道和官方机构页面，尚无任何一条涉及中国代表团成员被通报兴奋剂违规。新华社2026年9月27日报道称，国际检查机构（ITA）官网通报两名运动员兴奋剂检查呈阳性并被临时禁赛：土库曼斯坦空手道运动员凯莱利耶夫和乌兹别克斯坦综合格斗运动员沙夫卡托夫，后者还获得本届赛事男子现代71公斤级铜牌；通报称凯莱利耶夫9月20日赛外样本检出米屈肼，沙夫卡托夫9月22日赛外样本检出同种物质（来源：https://xinwen.bjd.com.cn/content/s6ab907f5e4b0e42f8f00e5e9.html）。同一报道还称，9月21日泰国羽毛球运动员碧查梦因样本检出呋塞米被临时禁赛，并说明米屈肼被列入世界反兴奋剂机构禁药名单S4类激素及代谢调节剂，赛内赛外均禁用；两名运动员已被临时禁赛，在案件审结前不得参加本届亚运会比赛、训练、执教或任何相关活动，且有权针对临时禁赛向国际体育仲裁法庭提出异议，也有权要求对B瓶样本进行检测。该报道系对ITA通报的转述，属当前材料中可靠性较高的部分，但报道本身未逐项披露样本采集、检测机构、是否已提出异议等细节。新华网2026年10月2日发布报道标题为“又有两人阳性 亚运会兴奋剂违规已有六例”（来源：https://www.news.cn/sports/20261002/9db58946cf374d86aeb4899ce456c625/c.html），内容称两名运动员分别是哈萨克斯坦田径运动员博拉特别克兹和塔吉克斯坦网球运动员沙里福夫，前者在9月27日赛内检查中被检出屈他雄酮代谢物（S1.1类蛋白同化雄性激素类固醇），后者在9月25日赛外检查中被检出S5类利尿剂和掩蔽剂坎利酮，两人均已被临时禁赛并享有向国际体育仲裁法庭提出异议或要求检测B瓶的权利；报道还称最近一例是乌兹别克斯坦皮划艇运动员艾格尔，在赛外检查中被检出S4类激素及代谢调节剂曲美他嗪，于9月28日被通报。上述内容仍以ITA通报为信息源、经新华社转述，具体身份、检测记录与程序进展待以ITA原始公告核验。此外，新浪转载页面称截至2026年10月3日已通报六例阳性、涉事运动员全部被临时禁赛（来源：https://k.sina.com.cn/article_7880068517_1d5b04da506802at9g.html?from=sports），属对既有通报数量的转述性概括，未提供新的原始证据。关于“成绩波动与争议疑点”中的裁判判罚申诉与运动员伤退声明，检索材料中未见亚奥理事会纪律页面原文、日本当地媒体独立报道或任何申诉与伤退信息，故该部分在现有材料下无证据支持，相关说法均为未证实或无从判断。传播表现上，反兴奋剂个案主要通过新华社等通讯社发布、由门户网站与社交平台转载，并以新华网亚运专题页聚合，形成以官方通报为核心的有限扩散；其中亦夹有赛前教育培训类官方信息，二者性质不同不应混同。证据可靠性方面，ITA通报经新华社转述的部分可靠性较高，但须以ITA原始公告核验；需要核验的事项包括9月27日报道所述三例的具体身份与检测细节、10月2日新增两例的完整信息、亚奥理事会是否发布纪律决定、是否出现针对判罚的申诉以及运动员伤退声明，以及是否存在任何涉及中国代表团成员的违规通报。在取得亚奥理事会纪律页面或权威原始公告前，不应将有关中国代表团兴奋剂违规、裁判争议或伤退的说法当作已确认事实。",
+        "title": "成绩波动与争议疑点",
+        "truncated": false
+      },
+      {
+        "id": "media-feedback:0",
+        "role": "media",
+        "source": "research_checkpoint",
+        "stage": "media-feedback",
+        "status": "RUNNING",
+        "text": "一、事件依据与官方成绩核查\n2026年爱知·名古屋亚运会于10月4日闭幕。根据Olympics.com与新华社报道，中国体育代表团最终以169金89银83铜共341枚奖牌位列金牌榜首位（来源：http://m.toutiao.com/group/7692992556531057167/?upstream_biz=VolcEngine）。中国男足在半决赛1-2不敌韩国队后，于铜牌赛常规时间2-2战平并在点球大战中4-3击败乌兹别克斯坦队，时隔28年再次登上亚运领奖台（来源：https://www.olympics.com/zh/news/2026-aichi-nagoya-asian-games-chinese-mens-football-team-results-tracker）。\n\n二、判罚争议、成绩异议与申诉事件核实\n1. 竞走首金计时与AI误判风波：女子20公里竞走决赛中，马振霞率先撞线夺冠，但组委会采用的“多源融合计时系统”AI姿态识别模块误判其正常摆臂为“疑似犯规”，导致数据校验延误，大屏幕实时榜单一度滞后显示。经裁判组复核37分钟后确认马振霞以1小时28分32秒夺得首金，中国代表团曾就AI判罚权限及更新滞后提出正式申诉（来源：http://m.toutiao.com/group/7687578001487315479/?upstream_biz=VolcEngine）。\n2. 竞走跑鞋违规改判：女子马拉松竞走决赛中，哈萨克斯坦选手托克桑巴耶娃率先撞线，次日亚组委发布通报确认其跑鞋中底厚度超标且未列入世界田联认可清单，依据规则取消其成绩（DQ）。中国选手旦增曲宗、马丽顺位递补为金牌和银牌（来源：http://m.toutiao.com/group/7693127243362484738/?upstream_biz=VolcEngine ；http://m.163.com/dy/article_v5/L87POTTU05564X8X.html）。\n3. 男足半决赛点球与VAR未介入争议：男足半决赛中国队1-2负于韩国队，下半场补时阶段张玉宁射门疑似击中韩国防守球员金志洙手臂，裁判未判罚点球且VAR未介入。主帅安东尼奥因抗议吃到黄牌（新华社报道其赛后拒绝谈论判罚）；张玉宁赛后接受采访质疑“裁判为什么没有去看VAR”；记者马德兴推测可能存在不利于中国的判罚倾向。韩国媒体及解说则评论称裁判对抗尺度对中国队动作偏软，中韩两方各执一词（来源：http://www.xinhuanet.com/sports/20260930/6603cb56f1c649d9b18bcf4b637a50d2/c.html ；https://www.dongqiudi.com/articles/6424162.html ；https://www.dongqiudi.com/articles/6418625.html ；https://www.dongqiudi.com/articles/6425586.html）。\n4. 田径接力交接棒申诉：男子4×100米接力决赛中国队以38秒17夺冠，获得第四名的泰国队申诉质疑中国队第二、三棒交接越界，组委会调取高清录像核验接力棒处于合规区域后，正式驳回申诉并维持赛果（来源：http://m.toutiao.com/group/7691337059604152871/?upstream_biz=VolcEngine）。\n5. 柔道赛场反则负争议：女子柔道70公斤级1/4决赛中，中国选手唐婧在地面缠斗中被裁判认定有咬人动作，被直接判罚反则负（来源：http://m.toutiao.com/group/7692992556531057167/?upstream_biz=VolcEngine）。\n\n三、证据可靠性与待核验事项\n官方通报与专业赛事记录证实了竞走AI误判、马拉松竞走违规取消成绩、接力申诉被驳回等赛果流程，证据可靠。对于网络流传女子马拉松竞走系“日本选手梅野幸子举报”的说法，组委会官方公告未指明申诉人身份，该指控属于媒体知情传闻与网民推测，仍未获独立证实；关于男足半决赛VAR未介入的背后动机，相关言论属于个人评论与猜测，无官方调查结论支持。",
+        "title": "官方奖牌榜与优势项目赛果核实",
+        "truncated": false
+      },
+      {
+        "id": "media-feedback:1",
+        "role": "media",
+        "source": "research_checkpoint",
+        "stage": "media-feedback",
+        "status": "RUNNING",
+        "text": "【事件依据与各项目战绩】\n2026年爱知·名古屋亚运会收官阶段，中国体育代表团在大盘上表现亮眼，据今日头条复盘报道（http://m.toutiao.com/group/7692764256571294269/?upstream_biz=VolcEngine），中国队共获得169金89银83铜共341枚奖牌，创下境外参赛历史最佳战绩。然而，在部分传统优势与重点球类项目上出现明显波动与预期落差：\n1. 乒乓球与羽毛球：国乒男团在决赛中大比分2比3惜败日本队，终结亚运连冠纪录，日本队则时隔数十年重夺男团金牌（https://news.china.com/socialgd/10000169/20260926/49765655_all.html）；羽毛球项目方面，据Olympics.com报道（https://www.olympics.com/zh/news/2026-aichi-nagoya-asian-games-chinese-badmintion-team-event-results-tracker），中国女团3比0完胜日本夺冠，但男团在2比0领先后遭印尼队连扳三盘以2比3惜败摘银，单打线亦出现男单无缘八强等低迷战绩（http://m.toutiao.com/group/7692764256571294269/?upstream_biz=VolcEngine）。\n2. 男子三大球及其他球类：中国蓝新闻报道（http://m.toutiao.com/group/7688566170064044567/?upstream_biz=VolcEngine），中国男篮半决赛以20分分差负于日本队二线阵容，季军战以70比79不敌伊朗队无缘奖牌；女篮亦惜败韩国无缘决赛（https://www.toutiao.com/w/1878099174780939/?upstream_biz=VolcEngine）。男足虽在半决赛失利，但通过点球大战摘得铜牌，时隔28年登上亚运领奖台（http://m.toutiao.com/group/7692948235974918684/?upstream_biz=VolcEngine）。\n\n【当事人表述与名宿发声】\n面对赛场失利，各方当事人与专业人士作出回应：\n1. 国乒方面：王楚钦赛后坦言自己准备不够充分、多线作战导致专注度和体力受限，主动承担第四盘失利责任；小将温瑞博承认关键球处理不足；主教练王皓解释本次布阵意在给年轻队员提供大赛锻炼机会，为洛杉矶奥运周期练兵（https://news.china.com/socialgd/10000169/20260926/49765655_all.html）。名宿邓亚萍指出，决赛排阵对王楚钦的容错要求极高，排兵相对冒险，温瑞博打二号位承受巨大压力，但年轻队员必须经历历练，应快速调整复盘（https://m.thepaper.cn/newsDetail_forward_34148049）。\n2. 国羽及男篮方面：李诗沣与梁伟铿/王昶在团体赛复盘中表示，场上节奏适应和逆风球果断性存在欠缺（https://www.olympics.com/zh/news/2026-aichi-nagoya-asian-games-chinese-badmintion-team-event-results-tracker）；男篮主教练赛后提出“大家所有人都非常辛苦”的表态，但在竞技结果不佳的背景下引发讨论（http://m.toutiao.com/group/7688566170064044567/?upstream_biz=VolcEngine）。\n\n【舆论观点分歧与传播表现】\n社交平台与自媒体围绕选拔机制与临场发挥展开热议，主要分歧集中在：\n1. “练兵代价”与“夺冠第一”之争：部分网民与评论认为亚运重头戏应全力保金，质疑教练组激进安排新人打关键场次是“豪赌”；另一派则认为主力梁靖崑等人有伤病，樊振东因主动退出世界排名积分清零不具备报名资格，梯队必须通过高强度对抗暴露短板（https://news.china.com/socialgd/10000169/20260926/49765655_all.html）。\n2. 选拔制度与商业化争议：部分微博舆论将丢冠归咎于长期选拔机制从绝对直通赛转向积分与综合评定，质疑存在“资源倾斜”（https://m.weibo.cn/detail/5348577796949389）；媒体评论则呼吁跳出悲情与谩骂叙事，关注三大球青训脱节与基本功底座厚度不足的深层问题（http://m.toutiao.com/group/7688566170064044567/?upstream_biz=VolcEngine）。\n\n【证据可靠性与待核验事项】\n官方及专业体育媒体报道的比赛比分、技术统计和当事人赛后采访具备较高可靠性；但自媒体与社交平台所称的“名额保送”、“赛场外围堵报警”等指控缺乏独立第三方的核验证据，属于未证实信息；关于多项目新老交替与长期选拔机制调整的实际成效，仍有待官方管理中心后续出具详细复盘报告予以确认。",
+        "title": "重点项目预期达成度与舆论反响排查",
+        "truncated": false
+      }
+    ],
+    "delivery": "saved_paragraphs",
+    "report_url": null,
+    "success": true,
+    "task_failures": [],
+    "unavailable_stages": [],
+    "workflow_id": "bf-entry-20261006-213814-6990a77bf8"
+  },
+  "visible": {
+    "host_cpu": "58.1%",
+    "task_cpu": "1.0%",
+    "task_memory": "87.4 MB",
+    "context": "3,664",
+    "output": "官方奖牌数据核查【中国爱知·名古屋亚运会奖牌数据核查舆情分析】\n\n一、事件依据\n本轮检索围绕2026年爱知·名古屋亚运会（下称“本届亚运会”）中国代表团奖牌数据进行核查。多家信源在核心数字上一致：中国代表团最终成绩为169枚金牌、89枚银牌、83枚铜牌，合计341枚奖牌。可归为报道类的材料包括：新华社英文稿（english.news.cn，2026-10-04，引述中国代表团秘书长张新表态）、央视网英语频道转载新华社稿（2026-10-05）、中国日报亚洲版及全球版稿件、ESPN奖牌榜汇总页面。新华社社交账号（X平台@XHNews）、新华社Facebook账号、央视亚太Facebook账号及CGTN欧洲Instagram帖文亦发布同一组数字。材料中“张新称中国代表团连续十二届位居亚运会金牌榜首位、金牌总数创境外参赛新高”属当事人表述，其身份为代表团秘书长，转引自新华社。检索未返回亚奥理事会、亚组委官网的奖牌榜与每日公报原文，官方一级信源缺失。\n\n二、观点分歧与口径差异\n现有材料未出现对169金核心数据的实质性反驳，差异主要体现在统计口径与叙事侧重：\n（1）叙事侧重不同。新华社、央视网、中国日报侧重“中国连续12届金牌榜首”“境外参赛最佳战绩”“新人涌现”等角度；中国日报亚洲版同时列出日本83金、韩国39金等名次信息；维基百科“2026年亚运会奖牌榜”条目呈现的是比赛中期数据（中国92金35银22铜），与闭幕后的最终数据不具可比性，反映的是更新时点差异而非争议。\n（2）榜单采样差异。ESPN奖牌榜列出中国队169/89/83居首、日本83/95/91、韩国39/43/68等，其数据与新华社、中国日报一致，但ESPN页面未标明数据来源与更新时间，无法确认是否直接取自官方公报。此前检索到的联合新闻网榜单亦为同一组数字，但来源为台湾媒体、非官方渠道。\n（3）社交平台评论（如CGTN"
+  },
+  "selected": "query-feedback",
+  "free_host_gb": 1.1747322082519531
+}

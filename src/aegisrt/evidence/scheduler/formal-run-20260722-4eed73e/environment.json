@@ -1,0 +1,16 @@
+{
+  "evidence_scope": "windows-functional",
+  "os_family": "windows",
+  "distribution_id": "windows",
+  "distribution_version": "10.0.26200",
+  "kernel_release": "10.0.26200",
+  "architecture": "amd64",
+  "logical_cpu_count": 24,
+  "memory_total_bytes": 16944848896,
+  "cgroup": {
+    "version": "none",
+    "controllers": [],
+    "delegation": "none",
+    "psi": "unavailable"
+  }
+}

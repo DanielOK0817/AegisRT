@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aegisrt:experiment:scheduler-analysis:v1",
+  "title": "AegisRT formal scheduler paired analysis v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "plan_id", "bootstrap_seed", "bootstrap_resamples", "cells"],
+  "properties": {
+    "schema_version": {"const": "aegisrt.experiment.scheduler-analysis/v1"},
+    "plan_id": {"const": "scheduler-s1-s2-s3-formal-v1"},
+    "bootstrap_seed": {"const": 424242},
+    "bootstrap_resamples": {"const": 10000},
+    "cells": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {"$ref": "#/$defs/cell"}
+    }
+  },
+  "$defs": {
+    "distribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "median", "p50", "p95", "iqr"],
+      "properties": {
+        "n": {"const": 30},
+        "median": {"type": "number"},
+        "p50": {"type": "number"},
+        "p95": {"type": "number"},
+        "iqr": {"type": "number", "minimum": 0}
+      }
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name", "direction", "baseline", "treatment", "paired_n",
+        "improvement_median", "improvement_ci95_lower",
+        "improvement_ci95_upper", "paired_rank_biserial"
+      ],
+      "properties": {
+        "name": {
+          "enum": [
+            "makespan_ms", "queue_p50_ms", "queue_p95_ms", "critical_path_ms",
+            "dependency_unlock_ms", "throughput_tasks_s", "jain_fairness",
+            "admission_rejections", "starvation_count", "decision_count"
+          ]
+        },
+        "direction": {"enum": ["lower-is-better", "higher-is-better"]},
+        "baseline": {"$ref": "#/$defs/distribution"},
+        "treatment": {"$ref": "#/$defs/distribution"},
+        "paired_n": {"const": 30},
+        "improvement_median": {"type": "number"},
+        "improvement_ci95_lower": {"type": "number"},
+        "improvement_ci95_upper": {"type": "number"},
+        "paired_rank_biserial": {"type": "number", "minimum": -1, "maximum": 1}
+      }
+    },
+    "cell": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "baseline_policy", "treatment", "metrics"],
+      "properties": {
+        "case_id": {"enum": ["S1", "S2", "S3"]},
+        "baseline_policy": {"enum": ["fifo", "priority"]},
+        "treatment": {"enum": ["priority", "dag-drcfs"]},
+        "metrics": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 6,
+          "items": {"$ref": "#/$defs/metric"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,255 @@
+package main
+
+import (
+	"crypto/sha256"
+	"encoding/hex"
+	"encoding/json"
+	"flag"
+	"fmt"
+	"os"
+	"sort"
+	"time"
+
+	"aegisrt/internal/domain"
+	"aegisrt/internal/scheduler"
+)
+
+var sourceSHA256, adapterSHA256, buildRole string
+
+// The wrapper preserves Select and Account while intentionally bypassing the
+// Engine's concrete *DAGDRCFS reservation-aware branch. It is simulation only:
+// Engine.State/Restore also use concrete type assertions for durable fairness.
+type settledOnly struct{ *scheduler.DAGDRCFS }
+
+type task struct {
+	ID        string                `json:"id"`
+	Workflow  string                `json:"workflow"`
+	ArrivalMS int64                 `json:"arrival_ms"`
+	ServiceMS int64                 `json:"service_ms"`
+	Priority  int                   `json:"priority"`
+	Resources domain.ResourceVector `json:"resources"`
+}
+
+type workload struct {
+	Case     string                `json:"case"`
+	Seed     uint32                `json:"seed"`
+	Capacity domain.ResourceVector `json:"capacity"`
+	Tasks    []task                `json:"tasks"`
+}
+
+type charge struct {
+	Workflow string  `json:"workflow"`
+	Settled  float64 `json:"settled"`
+	Reserved float64 `json:"reserved"`
+}
+
+type event struct {
+	Kind         string                `json:"kind"`
+	TimeMS       int64                 `json:"logical_ms"`
+	Task         string                `json:"task"`
+	Workflow     string                `json:"workflow"`
+	Accounted    float64               `json:"accounted_charge"`
+	Allocated    domain.ResourceVector `json:"allocated"`
+	Reservations []scheduler.Candidate `json:"reservations"`
+	Charges      []charge              `json:"charges"`
+}
+
+type timing struct{ Started, Finished int64 }
+
+type trial struct {
+	Workload workload `json:"workload"`
+	Events   []event  `json:"events"`
+	Metrics  metrics  `json:"metrics"`
+	Passed   bool     `json:"invariants_passed"`
+}
+
+type report struct {
+	Schema        string  `json:"schema"`
+	Variant       string  `json:"variant"`
+	BuildRole     string  `json:"build_role"`
+	SourceSHA256  string  `json:"source_sha256"`
+	AdapterSHA256 string  `json:"adapter_sha256"`
+	InputSHA256   string  `json:"input_sha256"`
+	Scope         string  `json:"scope"`
+	Trials        []trial `json:"trials"`
+}
+
+func main() {
+	variant := flag.String("variant", "", "A baseline, B current settled-only ablation, C current native")
+	output := flag.String("output", "", "new JSON report path")
+	flag.Parse()
+	if flag.NArg() != 0 || *output == "" || sourceSHA256 == "" || adapterSHA256 == "" ||
+		!(*variant == "A" && buildRole == "baseline" || (*variant == "B" || *variant == "C") && buildRole == "current") {
+		fail(fmt.Errorf("matching build identity, variant and output are required"))
+	}
+	inputs := workloads()
+	payload, err := json.Marshal(inputs)
+	if err != nil {
+		fail(err)
+	}
+	digest := sha256.Sum256(payload)
+	result := report{Schema: "aegisrt.core-comparison/v1", Variant: *variant, BuildRole: buildRole,
+		SourceSHA256: sourceSHA256, AdapterSHA256: adapterSHA256, InputSHA256: hex.EncodeToString(digest[:]),
+		Scope: "deterministic logical simulation; no CPU timing, daemon, checkpoint or recovery"}
+	for _, input := range inputs {
+		value, err := simulate(input, *variant == "B")
+		if err != nil {
+			fail(fmt.Errorf("%s/%d: %w", input.Case, input.Seed, err))
+		}
+		result.Trials = append(result.Trials, value)
+	}
+	payload, err = json.MarshalIndent(result, "", "  ")
+	if err != nil {
+		fail(err)
+	}
+	file, err := os.OpenFile(*output, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0600)
+	if err != nil {
+		fail(err)
+	}
+	if _, err := file.Write(append(payload, '\n')); err != nil {
+		file.Close()
+		fail(err)
+	}
+	if err := file.Close(); err != nil {
+		fail(err)
+	}
+	fmt.Printf("variant=%s trials=%d input_sha256=%s\n", *variant, len(result.Trials), result.InputSHA256)
+}
+
+func fail(err error) { fmt.Fprintln(os.Stderr, err); os.Exit(1) }
+
+func simulate(input workload, ablate bool) (trial, error) {
+	result := trial{Workload: input}
+	policy, err := scheduler.NewDAGDRCFS(input.Capacity, time.Second)
+	if err != nil {
+		return result, err
+	}
+	var selected scheduler.Policy = policy
+	if ablate {
+		selected = settledOnly{policy}
+	}
+	engine, err := scheduler.NewEngine(selected, input.Capacity)
+	if err != nil {
+		return result, err
+	}
+	status := make(map[string]int) // 0 pending, 1 running, 2 completed
+	timings := make(map[string]timing)
+	byID := make(map[string]task)
+	workflowIDs := make([]string, 0)
+	seen := make(map[string]bool)
+	for _, item := range input.Tasks {
+		byID[item.ID] = item
+		if !seen[item.Workflow] {
+			seen[item.Workflow] = true
+			workflowIDs = append(workflowIDs, item.Workflow)
+		}
+	}
+	sort.Strings(workflowIDs)
+	now, completed := int64(0), 0
+	for completed < len(input.Tasks) {
+		// Task order is stable; all simultaneous finishes precede admissions.
+		for _, item := range input.Tasks {
+			if status[item.ID] != 1 || timings[item.ID].Finished != now {
+				continue
+			}
+			if err := engine.Complete(item.ID, item.Resources); err != nil {
+				return result, err
+			}
+			status[item.ID] = 2
+			completed++
+			value, err := capture("finish", now, item, engine, policy, workflowIDs)
+			if err != nil {
+				return result, err
+			}
+			value.Accounted = item.Resources.DominantShare(input.Capacity) / float64(item.Priority+1)
+			result.Events = append(result.Events, value)
+		}
+		for {
+			var candidates []scheduler.Candidate
+			for _, item := range input.Tasks {
+				if status[item.ID] != 0 || item.ArrivalMS > now {
+					continue
+				}
+				candidates = append(candidates, scheduler.Candidate{TaskID: item.ID, WorkflowID: item.Workflow,
+					Priority: item.Priority, ReadyAt: time.Unix(0, item.ArrivalMS*int64(time.Millisecond)), Resources: item.Resources})
+			}
+			if len(candidates) == 0 {
+				break
+			}
+			decision, err := engine.DecideAndReserve(candidates, time.Unix(0, now*int64(time.Millisecond)))
+			if err == scheduler.ErrNoCandidate {
+				break
+			}
+			if err != nil {
+				return result, err
+			}
+			item := byID[decision.Candidate.TaskID]
+			if status[item.ID] != 0 || item.ArrivalMS > now {
+				return result, fmt.Errorf("invalid dispatch %s", item.ID)
+			}
+			status[item.ID] = 1
+			timings[item.ID] = timing{Started: now, Finished: now + item.ServiceMS}
+			value, err := capture("dispatch", now, item, engine, policy, workflowIDs)
+			if err != nil {
+				return result, err
+			}
+			result.Events = append(result.Events, value)
+		}
+		if completed == len(input.Tasks) {
+			break
+		}
+		next := int64(1 << 62)
+		for _, item := range input.Tasks {
+			if status[item.ID] == 1 && timings[item.ID].Finished < next {
+				next = timings[item.ID].Finished
+			}
+			if status[item.ID] == 0 && item.ArrivalMS > now && item.ArrivalMS < next {
+				next = item.ArrivalMS
+			}
+		}
+		if next <= now || next == 1<<62 {
+			return result, fmt.Errorf("simulation deadlock at %d", now)
+		}
+		now = next
+	}
+	if !engine.Allocated().IsZero() {
+		return result, fmt.Errorf("terminal resource leak")
+	}
+	for _, id := range workflowIDs {
+		want := 0.0
+		for _, item := range input.Tasks {
+			if item.Workflow == id {
+				want += item.Resources.DominantShare(input.Capacity) / float64(item.Priority+1)
+			}
+		}
+		if policy.VRuntime(id) != want {
+			return result, fmt.Errorf("settlement mismatch for %s", id)
+		}
+	}
+	result.Metrics = calculate(input, timings, result.Events)
+	result.Passed = true
+	return result, nil
+}
+
+func capture(kind string, now int64, item task, engine *scheduler.Engine, policy *scheduler.DAGDRCFS, workflows []string) (event, error) {
+	state := engine.State()
+	total := domain.ResourceVector{}
+	pending := make(map[string]float64)
+	for _, reservation := range state.Reservations {
+		var err error
+		total, err = total.AddChecked(reservation.Resources)
+		if err != nil {
+			return event{}, err
+		}
+		pending[reservation.WorkflowID] += reservation.Resources.DominantShare(state.Capacity) / float64(reservation.Priority+1)
+	}
+	if !total.FitsWithin(state.Capacity) || !total.FitsWithin(state.Allocated) || !state.Allocated.FitsWithin(total) {
+		return event{}, fmt.Errorf("allocation and reservation invariant failed")
+	}
+	value := event{Kind: kind, TimeMS: now, Task: item.ID, Workflow: item.Workflow,
+		Allocated: state.Allocated, Reservations: state.Reservations}
+	for _, id := range workflows {
+		value.Charges = append(value.Charges, charge{Workflow: id, Settled: policy.VRuntime(id), Reserved: pending[id]})
+	}
+	return value, nil
+}

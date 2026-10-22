@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aegisrt:experiment:component-manifest:v1",
+  "title": "AegisRT F4 component manifest v1",
+  "description": "Anonymous hashes for the F4 executables. The embedded Agent fixture is an alias of the exact harness executable and therefore repeats its bytes, hash, and source revision; semantic validation enforces that equality.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "components"],
+  "properties": {
+    "schema_version": {"const": "aegisrt.experiment.component-manifest/v1"},
+    "components": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/component"},
+      "allOf": [
+        {
+          "contains": {"properties": {"role": {"const": "harness"}}, "required": ["role"]},
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {"properties": {"role": {"const": "runtime-daemon"}}, "required": ["role"]},
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {"properties": {"role": {"const": "agent-fixture"}}, "required": ["role"]},
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "artifact_kind", "bytes", "sha256", "source_revision"],
+      "allOf": [
+        {
+          "if": {"properties": {"role": {"const": "agent-fixture"}}, "required": ["role"]},
+          "then": {"properties": {"artifact_kind": {"const": "embedded-fixture"}}},
+          "else": {"properties": {"artifact_kind": {"const": "executable"}}}
+        }
+      ],
+      "properties": {
+        "role": {"enum": ["harness", "runtime-daemon", "agent-fixture"]},
+        "artifact_kind": {"enum": ["executable", "embedded-fixture"]},
+        "bytes": {"type": "integer", "minimum": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "source_revision": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{40}$"
+        }
+      }
+    }
+  }
+}

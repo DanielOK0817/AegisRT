@@ -1,0 +1,78 @@
+package main
+
+import (
+    "context"
+    "encoding/json"
+    "fmt"
+    "os"
+    "path/filepath"
+    "time"
+
+    "aegisrt/internal/contextstate"
+)
+
+var variant string
+type Job struct {
+    Kind string `json:"kind"`
+    Case CommunicationCase `json:"case"`
+    Repetition int `json:"repetition"`
+    Corpus string `json:"corpus"`
+    Words int `json:"words"`
+    Fraction int `json:"fraction_eighths"`
+    Mode string `json:"mode"`
+    CompressionReadPasses int `json:"compression_read_passes"`
+}
+
+func main() {
+    if len(os.Args) != 3 { panic("usage: evaluation job.json output-directory") }
+    data, err := os.ReadFile(os.Args[1]); must(err)
+    var job Job; must(json.Unmarshal(data, &job))
+    dir := os.Args[2]; must(os.MkdirAll(dir, 0700))
+    ctx, cancel := context.WithTimeout(context.Background(), 90*time.Second); defer cancel()
+    var result any
+    if job.Kind == "communication" {
+        result, err = runCommunicationTrial(ctx, dir, job.Case, 4, job.Repetition)
+    } else if job.Kind == "compression" { result, err = compressionTrial(ctx, dir, job)
+    } else { err = fmt.Errorf("unknown kind") }
+    report := map[string]any{"variant": variant, "job": job, "result": result, "success": err == nil}
+    if err != nil { report["error"] = err.Error() }
+    must(writeCommunicationJSON(filepath.Join(dir, "result.json"), report))
+    if err != nil { fmt.Fprintln(os.Stderr, err); os.Exit(1) }
+}
+
+func must(err error) { if err != nil { panic(err) } }
+
+func (w *communicationWorkload) verify(ctx context.Context, trial *CommunicationTrial) error {
+    // Materialize dependency delivery before measuring replay stability.
+    for index := range w.commands {
+        if _, err := w.resolveAll(ctx, w.repository, index); err != nil { return err }
+    }
+    before, err := os.ReadFile(w.path); if err != nil { return err }
+    if err := os.WriteFile(filepath.Join(filepath.Dir(w.path), "replay-before.state"), before, 0600); err != nil { return err }
+    trial.IsolationVerified = true
+    checks := []map[string]any{}
+    for index, command := range w.commands {
+        replay, err := w.repository.PublishOutput(ctx, command, time.Now())
+        if err != nil || !replay.IdempotentReplay { return fmt.Errorf("publication replay: %v", err) }
+        if _, err := w.resolveAll(ctx, w.repository, index); err != nil { return err }
+        task, agent := communicationConsumer(command, 1)
+        task.ID += "-unrelated"; task.Dependencies = nil
+        resolution, err := w.repository.Resolve(ctx, task, agent, communicationBudget)
+        if err != nil { return err }
+        isolated := resolution.Text == "" && len(resolution.Refs) == 0
+        trial.IsolationVerified = trial.IsolationVerified && isolated
+        checks = append(checks, map[string]any{"task_id": task.ID, "isolated": isolated,
+            "observed_text": resolution.Text, "observed_refs": resolution.Refs})
+        if !isolated && variant != "A" { return fmt.Errorf("current variant isolation regression") }
+    }
+    after, err := os.ReadFile(w.path); if err != nil { return err }
+    if err := os.WriteFile(filepath.Join(filepath.Dir(w.path), "replay-after.state"), after, 0600); err != nil { return err }
+    trial.ReplayStable = string(before) == string(after)
+    if !trial.ReplayStable { return fmt.Errorf("replay changed checkpoint") }
+    reloaded, err := contextstate.NewPersistent(w.config, w.store, false, time.Now()); if err != nil { return err }
+    for index := range w.commands {
+        if _, err := w.resolveAll(ctx, reloaded, index); err != nil { return err }
+    }
+    trial.ReloadVerified = true
+    return writeCommunicationJSON(filepath.Join(filepath.Dir(w.path), "isolation-probes.json"), checks)
+}

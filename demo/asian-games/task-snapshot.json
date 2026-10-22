@@ -1,0 +1,203 @@
+{
+  "tasks": [
+    {
+      "task": {
+        "id": "bf-entry-20261006-213814-6990a77bf8-forum",
+        "workflow_id": "bf-entry-20261006-213814-6990a77bf8",
+        "agent_id": "bettafish-forum",
+        "goal": "{\"topic\": \"2026年爱知·名古屋亚运会中国代表队成绩\", \"max_paragraphs\": 2, \"max_reflections\": 1, \"insight_max_reflections\": 1, \"model_timeout_seconds\": 120, \"max_model_requests\": 1, \"max_output_tokens\": 16000, \"max_content_length\": 60000, \"flow_variant\": \"comprehensive\", \"research_phase\": \"initial\", \"discussion_round\": 1, \"dependency_tasks\": {\"query\": \"bf-entry-20261006-213814-6990a77bf8-query\", \"media\": \"bf-entry-20261006-213814-6990a77bf8-media\", \"insight\": \"bf-entry-20261006-213814-6990a77bf8-insight\"}, \"fixed_topic_search\": false}",
+        "dependencies": [
+          "bf-entry-20261006-213814-6990a77bf8-query",
+          "bf-entry-20261006-213814-6990a77bf8-media",
+          "bf-entry-20261006-213814-6990a77bf8-insight"
+        ],
+        "priority": 1,
+        "resources": {
+          "cpu_milli": 500,
+          "memory_mib": 512,
+          "llm_slots": 1,
+          "token_budget": 16000
+        },
+        "max_attempts": 1,
+        "timeout_ms": 1800000,
+        "idempotency_key": "bf-entry-20261006-213814-6990a77bf8-forum"
+      },
+      "status": "SUCCEEDED"
+    },
+    {
+      "task": {
+        "id": "bf-entry-20261006-213814-6990a77bf8-forum-final",
+        "workflow_id": "bf-entry-20261006-213814-6990a77bf8",
+        "agent_id": "bettafish-forum",
+        "goal": "{\"topic\": \"2026年爱知·名古屋亚运会中国代表队成绩\", \"max_paragraphs\": 2, \"max_reflections\": 1, \"insight_max_reflections\": 1, \"model_timeout_seconds\": 120, \"max_model_requests\": 1, \"max_output_tokens\": 16000, \"max_content_length\": 60000, \"flow_variant\": \"comprehensive\", \"research_phase\": \"initial\", \"discussion_round\": 2, \"dependency_tasks\": {\"query\": \"bf-entry-20261006-213814-6990a77bf8-query-feedback\", \"media\": \"bf-entry-20261006-213814-6990a77bf8-media-feedback\", \"insight\": \"bf-entry-20261006-213814-6990a77bf8-insight-feedback\"}, \"fixed_topic_search\": false}",
+        "dependencies": [
+          "bf-entry-20261006-213814-6990a77bf8-query-feedback",
+          "bf-entry-20261006-213814-6990a77bf8-media-feedback",
+          "bf-entry-20261006-213814-6990a77bf8-insight-feedback"
+        ],
+        "priority": 1,
+        "resources": {
+          "cpu_milli": 500,
+          "memory_mib": 512,
+          "llm_slots": 1,
+          "token_budget": 16000
+        },
+        "max_attempts": 1,
+        "timeout_ms": 1800000,
+        "idempotency_key": "bf-entry-20261006-213814-6990a77bf8-forum-final"
+      },
+      "status": "SUCCEEDED"
+    },
+    {
+      "task": {
+        "id": "bf-entry-20261006-213814-6990a77bf8-insight",
+        "workflow_id": "bf-entry-20261006-213814-6990a77bf8",
+        "agent_id": "bettafish-insight",
+        "goal": "{\"topic\": \"2026年爱知·名古屋亚运会中国代表队成绩\", \"max_paragraphs\": 2, \"max_reflections\": 1, \"insight_max_reflections\": 1, \"model_timeout_seconds\": 120, \"max_model_requests\": 11, \"max_output_tokens\": 16000, \"max_content_length\": 60000, \"flow_variant\": \"comprehensive\", \"research_phase\": \"initial\", \"discussion_round\": 1, \"dependency_tasks\": {}, \"fixed_topic_search\": false}",
+        "priority": 1,
+        "resources": {
+          "cpu_milli": 500,
+          "memory_mib": 2048,
+          "llm_slots": 1,
+          "token_budget": 16000
+        },
+        "max_attempts": 1,
+        "timeout_ms": 1800000,
+        "idempotency_key": "bf-entry-20261006-213814-6990a77bf8-insight"
+      },
+      "status": "SUCCEEDED"
+    },
+    {
+      "task": {
+        "id": "bf-entry-20261006-213814-6990a77bf8-insight-feedback",
+        "workflow_id": "bf-entry-20261006-213814-6990a77bf8",
+        "agent_id": "bettafish-insight",
+        "goal": "{\"topic\": \"2026年爱知·名古屋亚运会中国代表队成绩\", \"max_paragraphs\": 2, \"max_reflections\": 1, \"insight_max_reflections\": 1, \"model_timeout_seconds\": 120, \"max_model_requests\": 6, \"max_output_tokens\": 16000, \"max_content_length\": 60000, \"flow_variant\": \"comprehensive\", \"research_phase\": \"refinement\", \"discussion_round\": 1, \"dependency_tasks\": {\"insight\": \"bf-entry-20261006-213814-6990a77bf8-insight\", \"forum\": \"bf-entry-20261006-213814-6990a77bf8-forum\"}, \"fixed_topic_search\": false}",
+        "dependencies": [
+          "bf-entry-20261006-213814-6990a77bf8-insight",
+          "bf-entry-20261006-213814-6990a77bf8-forum"
+        ],
+        "priority": 1,
+        "resources": {
+          "cpu_milli": 500,
+          "memory_mib": 2048,
+          "llm_slots": 1,
+          "token_budget": 16000
+        },
+        "max_attempts": 1,
+        "timeout_ms": 1800000,
+        "idempotency_key": "bf-entry-20261006-213814-6990a77bf8-insight-feedback"
+      },
+      "status": "SUCCEEDED"
+    },
+    {
+      "task": {
+        "id": "bf-entry-20261006-213814-6990a77bf8-media",
+        "workflow_id": "bf-entry-20261006-213814-6990a77bf8",
+        "agent_id": "bettafish-media",
+        "goal": "{\"topic\": \"2026年爱知·名古屋亚运会中国代表队成绩\", \"max_paragraphs\": 2, \"max_reflections\": 1, \"insight_max_reflections\": 1, \"model_timeout_seconds\": 120, \"max_model_requests\": 11, \"max_output_tokens\": 16000, \"max_content_length\": 60000, \"flow_variant\": \"comprehensive\", \"research_phase\": \"initial\", \"discussion_round\": 1, \"dependency_tasks\": {}, \"fixed_topic_search\": false}",
+        "priority": 1,
+        "resources": {
+          "cpu_milli": 500,
+          "memory_mib": 512,
+          "llm_slots": 1,
+          "token_budget": 16000
+        },
+        "max_attempts": 1,
+        "timeout_ms": 1800000,
+        "idempotency_key": "bf-entry-20261006-213814-6990a77bf8-media"
+      },
+      "status": "SUCCEEDED"
+    },
+    {
+      "task": {
+        "id": "bf-entry-20261006-213814-6990a77bf8-media-feedback",
+        "workflow_id": "bf-entry-20261006-213814-6990a77bf8",
+        "agent_id": "bettafish-media",
+        "goal": "{\"topic\": \"2026年爱知·名古屋亚运会中国代表队成绩\", \"max_paragraphs\": 2, \"max_reflections\": 1, \"insight_max_reflections\": 1, \"model_timeout_seconds\": 120, \"max_model_requests\": 6, \"max_output_tokens\": 16000, \"max_content_length\": 60000, \"flow_variant\": \"comprehensive\", \"research_phase\": \"refinement\", \"discussion_round\": 1, \"dependency_tasks\": {\"media\": \"bf-entry-20261006-213814-6990a77bf8-media\", \"forum\": \"bf-entry-20261006-213814-6990a77bf8-forum\"}, \"fixed_topic_search\": false}",
+        "dependencies": [
+          "bf-entry-20261006-213814-6990a77bf8-media",
+          "bf-entry-20261006-213814-6990a77bf8-forum"
+        ],
+        "priority": 1,
+        "resources": {
+          "cpu_milli": 500,
+          "memory_mib": 512,
+          "llm_slots": 1,
+          "token_budget": 16000
+        },
+        "max_attempts": 1,
+        "timeout_ms": 1800000,
+        "idempotency_key": "bf-entry-20261006-213814-6990a77bf8-media-feedback"
+      },
+      "status": "SUCCEEDED"
+    },
+    {
+      "task": {
+        "id": "bf-entry-20261006-213814-6990a77bf8-query",
+        "workflow_id": "bf-entry-20261006-213814-6990a77bf8",
+        "agent_id": "bettafish-query",
+        "goal": "{\"topic\": \"2026年爱知·名古屋亚运会中国代表队成绩\", \"max_paragraphs\": 2, \"max_reflections\": 1, \"insight_max_reflections\": 1, \"model_timeout_seconds\": 120, \"max_model_requests\": 11, \"max_output_tokens\": 16000, \"max_content_length\": 60000, \"flow_variant\": \"comprehensive\", \"research_phase\": \"initial\", \"discussion_round\": 1, \"dependency_tasks\": {}, \"fixed_topic_search\": false}",
+        "priority": 1,
+        "resources": {
+          "cpu_milli": 500,
+          "memory_mib": 512,
+          "llm_slots": 1,
+          "token_budget": 16000
+        },
+        "max_attempts": 1,
+        "timeout_ms": 1800000,
+        "idempotency_key": "bf-entry-20261006-213814-6990a77bf8-query"
+      },
+      "status": "SUCCEEDED"
+    },
+    {
+      "task": {
+        "id": "bf-entry-20261006-213814-6990a77bf8-query-feedback",
+        "workflow_id": "bf-entry-20261006-213814-6990a77bf8",
+        "agent_id": "bettafish-query",
+        "goal": "{\"topic\": \"2026年爱知·名古屋亚运会中国代表队成绩\", \"max_paragraphs\": 2, \"max_reflections\": 1, \"insight_max_reflections\": 1, \"model_timeout_seconds\": 120, \"max_model_requests\": 6, \"max_output_tokens\": 16000, \"max_content_length\": 60000, \"flow_variant\": \"comprehensive\", \"research_phase\": \"refinement\", \"discussion_round\": 1, \"dependency_tasks\": {\"query\": \"bf-entry-20261006-213814-6990a77bf8-query\", \"forum\": \"bf-entry-20261006-213814-6990a77bf8-forum\"}, \"fixed_topic_search\": false}",
+        "dependencies": [
+          "bf-entry-20261006-213814-6990a77bf8-query",
+          "bf-entry-20261006-213814-6990a77bf8-forum"
+        ],
+        "priority": 1,
+        "resources": {
+          "cpu_milli": 500,
+          "memory_mib": 512,
+          "llm_slots": 1,
+          "token_budget": 16000
+        },
+        "max_attempts": 1,
+        "timeout_ms": 1800000,
+        "idempotency_key": "bf-entry-20261006-213814-6990a77bf8-query-feedback"
+      },
+      "status": "SUCCEEDED"
+    },
+    {
+      "task": {
+        "id": "bf-entry-20261006-213814-6990a77bf8-report",
+        "workflow_id": "bf-entry-20261006-213814-6990a77bf8",
+        "agent_id": "bettafish-report",
+        "goal": "{\"topic\": \"2026年爱知·名古屋亚运会中国代表队成绩\", \"max_paragraphs\": 2, \"max_reflections\": 1, \"insight_max_reflections\": 1, \"model_timeout_seconds\": 300, \"max_model_requests\": 5, \"max_output_tokens\": 32000, \"max_content_length\": 60000, \"flow_variant\": \"comprehensive\", \"research_phase\": \"initial\", \"discussion_round\": 2, \"dependency_tasks\": {\"query\": \"bf-entry-20261006-213814-6990a77bf8-query-feedback\", \"media\": \"bf-entry-20261006-213814-6990a77bf8-media-feedback\", \"insight\": \"bf-entry-20261006-213814-6990a77bf8-insight-feedback\", \"forum\": \"bf-entry-20261006-213814-6990a77bf8-forum-final\"}, \"fixed_topic_search\": false}",
+        "dependencies": [
+          "bf-entry-20261006-213814-6990a77bf8-query-feedback",
+          "bf-entry-20261006-213814-6990a77bf8-media-feedback",
+          "bf-entry-20261006-213814-6990a77bf8-insight-feedback",
+          "bf-entry-20261006-213814-6990a77bf8-forum-final"
+        ],
+        "priority": 1,
+        "resources": {
+          "cpu_milli": 500,
+          "memory_mib": 512,
+          "llm_slots": 1,
+          "token_budget": 16000
+        },
+        "max_attempts": 1,
+        "timeout_ms": 1800000,
+        "idempotency_key": "bf-entry-20261006-213814-6990a77bf8-report"
+      },
+      "status": "FAILED"
+    }
+  ]
+}

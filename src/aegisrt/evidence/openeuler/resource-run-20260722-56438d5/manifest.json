@@ -1,0 +1,105 @@
+{
+  "schema_version": "aegisrt.experiment.manifest/v1",
+  "run_id": "run-241caecabb84107d64121986",
+  "status": "COMPLETED",
+  "experiment": {
+    "kind": "resource",
+    "plan_id": "resource-cgroup-pressure-smoke-v1",
+    "case_ids": [
+      "R2",
+      "R3-memory",
+      "R3-pids"
+    ],
+    "workload_sha256": "90f5ed2994733a4dc526f9be1df60c38bc725b5a1c2726269cede68e8b943248",
+    "input_sha256": "90f5ed2994733a4dc526f9be1df60c38bc725b5a1c2726269cede68e8b943248"
+  },
+  "protocol": {
+    "warmup_pairs": 0,
+    "measured_pairs": 3,
+    "seeds": [
+      104729
+    ],
+    "pairing": "seed-and-repetition-v1",
+    "counterbalance": "alternating-seed-index-v1",
+    "trial_timeout_ms": 5000,
+    "bootstrap_seed": 424242,
+    "bootstrap_resamples": 10000
+  },
+  "environment": {
+    "evidence_scope": "openeuler-kernel",
+    "os_family": "linux",
+    "distribution_id": "openEuler",
+    "distribution_version": "24.03",
+    "kernel_release": "6.6.0-159.4.3.154.oe2403sp4.x86_64",
+    "architecture": "amd64",
+    "logical_cpu_count": 4,
+    "memory_total_bytes": 3570425856,
+    "cgroup": {
+      "version": "v2",
+      "controllers": [
+        "cpu",
+        "memory",
+        "pids"
+      ],
+      "delegation": "delegated",
+      "psi": "available"
+    }
+  },
+  "software": {
+    "runtime_commit": "56438d5fd25c989e4299f1fcad072ca2b3f7bc18",
+    "runtime_dirty": false,
+    "go_version": "go1.26.5",
+    "binary_sha256": "c6f7446a3cd06f5eb60ebaa6608a242339042259ea36002ce1fc7acc6808eebc",
+    "config_sha256": "90f5ed2994733a4dc526f9be1df60c38bc725b5a1c2726269cede68e8b943248"
+  },
+  "started_at": "2026-07-22T13:26:58.979632528Z",
+  "finished_at": "2026-07-22T13:27:08.78627561Z",
+  "integrity": {
+    "directory_policy": "create-only-atomic-publish",
+    "tamper_evident": true,
+    "worm_storage": false,
+    "checksum_algorithm": "SHA-256",
+    "checksum_file": "SHA256SUMS"
+  },
+  "anonymization": {
+    "contains_personal_identifiers": false,
+    "contains_credentials": false,
+    "contains_absolute_paths": false,
+    "raw_output_capture": false,
+    "scan_result": "PASSED"
+  },
+  "artifacts": [
+    {
+      "kind": "resource-csv",
+      "path": "resource.csv",
+      "media_type": "text/csv",
+      "bytes": 2325,
+      "sha256": "95f07400c89c9279c840cdc44a12d7e3d9af9026d4faedb411128c0c9c526dad",
+      "records": 6
+    },
+    {
+      "kind": "workload-json",
+      "path": "workload.json",
+      "media_type": "application/json",
+      "bytes": 1156,
+      "sha256": "90f5ed2994733a4dc526f9be1df60c38bc725b5a1c2726269cede68e8b943248",
+      "records": 1
+    },
+    {
+      "kind": "event-jsonl",
+      "path": "events.jsonl",
+      "media_type": "application/x-ndjson",
+      "bytes": 6081,
+      "sha256": "678c90de70e3463a4fc12fccb5c5a3e4ff64aec286e68413e71aaa1017e16347",
+      "records": 15
+    },
+    {
+      "kind": "environment-json",
+      "path": "environment.json",
+      "media_type": "application/json",
+      "bytes": 447,
+      "sha256": "1351d9dcff553abe86b8721ff4dbc15460269dcbb056852205a2a2d28091faf6",
+      "records": 1
+    }
+  ]
+}
